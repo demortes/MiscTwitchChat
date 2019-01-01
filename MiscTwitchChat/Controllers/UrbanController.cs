@@ -7,10 +7,11 @@ namespace MiscTwitchChat.Controllers
 {
     public class UrbanController : ApiController
     {
-        // GET api/values
-
-        // GET api/values/5
-
+        /// <summary>
+        /// Get the term from Urban Dictionary. Truncated to 255is characters, and single line.
+        /// </summary>
+        /// <param name="term">Term to look for.</param>
+        /// <returns>String of 255 ish characters, used for the definition.</returns>
         public HttpResponseMessage Get(string term)
         {
             try
