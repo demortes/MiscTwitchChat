@@ -1,39 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace MiscTwitchChat.Controllers
 {
-    public class ValuesController : ApiController
+    public class UrbanController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Get(string term)
         {
-        }
+            try
+            {
+                //Look it up.
+                var result = UrbanDictionaryNet.UrbanDictionary.Define(term);
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+                if (result.Definitions.Count < 1)
+                {
+                    var res = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("404: " + term + " not found.")
+                    };
+                    return res;
+                }
+                //Pass it back in formatted string, truncated.
+                var fullResult = result.Definitions.OrderByDescending(p => p.CurrentVote).First().Definition.Replace("\r\n", " ");
+                var truncatedResult = fullResult.Substring(0, fullResult.Length < 252 ? fullResult.Length : 252) + (fullResult.Length > 252 ? "..." : "");
 
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(truncatedResult);
+
+                return response;
+            }
+            catch
+            {
+                var res = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("ABORT ABORT ABORT: Server error. Something broke, but not likely your bot.")
+                };
+                return res;
+            }
         }
     }
 }
