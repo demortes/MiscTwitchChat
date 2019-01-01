@@ -8,7 +8,7 @@ namespace MiscTwitchChat.Controllers
     public class UrbanController : ApiController
     {
         /// <summary>
-        /// Get the term from Urban Dictionary. Truncated to 255is characters, and single line.
+        /// Get the term from Urban Dictionary. Truncated to 255 ish characters, and single line.
         /// </summary>
         /// <param name="term">Term to look for.</param>
         /// <returns>String of 255 ish characters, used for the definition.</returns>

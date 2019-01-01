@@ -21,7 +21,7 @@
                     @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("API", "Index", "Help", new { area = "" }, new { @class = "nav-link" })
+                    <a href="@Href("~/swagger")" class="nav-link">API</a>
                 </li>
             </ul>
         </div>
