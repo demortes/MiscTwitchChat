@@ -26,7 +26,10 @@ namespace MiscTwitchChat.Controllers
             "Doesn't look great.",
             "I don't think so.",
             "Without a doubt, no.",
-            "The answer is clearly NO!"
+            "The answer is clearly NO!",
+            "Today doesn't look good. Tomorrow doesn't either. Nor the year for that fact.",
+            "Only I will ever know",
+            "I better not say."
         };
 
         public HttpResponseMessage Get()
