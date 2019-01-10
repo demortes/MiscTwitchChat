@@ -29,7 +29,8 @@ namespace MiscTwitchChat.Controllers
             "The answer is clearly NO!",
             "Today doesn't look good. Tomorrow doesn't either. Nor the year for that fact.",
             "Only I will ever know",
-            "I better not say."
+            "I better not say.",
+            "Repeat after me... I am not that lucky."
         };
 
         public HttpResponseMessage Get()
