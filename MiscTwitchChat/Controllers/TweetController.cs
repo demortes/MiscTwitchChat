@@ -1,31 +1,32 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using System;
 
-namespace MiscTwitchChat.Controllers
+namespace MiscTwitchChatCore.Controllers
 {
-    /// <summary>
-    /// Used to retrieve the link to the latest tweet of a user.
-    /// </summary>
-    public class TweetController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TweetController : ControllerBase
     {
-        private readonly string TwitterPrefix = "https://twitter.com/demortes/status/";
-        /// <summary>
-        /// Get the latest tweet of the twitter username passed in, and display the link to it.
-        /// </summary>
-        /// <param name="twitterUsername">Twitter handle to search for.</param>
-        /// <returns>Link to the latest tweet of that user.</returns>
-        public async Task<HttpResponseMessage> Get(string twitterUsername)
+        private IConfiguration _configuration;
+
+        public TweetController(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
+        [HttpGet("{twitterUsername}")]
+        public async Task<string> GetAsync(string twitterUsername)
         {
             //HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={twitterUsername}&count=1");
-            string TwitterApiKey = ConfigurationManager.AppSettings["TwitterApiKey"].ToString();
-            string TwitterApiSecretKey = ConfigurationManager.AppSettings["TwitterApiSecret"].ToString();
+            string TwitterApiKey = _configuration["TwitterApiKey"].Trim();
+            string TwitterApiSecretKey = _configuration["TwitterApiSecret"].Trim();
+
             string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(TwitterApiKey + ":" + TwitterApiSecretKey));
 
             var client = new HttpClient();
@@ -44,12 +45,7 @@ namespace MiscTwitchChat.Controllers
             var tweetResponse = await client.GetStringAsync($"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={twitterUsername}&count=1&exclude_replies=true&trim_user=true&include_rts=false");
             dynamic tweet = JsonConvert.DeserializeObject(tweetResponse);
 
-            HttpResponseMessage rval = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent($"https://twitter.com/{twitterUsername}/status/" + tweet[0].id)
-            };
-
-            return rval;
+            return $"https://twitter.com/{twitterUsername}/status/" + tweet[0].id;
         }
     }
 }

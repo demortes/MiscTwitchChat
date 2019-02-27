@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Web.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MiscTwitchChat.Controllers
 {
     /// <summary>
     /// Get your eight ball here.
     /// </summary>
-    public class EightBallController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EightBallController : ControllerBase
     {
         private string[] response =
         {
@@ -32,15 +34,12 @@ namespace MiscTwitchChat.Controllers
             "I better not say.",
             "Repeat after me... I am not that lucky."
         };
-
-        public HttpResponseMessage Get()
+        [HttpGet]
+        public string Get()
         {
             var r = response[new Random().Next(0, response.Length - 1)];
-            HttpResponseMessage resp = new HttpResponseMessage()
-            {
-                Content = new StringContent(r)
-            };
-            return resp;
+
+            return r;
         }
     }
 }
