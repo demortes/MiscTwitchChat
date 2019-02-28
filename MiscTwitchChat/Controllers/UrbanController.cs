@@ -19,6 +19,10 @@ namespace MiscTwitchChat.Controllers
         [HttpGet("{term}")]
         public string Get(string term)
         {
+            if(term.ToLower() == "demortes")
+            {
+                return "An awesome individual who doesn't need his own Urban Dictionary entry. Creator of this API. Nice try chump.";
+            }
             try
             {
                 //Look it up.
