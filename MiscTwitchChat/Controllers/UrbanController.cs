@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using UrbanDictionaryNet;
 
 namespace MiscTwitchChat.Controllers
@@ -19,9 +16,13 @@ namespace MiscTwitchChat.Controllers
         [HttpGet("{term}")]
         public string Get(string term)
         {
-            if(term.ToLower() == "demortes")
+            if (term.ToLower() == "demortes")
             {
                 return "An awesome individual who doesn't need his own Urban Dictionary entry. Creator of this API. Nice try chump.";
+            }
+            else if (term.ToLower() == "LittleChrissie".ToLower())
+            {
+                return "LittleChrissie can't remove this either, but that's OK. They're pretty great.";
             }
             try
             {
