@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MiscTwitchChat
@@ -29,8 +31,11 @@ namespace MiscTwitchChat
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(config=> 
+                config.Filters.Add(new ActionFilter(new LoggerFactory())))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IConfiguration>(Configuration);
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -60,7 +65,7 @@ namespace MiscTwitchChat
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demortes' Random Chatbot API's");
             });
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -74,6 +79,7 @@ namespace MiscTwitchChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }

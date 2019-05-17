@@ -11,10 +11,10 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class CardsController : ControllerBase
     {
- 
+
         // GET: api/Cards
         [HttpGet]
-        public async Task<string> GetAsync()
+        public string Get()
         {
             var blackCards = System.IO.File.ReadAllLines("black_cards.txt");
             var whiteCards = System.IO.File.ReadAllLines("white_cards.txt");
