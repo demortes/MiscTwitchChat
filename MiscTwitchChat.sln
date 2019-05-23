@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiscTwitchChat", "MiscTwitchChat\MiscTwitchChat.csproj", "{03F06CB1-8C42-4C59-8939-3FD8EDFAA53C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiscTwitchChat", "MiscTwitchChat\MiscTwitchChat.csproj", "{03F06CB1-8C42-4C59-8939-3FD8EDFAA53C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiscTwitchChatTests", "MiscTwitchChatTests\MiscTwitchChatTests.csproj", "{4EA638B9-F54E-4B3B-9193-D4C96007CD00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{03F06CB1-8C42-4C59-8939-3FD8EDFAA53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F06CB1-8C42-4C59-8939-3FD8EDFAA53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03F06CB1-8C42-4C59-8939-3FD8EDFAA53C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EA638B9-F54E-4B3B-9193-D4C96007CD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA638B9-F54E-4B3B-9193-D4C96007CD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EA638B9-F54E-4B3B-9193-D4C96007CD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA638B9-F54E-4B3B-9193-D4C96007CD00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
