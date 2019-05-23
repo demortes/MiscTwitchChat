@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using UrbanDictionaryNet;
 
@@ -8,6 +10,13 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class UrbanController : ControllerBase
     {
+        private readonly ILogger _logger;
+
+        public UrbanController(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// Get the term from Urban Dictionary. Truncated to 255 ish characters, and single line.
         /// </summary>
@@ -16,6 +25,12 @@ namespace MiscTwitchChat.Controllers
         [HttpGet("{term}")]
         public string Get(string term)
         {
+            var guid = Guid.NewGuid().ToString();
+            var headers = HttpContext.Request.Headers;
+            foreach (var header in headers)
+            {
+                _logger.LogInformation($"[{guid} Header: {header.Key} - Value: {header.Value}");
+            }
             if (term.ToLower() == "demortes")
             {
                 return "An awesome individual who doesn't need his own Urban Dictionary entry. Creator of this API. Nice try chump.";

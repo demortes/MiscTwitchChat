@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -14,6 +16,10 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class EightBallController : ControllerBase
     {
+        public EightBallController(ILogger logger)
+        {
+            _logger = logger;
+        }
         private string[] response =
         {
             "Yes, of course!",
@@ -34,10 +40,18 @@ namespace MiscTwitchChat.Controllers
             "I better not say.",
             "Repeat after me... I am not that lucky."
         };
+        private readonly ILogger _logger;
+
         [HttpGet]
         public string Get()
         {
             var r = response[new Random().Next(0, response.Length - 1)];
+            var guid = Guid.NewGuid().ToString();
+            var headers = HttpContext.Request.Headers;
+            foreach (var header in headers)
+            {
+                _logger.LogInformation($"[{guid} Header: {header.Key} - Value: {header.Value}");
+            }
 
             return r;
         }
