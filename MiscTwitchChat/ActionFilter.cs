@@ -15,7 +15,7 @@ namespace MiscTwitchChat
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            _logger.LogInformation($"Headers: {context.HttpContext.Request.Headers}");
+            _logger.LogWarning($"Headers: {context.HttpContext.Request.Headers}");
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
