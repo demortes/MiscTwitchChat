@@ -12,9 +12,9 @@ namespace MiscTwitchChat.Controllers
     {
         private readonly ILogger _logger;
 
-        public UrbanController(ILogger logger)
+        public UrbanController(ILoggerFactory logger)
         {
-            _logger = logger;
+            _logger = logger.CreateLogger<UrbanController>();
         }
 
         /// <summary>

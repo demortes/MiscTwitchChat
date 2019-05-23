@@ -14,9 +14,9 @@ namespace MiscTwitchChat.Controllers
     {
         private readonly ILogger _logger;
 
-        public CardsController(ILogger logger)
+        public CardsController(ILoggerFactory logger)
         {
-            _logger = logger;
+            _logger = logger.CreateLogger<CardsController>();
         }
 
         // GET: api/Cards

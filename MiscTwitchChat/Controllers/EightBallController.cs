@@ -16,9 +16,9 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class EightBallController : ControllerBase
     {
-        public EightBallController(ILogger logger)
+        public EightBallController(ILoggerFactory logger)
         {
-            _logger = logger;
+            _logger = logger.CreateLogger<EightBallController>();
         }
         private string[] response =
         {
