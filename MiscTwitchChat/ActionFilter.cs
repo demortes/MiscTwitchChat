@@ -15,7 +15,11 @@ namespace MiscTwitchChat
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            _logger.LogWarning($"Headers: {context.HttpContext.Request.Headers}");
+            var guid = Guid.NewGuid().ToString();
+            foreach (var header in context.HttpContext.Request.Headers)
+            {
+                _logger.LogInformation($"[{guid}]Header {header.Key} - {header.Value}");
+            }
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
