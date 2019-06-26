@@ -44,7 +44,8 @@ namespace MiscTwitchChat.Controllers
             "What the hell kind of question is that?",
             "HAH! In your dreams.",
             "Sure, why not?",
-            "Ra made me say yes."
+            "Ra made me say yes.",
+            "Only if you eat smegma."
         };
         private readonly ILogger _logger;
 
