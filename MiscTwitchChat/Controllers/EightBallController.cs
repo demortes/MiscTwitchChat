@@ -38,7 +38,13 @@ namespace MiscTwitchChat.Controllers
             "Today doesn't look good. Tomorrow doesn't either. Nor the year for that fact.",
             "Only I will ever know",
             "I better not say.",
-            "Repeat after me... I am not that lucky."
+            "Repeat after me... I am not that lucky.", 
+            "Only if your name is Zach.",
+            "What are you? Stupid?",
+            "What the hell kind of question is that?",
+            "HAH! In your dreams.",
+            "Sure, why not?",
+            "Ra made me say yes."
         };
         private readonly ILogger _logger;
 
