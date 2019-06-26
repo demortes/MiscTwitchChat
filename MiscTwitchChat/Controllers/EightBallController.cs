@@ -45,7 +45,8 @@ namespace MiscTwitchChat.Controllers
             "HAH! In your dreams.",
             "Sure, why not?",
             "Ra made me say yes.",
-            "Only if you eat smegma."
+            "Only if you eat smegma.",
+            "Help me.... The oompa loompa uses me when he decides to go to war..."
         };
         private readonly ILogger _logger;
 
