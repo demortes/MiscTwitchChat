@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,8 @@ namespace MiscTwitchChat
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddEntityFrameworkMySql();
+            services.AddDbContext<MiscTwitchDbContext>(o=>o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc(config=> 
                 config.Filters.Add(new ActionFilter(new LoggerFactory())))
