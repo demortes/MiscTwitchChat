@@ -49,7 +49,7 @@ namespace MiscTwitchChat.Controllers
 
                 //Pick one randomly.
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
-            } while (_db.Disconsenters.FirstOrDefault(p => p.Name == target) != default);
+            } while (_db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);
 
             return target;
         }
