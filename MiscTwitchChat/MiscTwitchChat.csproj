@@ -5,6 +5,7 @@
     <ApplicationInsightsResourceId>/subscriptions/bf16e99c-276a-4825-91f7-c943463031e2/resourcegroups/TwitchSandbox/providers/microsoft.insights/components/DemTwitchSandbox</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/bf16e99c-276a-4825-91f7-c943463031e2/resourcegroups/TwitchSandbox/providers/microsoft.insights/components/DemTwitchSandbox</ApplicationInsightsAnnotationResourceId>
     <UserSecretsId>c9a09168-998a-4961-bc4a-14ab928ca33f</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />

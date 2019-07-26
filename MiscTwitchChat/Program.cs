@@ -18,7 +18,6 @@ namespace MiscTwitchChat
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddFilter("", LogLevel.Information);
                 })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
