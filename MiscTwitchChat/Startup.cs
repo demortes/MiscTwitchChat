@@ -43,6 +43,12 @@ namespace MiscTwitchChat
             {
                 c.SwaggerDoc("v1", new Info { Title = "Demortes' Random Chatbot API's", Version = "v1" });
             });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,7 +87,8 @@ namespace MiscTwitchChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            
+            app.UseForwardedHeaders();
+
         }
     }
 }
