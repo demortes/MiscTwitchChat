@@ -51,7 +51,7 @@ namespace MiscTwitchChat.Controllers
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
             } while (_db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);
 
-            return target;
+            return $"Well well well, {target} was spanked by ProsperousGuard. WAS THERE EVEN CONSENT?!";
         }
 
         [HttpGet("{channel}/{origUser}/consent")]
