@@ -1,0 +1,1 @@
+[![Build Status](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_apis/build/status/demortes.MiscTwitchChat?branchName=master)](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_build/latest?definitionId=10&branchName=master)
