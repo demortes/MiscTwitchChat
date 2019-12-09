@@ -20,7 +20,7 @@ namespace MiscTwitchChat.Controllers
         {
             _logger = logger.CreateLogger<EightBallController>();
         }
-        private string[] response =
+        private readonly string[] response =
         {
             "Yes, of course!",
             "Without a doubt, yes.",

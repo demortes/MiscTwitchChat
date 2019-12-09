@@ -31,23 +31,27 @@ namespace MiscTwitchChat
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddEntityFrameworkMySql();
-            services.AddDbContext<MiscTwitchDbContext>(o=>o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MiscTwitchDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc(config=> 
+            services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSingleton<IConfiguration>(Configuration);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Demortes' Random Chatbot API's", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Demortes' Random Chatbot API's", Version = "v1" });
             });
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+            services.Configure<MvcOptions>(options =>
+            {
+                options.EnableEndpointRouting = false;
             });
         }
 

@@ -6,12 +6,14 @@ namespace MiscTwitchChatTests
     [TestClass]
     public class HomeControllerTests
     {
-        [TestMethod]
-        public async System.Threading.Tasks.Task TestingIndexAsync()
-        {
-            var uut = new HomeController();
-            var result = uut.Index();
+        //[TestMethod]
+        //public async System.Threading.Tasks.Task TestingIndexAsync()
+        //{
+        //    using (var uut = new HomeController())
+        //    {
+        //        var result = uut.Index();
+        //    }
 
-        }
+        //}
     }
 }

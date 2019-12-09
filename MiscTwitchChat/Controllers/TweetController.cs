@@ -13,7 +13,7 @@ namespace MiscTwitchChatCore.Controllers
     [ApiController]
     public class TweetController : ControllerBase
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public TweetController(IConfiguration configuration)
         {
@@ -29,7 +29,7 @@ namespace MiscTwitchChatCore.Controllers
 
             string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(TwitterApiKey + ":" + TwitterApiSecretKey));
 
-            var client = new HttpClient();
+            using var client = new HttpClient();
             var formDictionary = new Dictionary<string, string>()
             {
                 { "grant_type", "client_credentials"}

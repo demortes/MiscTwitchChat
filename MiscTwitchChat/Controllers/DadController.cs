@@ -16,7 +16,7 @@ namespace MiscTwitchChat.Controllers
         [HttpGet]
         public async Task<String> GetDadJoke()
         {
-            var client = new HttpClient();
+            using var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("text/plain"));
             var resp = await client.GetAsync("https://icanhazdadjoke.com");
