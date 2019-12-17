@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MiscTwitchChat.Helpers;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace MiscTwitchChat
 {
@@ -32,6 +35,14 @@ namespace MiscTwitchChat
             });
             services.AddEntityFrameworkMySql();
             services.AddDbContext<MiscTwitchDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+
+            //Load CAH Cards JSON and add to singleton.
+            using(StreamReader file = File.OpenText("cah_cards.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                CAH_cards cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
+                services.AddSingleton(cards);
+            }
 
             services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())))
@@ -77,7 +88,7 @@ namespace MiscTwitchChat
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demortes' Random Chatbot API's");
             });
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
