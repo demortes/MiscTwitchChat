@@ -61,9 +61,9 @@ namespace MiscTwitchChat.Controllers
             {
                 var whiteCard = cahCards.whiteCards[new Random().Next(0, cahCards.whiteCards.Length)];
                 if (rval.Contains('_'))
-                    rval = rval.ReplaceFirst("_", replace: $"_{StripHTML(whiteCard)}_");
+                    rval = rval.ReplaceFirst("_", replace: $"*{StripHTML(whiteCard)}*");
                 else
-                    rval += $"_{StripHTML(whiteCard)}_";
+                    rval += $"*{StripHTML(whiteCard)}*";
             }
             return rval;
         }
