@@ -54,13 +54,16 @@ namespace MiscTwitchChat.Controllers
                 _logger.LogInformation($"[{guid} Header: {header.Key} - Value: {header.Value}");
             }
 
-            var rval = @"Prompt: ";
+            var rval = @"";
             var blackCard = cahCards.blackCards[new Random().Next(0, cahCards.blackCards.Length)];
             rval += StripHTML(blackCard.text);
             for(int y = 0; y < blackCard.pick;y++)
             {
                 var whiteCard = cahCards.whiteCards[new Random().Next(0, cahCards.whiteCards.Length)];
-                rval += " Response: " + StripHTML(whiteCard);
+                if (rval.Contains('_'))
+                    rval = rval.ReplaceFirst("_", replace: $"_{StripHTML(whiteCard)}_");
+                else
+                    rval += $"_{StripHTML(whiteCard)}_";
             }
             return rval;
         }
@@ -70,5 +73,17 @@ namespace MiscTwitchChat.Controllers
             return Regex.Replace(input, "<.*?>", "");
         }
 
+    }
+    public static class StringExtensionMethods
+    {
+        public static string ReplaceFirst(this string text, string search, string replace)
+        {
+            int pos = text.IndexOf(search);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
     }
 }
