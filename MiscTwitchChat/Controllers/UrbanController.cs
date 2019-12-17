@@ -49,8 +49,8 @@ namespace MiscTwitchChat.Controllers
                     return "404: " + term + " not found.";
                 }
                 //Pass it back in formatted string, truncated.
-                var fullResult = result.Definitions.OrderByDescending(p => p.CurrentVote).First().Definition.Replace("\r\n", " ");
-                var truncatedResult = fullResult.Substring(0, fullResult.Length < 252 ? fullResult.Length : 252) + (fullResult.Length > 252 ? "..." : "");
+                var fullResult = result.Definitions.OrderByDescending(p => p.CurrentVote).First().Definition.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
+                var truncatedResult = fullResult.Substring(0, fullResult.Length < 175 ? fullResult.Length : 175) + (fullResult.Length > 175 ? "..." : "");
 
                 return truncatedResult;
             }
