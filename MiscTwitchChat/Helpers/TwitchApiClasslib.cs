@@ -30,7 +30,12 @@ namespace MiscTwitchChat.Helpers
                 allChatters.AddRange(chatters.staff);
                 allChatters.AddRange(chatters.viewers);
                 allChatters.AddRange(chatters.vips);
-
+                //Remove disconsentors.
+                allChatters = allChatters.Distinct().ToList();
+                foreach(var disconsentor in _db.Disconsenters.Select(p => p.Name))
+                {
+                    allChatters.Remove(disconsentor);
+                }
                 //Pick one randomly.
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
             } while (target == origUser && _db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);

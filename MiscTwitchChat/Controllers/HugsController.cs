@@ -28,7 +28,7 @@ namespace MiscTwitchChat.Controllers
         [HttpGet("{channel}/{origUser}")]
         public async Task<string> HugAsync(string channel, string origUser)
         {
-            _logger.LogInformation($"Starting spank from {origUser} in {channel}");
+            _logger.LogInformation($"Starting Hug from {origUser} in {channel}");
             string target = await TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "hug", false);
 
             return $"Well well well, {target} was hugged by {origUser}. WAS THERE EVEN CONSENT?!";
