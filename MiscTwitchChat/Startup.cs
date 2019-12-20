@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MiscTwitchChat.Discord_Commands;
 using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MiscTwitchChat
 {
@@ -64,6 +68,16 @@ namespace MiscTwitchChat
             {
                 options.EnableEndpointRouting = false;
             });
+
+
+            //Init the discord bot
+            var client = new DiscordSocketClient();
+            client.Log += LogAsync;
+            var commandService = new CommandService();
+            commandService.Log += LogAsync;
+            services.AddSingleton<DiscordSocketClient>(client)
+                .AddSingleton<CommandService>(commandService)
+                .AddSingleton<CommandHandlingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +118,13 @@ namespace MiscTwitchChat
             });
             app.UseForwardedHeaders();
 
+        }
+
+
+        private Task LogAsync(LogMessage msg)
+        {
+            Console.WriteLine(msg.ToString());
+            return Task.CompletedTask;
         }
     }
 }
