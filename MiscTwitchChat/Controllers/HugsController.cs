@@ -29,6 +29,11 @@ namespace MiscTwitchChat.Controllers
         public async Task<string> HugAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting Hug from {origUser} in {channel}");
+            if(_db.Disconsenters.FirstOrDefault(p=>p.Name == origUser) != null)
+            {
+                return $"{origUser} does not consent and so is not allowed to hug.";
+            }
+
             string target = await TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "hug", false);
 
             return $"Well well well, {target} was hugged by {origUser}. WAS THERE EVEN CONSENT?!";

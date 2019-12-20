@@ -29,6 +29,10 @@ namespace MiscTwitchChat.Controllers
         public async Task<string> HugAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting poke from {origUser} in {channel}");
+            if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
+            {
+                return $"{origUser} does not consent and so is not allowed to poke.";
+            }
             string target = await TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "hug", false);
 
             return $"{target} was poke by {origUser}. POKE HARDER!";

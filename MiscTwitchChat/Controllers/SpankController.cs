@@ -29,6 +29,10 @@ namespace MiscTwitchChat.Controllers
         public async Task<string> SpankAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting spank from {origUser} in {channel}");
+            if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
+            {
+                return $"{origUser} does not consent and so is not allowed to spank.";
+            }
             string target = await TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "spank", false);
 
             return $"Well well well, {target} was spanked by {origUser}. WAS THERE EVEN CONSENT?!";
