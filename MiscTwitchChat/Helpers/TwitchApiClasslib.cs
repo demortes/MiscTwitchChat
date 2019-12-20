@@ -36,6 +36,8 @@ namespace MiscTwitchChat.Helpers
                 {
                     allChatters.Remove(disconsentor);
                 }
+
+                allChatters.Remove(origUser);
                 //Pick one randomly.
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
             } while (target == origUser && _db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);

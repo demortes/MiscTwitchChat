@@ -14,7 +14,7 @@ namespace MiscTwitchChat.Controllers
     public class DadController : ControllerBase
     {
         [HttpGet]
-        public async Task<String> GetDadJoke()
+        public async Task<string> GetDadJoke()
         {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
