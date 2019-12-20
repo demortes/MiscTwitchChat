@@ -72,7 +72,7 @@ namespace MiscTwitchChat.Controllers
         public static string StripHTML(string input)
         {
             input = HttpUtility.HtmlDecode(input);
-            return Regex.Replace(input, "<.*?>", "");
+            return Regex.Replace(input, "<.*?>", " ");
         }
 
     }
