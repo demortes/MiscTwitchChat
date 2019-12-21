@@ -33,8 +33,9 @@ steps:
 - script: |
     mkdir packages
     zip -r packages/MiscTwitchApi.zip out/MiscTwitchApi/*
-    zip -r packagesTwitchActivityBot.zip out/TwitchChatBot/*
+    zip -r packages/TwitchActivityBot.zip out/TwitchChatBot/*
   displayName: 'Package'
 
-- publish: $(System.DefaultWorkingDirectory)/packages
+- publish: $(System.DefaultWorkingDirectory)/packages/
   artifact: drop
+  displayName: 'Upload API'
