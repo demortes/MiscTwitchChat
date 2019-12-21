@@ -39,11 +39,18 @@ namespace TwitchActivityBot
             _client.OnJoinedChannel += joinedChannel;
             _client.OnConnected += onConnected;
             _client.OnConnectionError += onConnectionError;
+            _client.OnFailureToReceiveJoinConfirmation += onFailuredToReceiveJoinConfirmation;
             _client.Connect();
 
             foreach (var channel in _config.GetSection("Channels").Get<string[]>())
                 _client.JoinChannel(channel.ToLower());
             
+        }
+
+        private void onFailuredToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
+        {
+            _logger.LogError($"Failed to receive join confirmation on channel {e.Exception.Channel}: {e.Exception.Details}");
+            _client.JoinChannel(e.Exception.Channel);
         }
 
         private void onConnectionError(object sender, OnConnectionErrorArgs e)
