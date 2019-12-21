@@ -1,41 +1,34 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
 trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: NuGetToolInstaller@1
+- script: dotnet build -c Release
+  displayName: 'Build'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+- script: dotnet test
+  displayName: 'Test'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: |
+    mkdir -p out/MiscTwitchApi
+    mkdir -p out/TwitchChatBot
+    dotnet publish
+    cp -r MiscTwitchChat/bin/*/*/publish/* out/MiscTwitchApi
+    cp -r TwitchActivityBot/bin/*/*/publish/* out/TwitchChatBot
+  displayName: 'Publish'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: |
+    mkdir packages
+    zip -r packages/MiscTwitchApi.zip out/MiscTwitchApi/*
+    zip -r packagesTwitchActivityBot.zip out/TwitchChatBot/*
+  displayName: 'Package'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
+- publish: $(System.DefaultWorkingDirectory)/packages
+  artifact: drop
