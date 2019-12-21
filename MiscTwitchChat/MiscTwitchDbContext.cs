@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MiscTwitchChat.Classlib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace MiscTwitchChat
         }
 
         public DbSet<Disconsenter> Disconsenters { get; set; }
+        public DbSet<ActiveChatter> ActiveChatters { get; set; }
     }
 }

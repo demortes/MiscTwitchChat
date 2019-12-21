@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MiscTwitchChat
+namespace MiscTwitchChat.Classlib.Entities
 {
     public class Disconsenter
     {

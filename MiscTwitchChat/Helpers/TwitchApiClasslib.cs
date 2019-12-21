@@ -10,29 +10,17 @@ namespace MiscTwitchChat.Helpers
 {
     public class TwitchApiClasslib
     {
-        public static async Task<string> GetRandomConsentingChatter(MiscTwitchDbContext _db, string channel, string origUser, string command = null, bool? increaseCount = null)
+        public static string GetRandomConsentingChatter(MiscTwitchDbContext _db, string channel, string origUser, string command = null, bool? increaseCount = null)
         {
             string target = "No one";
             do
             {
                 //Pull viewers from twitch api.
-                var url = $"http://tmi.twitch.tv/group/user/{channel.ToLower()}/chatters";
-                using HttpClient client = new HttpClient();
-                var response = await client.GetAsync(url);
-                var content = await response.Content.ReadAsStringAsync();
-                var serialized = JsonConvert.DeserializeObject<TwitchChattersDTO>(content);
-                var allChatters = new List<string>();
-                var chatters = serialized.chatters;
-                allChatters.AddRange(chatters.admins);
-                allChatters.AddRange(chatters.broadcaster);
-                allChatters.AddRange(chatters.global_mods);
-                allChatters.AddRange(chatters.moderators);
-                allChatters.AddRange(chatters.staff);
-                allChatters.AddRange(chatters.viewers);
-                allChatters.AddRange(chatters.vips);
-                //Remove disconsentors.
-                allChatters = allChatters.Distinct().ToList();
-                foreach(var disconsentor in _db.Disconsenters.Select(p => p.Name))
+                var allChatters = _db.ActiveChatters
+                    .Where(p => p.Channel == channel && p.LastSeen >= DateTimeOffset.UtcNow.AddMinutes(-60))
+                    .Select(p => p.Username)
+                    .Distinct().ToList();
+                foreach (var disconsentor in _db.Disconsenters.Select(p => p.Name))
                 {
                     allChatters.Remove(disconsentor);
                 }

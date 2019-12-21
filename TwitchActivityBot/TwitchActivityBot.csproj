@@ -24,4 +24,8 @@
     <PackageReference Include="TwitchLib" Version="3.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MiscTwitchChat.Classlib\MiscTwitchChat.Classlib.csproj" />
+  </ItemGroup>
+
 </Project>

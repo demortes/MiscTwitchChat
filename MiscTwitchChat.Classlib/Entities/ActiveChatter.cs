@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TwitchActivityBot
+namespace MiscTwitchChat.Classlib.Entities
 {
     public class ActiveChatter
     {

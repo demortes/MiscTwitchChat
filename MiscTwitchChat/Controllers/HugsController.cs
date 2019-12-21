@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MiscTwitchChat.Classlib.Entities;
 using MiscTwitchChat.Helpers;
 using MiscTwitchChat.Models;
 using Newtonsoft.Json;
@@ -34,7 +35,7 @@ namespace MiscTwitchChat.Controllers
                 return $"{origUser} does not consent and so is not allowed to hug.";
             }
 
-            string target = await TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "hug", false);
+            string target = TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "hug", false);
 
             return $"Well well well, {target} was hugged by {origUser}. WAS THERE EVEN CONSENT?!";
         }

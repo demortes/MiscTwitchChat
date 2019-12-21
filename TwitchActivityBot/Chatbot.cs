@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MiscTwitchChat.Classlib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
