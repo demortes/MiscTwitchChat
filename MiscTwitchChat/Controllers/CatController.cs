@@ -14,9 +14,9 @@ namespace MiscTwitchChat.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PickupController : ControllerBase
+    public class CatController : ControllerBase
     {
-        private string endpoint = "http://pebble-pickup.herokuapp.com/tweets/random";
+        private string endpoint = "https://catfact.ninja/fact";
         [HttpGet]
         public async System.Threading.Tasks.Task<string> GetAsync()
         {
@@ -26,8 +26,8 @@ namespace MiscTwitchChat.Controllers
             var response = await client.GetAsync(endpoint);
             var contentReader = new StreamReader(await response.Content.ReadAsStreamAsync());
             JsonSerializer serializer = new JsonSerializer();
-            var pickupResponse = (PickupResponse)serializer.Deserialize(contentReader, typeof(PickupResponse));
-            return pickupResponse.tweet;
+            var catResponse = (CatResponse)serializer.Deserialize(contentReader, typeof(CatResponse));
+            return catResponse.fact;
         }
     }
 }
