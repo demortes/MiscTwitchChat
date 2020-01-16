@@ -25,15 +25,18 @@ steps:
 - script: |
     mkdir -p out/MiscTwitchApi
     mkdir -p out/TwitchChatBot
+    mkdir -p out/DiscordBot
     dotnet publish
     cp -r MiscTwitchChat/bin/*/*/publish/* out/MiscTwitchApi
     cp -r TwitchActivityBot/bin/*/*/publish/* out/TwitchChatBot
+    cp -r DiscordBot/bin/*/*/publish/* out/DiscordBot
   displayName: 'Publish'
 
 - script: |
     mkdir packages
     zip -r packages/MiscTwitchApi.zip out/MiscTwitchApi/*
     zip -r packages/TwitchActivityBot.zip out/TwitchChatBot/*
+    zip -r packages/DiscordBot.zip out/DiscordBot/*
   displayName: 'Package'
 
 - publish: $(System.DefaultWorkingDirectory)/packages/
