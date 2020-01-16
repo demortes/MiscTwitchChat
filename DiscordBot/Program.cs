@@ -65,8 +65,7 @@ namespace DiscordBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<HttpClient>()
-                .AddSingleton<PictureService>()
-                .AddSingleton<IConfiguration>(config)
+                .AddSingleton(config)
                 .BuildServiceProvider();
         }
     }
