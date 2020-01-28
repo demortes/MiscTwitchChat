@@ -21,6 +21,10 @@ namespace DiscordBot.Modules
         [Command("insult")]
         public async Task Insult(IUser target = null)
         {
+            if (target != null && target.Username.ToLower().Contains("harley"))
+            {
+                await ReplyAsync("HARLEY NEEDS TO WATCH WITCHER!");
+            }
             var channel = Context.Channel.Name;
             var user = Context.User.Username;
             var url = _config.GetValue<string>("BaseAPIUrl");
