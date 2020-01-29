@@ -23,7 +23,7 @@ namespace DiscordBot.Modules
         {
             if (target != null && target.Username.ToLower().Contains("harley"))
             {
-                await ReplyAsync("HARLEY NEEDS TO WATCH WITCHER!");
+                await ReplyAsync("HARLEY NEEDS TO WATCH ALTERED CARBON!");
             }
             var channel = Context.Channel.Name;
             var user = Context.User.Username;
