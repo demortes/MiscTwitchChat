@@ -34,13 +34,16 @@ namespace DiscordBot.Modules
 
         [Command("cah")]
         [Alias("cards", "card")]
-        public async Task CardAsync()
+        public async Task CardAsync(string args = null)
         {
+            var tts = false;
+            if (!string.IsNullOrWhiteSpace(args) && args.ToLower() == "tts")
+                tts = true;
             var url = _config.GetValue<string>("BaseAPIUrl");
             var apiService = new DemAPI.Client(url, new HttpClient());
             apiService.ReadResponseAsString = true;
             var reply = await apiService.ApiCardsAsync();
-            await ReplyAsync(reply);
+            await ReplyAsync(reply, isTTS: tts);
         }
 
         //// Ban a user
