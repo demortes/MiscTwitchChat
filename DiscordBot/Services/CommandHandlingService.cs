@@ -51,7 +51,7 @@ namespace DiscordBot.Services
             // Perform the execution of the command. In this method,
             // the command service will perform precondition and parsing check
             // then execute the command if one is matched.
-            if (message.Content.Contains("(╯°□°）╯︵ ┻━┻"))
+            if (message.Content.Replace(" ", "").Contains("(╯°□°）╯︵ ┻━┻".Replace(" ","")))
             {
                 await context.Channel.SendMessageAsync("┬─┬ノ(ಠ_ಠノ)");
             }
