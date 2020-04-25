@@ -19,10 +19,10 @@ namespace DiscordBot.Modules
         }
 
         [Command("blame")]
-        public async Task Blame(IUser target = null)
+        public async Task Blame(IUser target)
         {
             var user = Context.User.Username;
-            var reply = $"We should all blame @{user}";
+            var reply = $"We should all blame {target}";
             await ReplyAsync(reply);
         }
 
