@@ -11,23 +11,23 @@ namespace DiscordBot.Modules
 {
     public class InsultModule : ModuleBase<SocketCommandContext>
     {
-        private IConfiguration _config;
+        //private IConfiguration _config;
 
-        public InsultModule(IConfiguration config)
-        {
-            _config = config;
-        }
+        //public InsultModule(IConfiguration config)
+        //{
+        //    _config = config;
+        //}
 
-        [Command("insult")]
-        public async Task Insult(IUser target = null)
-        {
-            var channel = Context.Channel.Name;
-            var user = Context.User.Username;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
-            var reply = await apiService.ApiInsultAsync(channel, user, target?.Username);
-            await ReplyAsync(reply);
-        }
+        //[Command("insult")]
+        //public async Task Insult(IUser target = null)
+        //{
+        //    var channel = Context.Channel.Name;
+        //    var user = Context.User.Username;
+        //    var url = _config.GetValue<string>("BaseAPIUrl");
+        //    var apiService = new DemAPI.Client(url, new HttpClient());
+        //    apiService.ReadResponseAsString = true;
+        //    var reply = await apiService.ApiInsultAsync(channel, user, target?.Username);
+        //    await ReplyAsync(reply);
+        //}
     }
 }
