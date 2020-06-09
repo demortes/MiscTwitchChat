@@ -26,12 +26,12 @@ namespace DiscordBot.Modules
             await ReplyAsync(reply);
         }
 
-        //[Command("blamedem")]
-        //public async Task BlameDem()
-        //{
-        //    var user = Context.User.Username;
-        //    var reply = $"Demortes is at it again... WTF Demortes.";
-        //    await ReplyAsync(reply);
-        //}
+        [Command("blamedem")]
+        public async Task BlameDem()
+        {
+            var user = Context.User.Username;
+            var reply = $"Demortes is at it again... WTF Demortes.";
+            await ReplyAsync(reply);
+        }
     }
 }
