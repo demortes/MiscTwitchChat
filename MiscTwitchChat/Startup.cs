@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace MiscTwitchChat
 {
@@ -22,7 +21,7 @@ namespace MiscTwitchChat
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,24 +34,26 @@ namespace MiscTwitchChat
             });
             services.AddEntityFrameworkMySql();
             services.AddDbContext<MiscTwitchDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddApplicationInsightsTelemetry(
+                Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
 
             //Load CAH Cards JSON and add to singleton.
             using(StreamReader file = File.OpenText("cah_cards.json"))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                CAH_cards cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
+                var serializer = new JsonSerializer();
+                var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
                 services.AddSingleton(cards);
             }
 
             services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton(Configuration);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Demortes' Random Chatbot API's", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Demortes' Random Chat Bot APIs", Version = "v1" });
             });
 
             services.Configure<ForwardedHeadersOptions>(options =>
@@ -67,7 +68,8 @@ namespace MiscTwitchChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        // ReSharper disable once UnusedMember.Global
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -86,7 +88,7 @@ namespace MiscTwitchChat
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demortes' Random Chatbot API's");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demortes' Random Chat Bot APIs");
             });
 
             app.UseHttpsRedirection();

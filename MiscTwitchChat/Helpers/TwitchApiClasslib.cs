@@ -10,17 +10,17 @@ namespace MiscTwitchChat.Helpers
 {
     public class TwitchApiClasslib
     {
-        public static string GetRandomConsentingChatter(MiscTwitchDbContext _db, string channel, string origUser, string command = null, bool? increaseCount = null)
+        public static string GetRandomConsentingChatter(MiscTwitchDbContext db, string channel, string origUser, string command = null, bool? increaseCount = null)
         {
             string target = "No one";
             do
             {
                 //Pull viewers from twitch api.
-                var allChatters = _db.ActiveChatters
+                var allChatters = db.ActiveChatters
                     .Where(p => p.Channel == channel && p.LastSeen >= DateTimeOffset.UtcNow.AddMinutes(-60))
                     .Select(p => p.Username)
                     .Distinct().ToList();
-                foreach (var disconsentor in _db.Disconsenters.Select(p => p.Name))
+                foreach (var disconsentor in db.Disconsenters.Select(p => p.Name))
                 {
                     allChatters.Remove(disconsentor);
                 }
@@ -28,7 +28,7 @@ namespace MiscTwitchChat.Helpers
                 allChatters.Remove(origUser);
                 //Pick one randomly.
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
-            } while (target == origUser && _db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);
+            } while (target == origUser && db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);
 
             if (increaseCount != null && increaseCount == true)
             {
