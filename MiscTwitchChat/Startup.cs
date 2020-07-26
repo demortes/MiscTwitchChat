@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -11,6 +12,7 @@ using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
 using System.IO;
 using Microsoft.Extensions.Hosting;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MiscTwitchChat
 {
@@ -33,7 +35,9 @@ namespace MiscTwitchChat
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddEntityFrameworkMySql();
-            services.AddDbContext<MiscTwitchDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MiscTwitchDbContext>(o => 
+                o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), mySqlOptions => 
+                    mySqlOptions.ServerVersion(new Version(5, 7, 30), ServerType.MySql)));
             services.AddApplicationInsightsTelemetry(
                 Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
 
