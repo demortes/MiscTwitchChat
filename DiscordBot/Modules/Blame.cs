@@ -33,14 +33,5 @@ namespace DiscordBot.Modules
             var reply = $"Demortes is at it again... WTF Demortes.";
             await ReplyAsync(reply);
         }
-
-        [Command("bancah")]
-        [Alias(new string[]{ "throwcahintothevoid" })]
-        public async Task BanCah()
-        {
-            var user = Context.User.Username;
-            var reply = $"Yes, I get it. CAH fucked up.... it'll be in the corner.";
-            await ReplyAsync(reply);
-        }
     }
 }

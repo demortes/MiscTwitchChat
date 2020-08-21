@@ -46,6 +46,15 @@ namespace DiscordBot.Modules
             await ReplyAsync(reply, isTTS: tts);
         }
 
+        [Command("bancah")]
+        [Alias(new string[] { "throwcahintothevoid" })]
+        public async Task BanCah()
+        {
+            var user = Context.User.Username;
+            var reply = $"Yes, I get it. CAH fucked up.... it'll be in the corner.";
+            await ReplyAsync(reply);
+        }
+
         //// Ban a user
         //[Command("ban")]
         //[RequireContext(ContextType.Guild)]

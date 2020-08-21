@@ -17,13 +17,40 @@ namespace MiscTwitchChat.Controllers
     {
         private readonly ILogger _logger;
         private readonly CAH_cards cahCards;
+        private readonly MiscTwitchDbContext _context;
+        private const string BanSettingName = "BANCAH";
 
-        public CardsController(ILoggerFactory logger, CAH_cards cards)
+        public CardsController(ILoggerFactory logger, CAH_cards cards, MiscTwitchDbContext context)
         {
             _logger = logger.CreateLogger<CardsController>();
             cahCards = cards;
+            _context = context;
         }
 
+        [HttpDelete("{channel}")]
+        public string BanCah(string channel)
+        {
+            string rval = "Something went wrong. Please DM Demortes";
+            //Get last ban.
+            var banCah = _context.Settings.Where(x => x.Channel == channel && x.Name == BanSettingName).FirstOrDefault();
+            if (banCah == null || DateTimeOffset.Parse(banCah.Value).AddMinutes(3) < DateTimeOffset.UtcNow)
+            {
+                rval = $"CAH has been silenced for a while. Let's hope the punishment fit the crime.";
+                if (banCah == null)
+                {
+                    banCah = new Classlib.Entities.Setting();
+                    banCah.Name = BanSettingName;
+                    _context.Add(banCah);
+                }
+                banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
+            }
+            else
+            {
+                rval = $"CAH is already banned. Let the punishment lapse first.";
+            }
+
+            return rval;
+        }
         //// GET: api/Cards
         //[HttpGet]
         //public string Get()
@@ -44,9 +71,15 @@ namespace MiscTwitchChat.Controllers
         //    return returnString;
         //}
 
-        // GET: api/Cards
         [HttpGet]
-        public string Get()
+        public string Get() 
+        {
+            return Get(null);    
+        }
+
+        // GET: api/Cards
+        [HttpGet("{channel}")]
+        public string Get(string channel = null)
         {
             var guid = Guid.NewGuid().ToString();
             var headers = HttpContext.Request.Headers;
@@ -55,10 +88,19 @@ namespace MiscTwitchChat.Controllers
                 _logger.LogInformation($"[{guid} Header: {header.Key} - Value: {header.Value}");
             }
 
+            if (channel != null)
+            {
+                //get Channel setting.
+                var banCah = _context.Settings.FirstOrDefault(x => x.Channel == channel && x.Name == BanSettingName);
+                if (banCah != null && DateTimeOffset.Parse(banCah.Value) > DateTimeOffset.UtcNow)
+                    return $"As CAH opens its mouth to impart words of callous wisdom, a magical forces it shut. Someones been a bad algorithm.";
+            }
+
             var rval = @"";
+            //Get any 
             var blackCard = cahCards.blackCards[new Random().Next(0, cahCards.blackCards.Length)];
             rval += StripHTML(blackCard.text);
-            for(int y = 0; y < blackCard.pick;y++)
+            for (int y = 0; y < blackCard.pick; y++)
             {
                 var whiteCard = cahCards.whiteCards[new Random().Next(0, cahCards.whiteCards.Length)];
                 if (rval.Contains('_'))

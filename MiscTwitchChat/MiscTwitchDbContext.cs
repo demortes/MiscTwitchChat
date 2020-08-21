@@ -14,8 +14,15 @@ namespace MiscTwitchChat
         public MiscTwitchDbContext(DbContextOptions<MiscTwitchDbContext> options) : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Setting>()
+                .HasKey(p => new { p.Channel, p.Name });
+        }
 
         public DbSet<Disconsenter> Disconsenters { get; set; }
         public DbSet<ActiveChatter> ActiveChatters { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }
