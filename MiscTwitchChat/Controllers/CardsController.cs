@@ -105,7 +105,7 @@ namespace MiscTwitchChat.Controllers
                 //get Channel setting.
                 var banCah = _context.Settings.FirstOrDefault(x => x.Channel == channel && x.Name == BanSettingName);
                 if (banCah != null && DateTimeOffset.Parse(banCah.Value) > DateTimeOffset.UtcNow)
-                    return $"As CAH opens its mouth to impart words of callous wisdom, a magical forces it shut. Someones been a bad algorithm.";
+                    return $"As CAH opens its mouth to impart words of callous wisdom, a magical force press it shut. Someone has been a bad algorithm.";
             }
 
             var rval = @"";
