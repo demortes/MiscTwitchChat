@@ -31,22 +31,33 @@ namespace MiscTwitchChat.Controllers
         public string BanCah(string channel)
         {
             string rval = "Something went wrong. Please DM Demortes";
-            //Get last ban.
-            var banCah = _context.Settings.Where(x => x.Channel == channel && x.Name == BanSettingName).FirstOrDefault();
-            if (banCah == null || DateTimeOffset.Parse(banCah.Value).AddMinutes(3) < DateTimeOffset.UtcNow)
+            try
             {
-                rval = $"CAH has been silenced for a while. Let's hope the punishment fit the crime.";
-                if (banCah == null)
+                //Get last ban.
+                var banCah = _context.Settings.Where(x => x.Channel == channel && x.Name == BanSettingName).FirstOrDefault();
+                if (banCah == null || DateTimeOffset.Parse(banCah.Value).AddMinutes(3) < DateTimeOffset.UtcNow)
                 {
-                    banCah = new Classlib.Entities.Setting();
-                    banCah.Name = BanSettingName;
-                    _context.Add(banCah);
+                    rval = $"CAH has been silenced for a while. Let's hope the punishment fit the crime.";
+                    if (banCah == null)
+                    {
+                        banCah = new Classlib.Entities.Setting()
+                        {
+                            Channel = channel,
+                            Name = BanSettingName
+                        };
+
+                        _context.Add(banCah);
+                    }
+                    banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
                 }
-                banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
+                else
+                {
+                    rval = $"CAH is already banned. Let the punishment lapse first.";
+                }
             }
-            else
+            catch
             {
-                rval = $"CAH is already banned. Let the punishment lapse first.";
+
             }
 
             return rval;
@@ -72,9 +83,9 @@ namespace MiscTwitchChat.Controllers
         //}
 
         [HttpGet]
-        public string Get() 
+        public string Get()
         {
-            return Get(null);    
+            return Get(null);
         }
 
         // GET: api/Cards
