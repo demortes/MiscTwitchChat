@@ -49,6 +49,7 @@ namespace MiscTwitchChat.Controllers
                         _context.Add(banCah);
                     }
                     banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
+                    _context.SaveChanges();
                 }
                 else
                 {

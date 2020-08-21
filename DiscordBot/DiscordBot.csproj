@@ -31,6 +31,15 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Connected Services\DemAPI\DemAPI.nswag">
+      <Generator>NswagCodeGenerator</Generator>
+      <LastGenOutput>DemAPI.nswag.txt</LastGenOutput>
+    </None>
+    <None Update="Connected Services\DemAPI\DemAPI.nswag.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DemAPI.nswag</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -42,7 +42,7 @@ namespace DiscordBot.Modules
             var url = _config.GetValue<string>("BaseAPIUrl");
             var apiService = new DemAPI.Client(url, new HttpClient());
             apiService.ReadResponseAsString = true;
-            var reply = await apiService.ApiCardsAsync();
+            var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
             await ReplyAsync(reply, isTTS: tts);
         }
 
@@ -50,8 +50,10 @@ namespace DiscordBot.Modules
         [Alias(new string[] { "throwcahintothevoid" })]
         public async Task BanCah()
         {
-            var user = Context.User.Username;
-            var reply = $"Yes, I get it. CAH fucked up.... it'll be in the corner.";
+            var url = _config.GetValue<string>("BaseAPIUrl");
+            var apiService = new DemAPI.Client(url, new HttpClient());
+            apiService.ReadResponseAsString = true;
+            var reply = await apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
             await ReplyAsync(reply);
         }
 
