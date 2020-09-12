@@ -1,10 +1,6 @@
-﻿using MiscTwitchChat.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace MiscTwitchChat.Helpers
 {
@@ -30,10 +26,6 @@ namespace MiscTwitchChat.Helpers
                 target = allChatters[new Random().Next(0, allChatters.Count - 1)];
             } while (target == origUser && db.Disconsenters.FirstOrDefault(p => p.Name == target) != null);
 
-            if (increaseCount != null && increaseCount == true)
-            {
-                //TODO: Get any DB entry for command @ channel, if none, create one. If any, increase count.
-            }
             return target;
         }
     }

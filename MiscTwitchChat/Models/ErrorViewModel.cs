@@ -1,5 +1,3 @@
-using System;
-
 namespace MiscTwitchChat.Models
 {
     public class ErrorViewModel
