@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MiscTwitchChat.Classlib.Entities
+﻿namespace MiscTwitchChat.Classlib.Entities
 {
     public class Setting
     {

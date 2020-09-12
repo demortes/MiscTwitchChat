@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
 using MiscTwitchChat.Helpers;
-using MiscTwitchChat.Models;
-using Newtonsoft.Json;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -35,6 +30,21 @@ namespace MiscTwitchChat.Controllers
                 return $"{origUser} does not consent and so is not allowed to spank.";
             }
             string target = TwitchApiClasslib.GetRandomConsentingChatter(_db, channel, origUser, "spank", false);
+
+            //Increase count on target user.
+            var targetDbRecord = await _db.CommandCounts.FirstOrDefaultAsync(x => x.Channel == channel && x.TargetUser == target && x.CommandUsed == "spank");
+            if (targetDbRecord == null)
+            {
+                targetDbRecord = new CommandCount
+                {
+                    CommandUsed = "spank",
+                    TargetUser = target,
+                    Channel = channel
+                };
+                _db.Add(targetDbRecord);
+            }
+            targetDbRecord.Count++;
+            await _db.SaveChangesAsync();
 
             return $"Well well well, {target} was spanked by {origUser}. WAS THERE EVEN CONSENT?!";
         }
