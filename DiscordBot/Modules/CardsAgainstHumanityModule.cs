@@ -1,9 +1,7 @@
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using DiscordBot.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace DiscordBot.Modules

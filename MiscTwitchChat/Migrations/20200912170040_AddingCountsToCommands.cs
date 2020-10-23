@@ -2,28 +2,29 @@
 
 namespace MiscTwitchChat.Migrations
 {
-    public partial class AddingSettings : Migration
+    public partial class AddingCountsToCommands : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Settings",
+                name: "CommandCounts",
                 columns: table => new
                 {
-                    Name = table.Column<string>(nullable: false),
                     Channel = table.Column<string>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    TargetUser = table.Column<string>(nullable: false),
+                    CommandUsed = table.Column<string>(nullable: false),
+                    Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => new { x.Channel, x.Name });
+                    table.PrimaryKey("PK_CommandCounts", x => new { x.Channel, x.CommandUsed, x.TargetUser });
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Settings");
+                name: "CommandCounts");
         }
     }
 }

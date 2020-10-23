@@ -1,11 +1,5 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using MiscTwitchChat.Classlib.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MiscTwitchChat
 {
@@ -22,10 +16,14 @@ namespace MiscTwitchChat
 
             modelBuilder.Entity<Disconsenter>()
                 .HasKey(prop => prop.Id);
+
+            modelBuilder.Entity<CommandCount>()
+                .HasKey(c => new { c.Channel, c.CommandUsed, c.TargetUser });
         }
 
         public DbSet<Disconsenter> Disconsenters { get; set; }
         public DbSet<ActiveChatter> ActiveChatters { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<CommandCount> CommandCounts { get; set; }
     }
 }

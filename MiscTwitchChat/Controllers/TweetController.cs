@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
 using System;
 
 namespace MiscTwitchChatCore.Controllers
