@@ -19,6 +19,9 @@ namespace MiscTwitchChat
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Setting>()
                 .HasKey(p => new { p.Channel, p.Name });
+
+            modelBuilder.Entity<Disconsenter>()
+                .HasKey(prop => prop.Id);
         }
 
         public DbSet<Disconsenter> Disconsenters { get; set; }
