@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using System.Collections.Concurrent;
 
 namespace DiscordBot.Services
 {
@@ -13,6 +14,7 @@ namespace DiscordBot.Services
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _discord;
         private readonly IServiceProvider _services;
+        private ConcurrentDictionary<ulong, string> idDict = new ConcurrentDictionary<ulong, string>();
 
         public CommandHandlingService(IServiceProvider services)
         {
@@ -25,6 +27,17 @@ namespace DiscordBot.Services
             // Hook MessageReceived so we can process each message to see
             // if it qualifies as a command.
             _discord.MessageReceived += MessageReceivedAsync;
+            _discord.MessageDeleted += MessageDeleted;
+        }
+
+        private async Task MessageDeleted(Cacheable<IMessage, ulong> arg1, ISocketMessageChannel arg2)
+        {
+            if (idDict.ContainsKey(arg1.Id))
+            {
+                var message = await arg2.SendMessageAsync("┬─┬ノ(ಠ_ಠノ) - You shall not flip.");
+                idDict.TryAdd(message.Id, "Reflipped");
+                idDict.TryRemove(arg1.Id, out _);
+            }
         }
 
         public async Task InitializeAsync()
@@ -50,9 +63,10 @@ namespace DiscordBot.Services
             // Perform the execution of the command. In this method,
             // the command service will perform precondition and parsing check
             // then execute the command if one is matched.
-            if (message.Content.Replace(" ", "").Contains("(╯°□°）╯︵ ┻━┻".Replace(" ","")))
+            if (message.Content.Replace(" ", "").Contains("(╯°□°）╯︵ ┻━┻".Replace(" ", "")))
             {
-                await context.Channel.SendMessageAsync("┬─┬ノ(ಠ_ಠノ)");
+                var sentMessage = await context.Channel.SendMessageAsync("┬─┬ノ(ಠ_ಠノ)");
+                idDict.TryAdd(sentMessage.Id, "Unflipped.");
             }
             else
             {
