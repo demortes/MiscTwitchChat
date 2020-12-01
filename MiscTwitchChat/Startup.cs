@@ -35,9 +35,9 @@ namespace MiscTwitchChat
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddEntityFrameworkMySql();
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MiscTwitchDbContext>(o => 
-                o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), mySqlOptions => 
-                    mySqlOptions.ServerVersion(new Version(5, 7, 30), ServerType.MySql)));
+                o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
             services.AddApplicationInsightsTelemetry(
                 Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
 
