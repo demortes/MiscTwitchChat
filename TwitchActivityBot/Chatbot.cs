@@ -3,10 +3,12 @@ using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
 using System;
 using System.Linq;
+using System.Threading;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Clients;
+using TwitchLib.Communication.Events;
 using TwitchLib.Communication.Models;
 
 namespace TwitchActivityBot
@@ -37,12 +39,30 @@ namespace TwitchActivityBot
             _client.OnJoinedChannel += joinedChannel;
             _client.OnConnected += onConnected;
             _client.OnConnectionError += onConnectionError;
+            _client.OnReconnected += onReconnected;
+            _client.AutoReListenOnException = true;
+            _client.OnDisconnected += onDisconnected;
             _client.OnFailureToReceiveJoinConfirmation += onFailuredToReceiveJoinConfirmation;
             _client.Connect();
 
             foreach (var channel in _config.GetSection("Channels").Get<string[]>())
                 _client.JoinChannel(channel.ToLower());
             
+        }
+
+        private void onDisconnected(object sender, OnDisconnectedEventArgs e)
+        {
+            _logger.LogWarning($"Servier disconnected.");
+            Thread.Sleep(5000);
+            if(!_client.IsConnected)
+            {
+                _client.Connect();
+            }
+        }
+
+        private void onReconnected(object sender, OnReconnectedEventArgs e)
+        {
+            _logger.LogWarning($"Reconnected to server.");
         }
 
         private void onFailuredToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
