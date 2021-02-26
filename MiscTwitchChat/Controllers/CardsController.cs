@@ -25,6 +25,12 @@ namespace MiscTwitchChat.Controllers
             _context = context;
         }
 
+        [HttpGet("ban/{channel}")]
+        public string BanCahGet(string channel)
+        {
+            return BanCah(channel);
+        }
+
         [HttpDelete("{channel}")]
         public string BanCah(string channel)
         {
