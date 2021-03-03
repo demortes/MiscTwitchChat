@@ -1,8 +1,11 @@
-﻿namespace MiscTwitchChat.Models
+﻿using Newtonsoft.Json;
+
+namespace MiscTwitchChat.Models
 {
     public class DogResponse
     {
-        public string fact { get; set; }
+        [JsonProperty("fact")]
+        public string Fact { get; set; }
     }
 
 }

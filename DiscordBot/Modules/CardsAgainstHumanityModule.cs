@@ -25,7 +25,7 @@ namespace DiscordBot.Modules
         [Command("userinfo")]
         public async Task UserInfoAsync(IUser user = null)
         {
-            user = user ?? Context.User;
+            user ??= Context.User;
 
             await ReplyAsync(user.ToString());
         }
@@ -37,9 +37,11 @@ namespace DiscordBot.Modules
             var tts = false;
             if (!string.IsNullOrWhiteSpace(args) && args.ToLower() == "tts")
                 tts = true;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
+            string url = _config.GetValue<string>("BaseAPIUrl");
+            var apiService = new DemAPI.Client(url, new HttpClient())
+            {
+                ReadResponseAsString = true
+            };
             var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
             await ReplyAsync(reply, isTTS: tts);
         }
@@ -49,8 +51,10 @@ namespace DiscordBot.Modules
         public async Task BanCah()
         {
             var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
+            var apiService = new DemAPI.Client(url, new HttpClient())
+            {
+                ReadResponseAsString = true
+            };
             var reply = await apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
             await ReplyAsync(reply);
         }
