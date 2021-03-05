@@ -54,6 +54,9 @@ namespace MiscTwitchChat.Controllers
                     }
                     banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
                     _context.SaveChanges();
+                } else if (DateTimeOffset.Parse(banCah.Value).AddMinutes(3) > DateTimeOffset.UtcNow)
+                {
+                    rval = "CAH was banned too recently. Give peace a chance.";
                 }
                 else
                 {
