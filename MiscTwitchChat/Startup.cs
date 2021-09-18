@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Prometheus;
 
 namespace MiscTwitchChat
 {
@@ -75,6 +76,7 @@ namespace MiscTwitchChat
         // ReSharper disable once UnusedMember.Global
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMetricServer();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -108,6 +110,8 @@ namespace MiscTwitchChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseRouting();
+            app.UseHttpMetrics();
             app.UseForwardedHeaders();
 
         }
