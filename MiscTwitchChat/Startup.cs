@@ -50,6 +50,13 @@ namespace MiscTwitchChat
                 services.AddSingleton(cards);
             }
 
+            using(StreamReader file = File.OpenText("stjudefacts.json"))
+            {
+                var serializer = new JsonSerializer();
+                var facts = (StJude)serializer.Deserialize(file, typeof(StJude));
+                services.AddSingleton(facts);
+            }
+
             services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
