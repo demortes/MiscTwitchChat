@@ -4,8 +4,9 @@ namespace MiscTwitchChat.Models
 {
     public class DogResponse
     {
-        [JsonProperty("fact")]
-        public string Fact { get; set; }
+        public string[] facts { get; set; }
+        public bool success { get; set; }
+
     }
 
 }
