@@ -29,5 +29,13 @@ namespace DiscordBot.Modules
             var reply = $"Demortes is at it again... WTF Demortes.";
             await ReplyAsync(reply);
         }
+
+        [Command("blamecody")]
+        public async Task BlameCody()
+        {
+            var user = Context.User.Username;
+            var reply = $"U wot m8? Cody's wheezing again....";
+            await ReplyAsync(reply);
+        }
     }
 }
