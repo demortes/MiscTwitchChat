@@ -24,6 +24,7 @@ namespace TwitchActivityBot
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             //Configure DB.
             var db = new ActivityBotDbContext();
+            serviceCollection.AddDbContext<ActivityBotDbContext>();
             serviceCollection.AddSingleton(db);
             serviceCollection.AddScoped<Chatbot>();
             //Check Config/Connection.
