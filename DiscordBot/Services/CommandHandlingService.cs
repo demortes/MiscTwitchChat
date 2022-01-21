@@ -30,11 +30,11 @@ namespace DiscordBot.Services
             _discord.MessageDeleted += MessageDeleted;
         }
 
-        private async Task MessageDeleted(Cacheable<IMessage, ulong> arg1, ISocketMessageChannel arg2)
+        private async Task MessageDeleted(Cacheable<IMessage, ulong> arg1, Cacheable<IMessageChannel, ulong> arg2)
         {
             if (idDict.ContainsKey(arg1.Id))
             {
-                var message = await arg2.SendMessageAsync("┬─┬ノ(ಠ_ಠノ) - You shall not flip.");
+                var message = await arg2.Value.SendMessageAsync("┬─┬ノ(ಠ_ಠノ) - You shall not flip.");
                 idDict.TryAdd(message.Id, "Reflipped");
                 idDict.TryRemove(arg1.Id, out _);
             }
