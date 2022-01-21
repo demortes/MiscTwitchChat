@@ -58,8 +58,7 @@ namespace MiscTwitchChat
             }
 
             services.AddMvc(config =>
-                config.Filters.Add(new ActionFilter(new LoggerFactory())))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                config.Filters.Add(new ActionFilter(new LoggerFactory())));
             services.AddSingleton(Configuration);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
