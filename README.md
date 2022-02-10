@@ -1,4 +1,5 @@
 [![Build Status](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_apis/build/status/demortes.MiscTwitchChat?branchName=master)](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_build/latest?definitionId=10&branchName=master)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat?ref=badge_shield)
 
 # Misc Twitch Api
 ## Description
@@ -9,6 +10,9 @@ The official maintainer is Kevin "Demortes" Dethlefs, a Senior Software Engineer
 
 ## License
 All code here is maintained with the MIT License. This means users, developers or anyone in the world should not count on it to be maintained, unique or earth shattering. As with anything security based, assume all information gathered by the API is public domain. It is provided for free, and no data is exchanged with other companies unless required by law or to complete the action the user requested.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat?ref=badge_large)
 
 ## Support
 No support is given for the API. Questions on how to consume or use the API will be ignored. Repeated questions will result in further actions, such as blocking by the maintainer, or if particularly malicious/harmful, reports to appropriate authorities. If you would like to notify the maintainers of possible issues, file an issue ticket on GitHub and anyone interested can pick up and resolve the concern. If there are security concerns, you may email Demortes at [webmaster@demortes.com](mailto://webmaster@demortes.com).
