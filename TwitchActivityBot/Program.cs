@@ -16,7 +16,7 @@ namespace TwitchActivityBot
             //Load configuration files
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
-                .AddUserSecrets<Program>()
+                .AddUserSecrets<Program>(false)
                 .AddEnvironmentVariables()
                 .Build();
             var logger = loggerFactory.CreateLogger("TwitchActivityBot");
