@@ -29,7 +29,7 @@ namespace MiscTwitchChat.Controllers
             if (string.IsNullOrEmpty(giftingUsername))
             {
                 var giftingUsernames = _context.ActiveChatters.Where(x => x.Channel == channel).ToArray();
-                giftingUsername = giftingUsernames[new Random().Next(giftingUsername.Length - 1)].Username;
+                giftingUsername = giftingUsernames[new Random().Next(giftingUsernames.Length - 1)].Username;
                 if (string.IsNullOrEmpty(giftingUsername))
                 {
                     return "No active consenting users found.... Sad Panda.";
