@@ -26,7 +26,7 @@ namespace MiscTwitchChat.Controllers
         [HttpGet]
         public string Get(string channel, string fromUser, string giftingUsername = null)
         {
-            if (string.IsNullOrEmpty(giftingUsername))
+            if (string.IsNullOrEmpty(giftingUsername) || giftingUsername == fromUser)
             {
                 var giftingUsernames = _context.ActiveChatters.Where(x => x.Channel == channel).ToArray();
                 giftingUsername = giftingUsernames[new Random().Next(giftingUsernames.Length - 1)].Username;
