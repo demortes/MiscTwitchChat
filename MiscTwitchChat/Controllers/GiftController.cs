@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MiscTwitchChat.Classlib.Entities;
 using MiscTwitchChat.Helpers;
 
 namespace MiscTwitchChat.Controllers
@@ -24,17 +27,30 @@ namespace MiscTwitchChat.Controllers
 
         // GET: api/Cards
         [HttpGet]
-        public string Get(string channel, string fromUser, string giftingUsername = null)
+        public async Task<string> Get(string channel, string fromUser, string giftingUsername = null)
         {
             if (string.IsNullOrEmpty(giftingUsername) || giftingUsername == fromUser)
             {
-                var giftingUsernames = _context.ActiveChatters.Where(x => x.Channel == channel).ToArray();
-                giftingUsername = giftingUsernames[new Random().Next(giftingUsernames.Length - 1)].Username;
+                giftingUsername = TwitchApiClasslib.GetRandomConsentingChatter(_context, channel, fromUser, "gift", false);
                 if (string.IsNullOrEmpty(giftingUsername))
                 {
                     return "No active consenting users found.... Sad Panda.";
                 }
             }
+            //Increase count on target user.
+            var targetDbRecord = await _context.CommandCounts.FirstOrDefaultAsync(x => x.Channel == channel && x.TargetUser == fromUser && x.CommandUsed == "gift");
+            if (targetDbRecord == null)
+            {
+                targetDbRecord = new CommandCount
+                {
+                    CommandUsed = "gift",
+                    TargetUser = fromUser,
+                    Channel = channel
+                };
+                _context.Add(targetDbRecord);
+            }
+            targetDbRecord.Count++;
+            await _context.SaveChangesAsync();
             var gifts = System.IO.File.ReadAllLines("gifts.txt");
 
             var gift = gifts[new Random().Next(gifts.Length - 1)].ToString();
