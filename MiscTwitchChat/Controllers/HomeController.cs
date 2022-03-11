@@ -17,19 +17,6 @@ namespace MiscTwitchChat.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "This is a misc site for Demortes' random Twitch Chatbot API's.";
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 
