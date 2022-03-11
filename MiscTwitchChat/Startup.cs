@@ -37,8 +37,6 @@ namespace MiscTwitchChat
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MiscTwitchDbContext>(o => 
                 o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
-            services.AddApplicationInsightsTelemetry(
-                Configuration.GetValue<string>("ApplicationInsights:InstrumentationKey"));
 
             //Load CAH Cards JSON and add to singleton.
             using(StreamReader file = File.OpenText("cah_cards.json"))
