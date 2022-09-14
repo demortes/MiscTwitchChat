@@ -1,4 +1,4 @@
-name: .NET
+name: Build, Test, Deploy MiscTwitchApi
 
 on:
   push:
@@ -28,4 +28,4 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
-          path: ./publish/
+          path: ./**/publish/
