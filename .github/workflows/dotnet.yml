@@ -24,9 +24,9 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c Release -o ./publish/
+      run: dotnet publish MiscTwitchChat/MiscTwitchChat.csproj -c Release -o ./publish/
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
           name: MiscTwitchApi
-          path: ./
+          path: ./publish
