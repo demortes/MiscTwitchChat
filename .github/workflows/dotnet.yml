@@ -28,4 +28,5 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
-          path: ./MiscTwitchChat/publish/
+          name: MiscTwitchApi
+          path: ./
