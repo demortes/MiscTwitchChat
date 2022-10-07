@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using DiscordBot.Services;
 using Microsoft.Extensions.Configuration;
+using Discord.Interactions;
 
 namespace DiscordBot
 {
@@ -42,7 +43,10 @@ namespace DiscordBot
                 await client.StartAsync();
 
                 // Here we initialize the logic required to register our commands.
-                await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
+                client.Ready += async () => 
+                { 
+                    await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
+                };
 
                 await Task.Delay(-1);
             }
@@ -64,7 +68,9 @@ namespace DiscordBot
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
+                .AddSingleton<InteractionService>()
                 .AddSingleton<HttpClient>()
+                .AddLogging()
                 .AddSingleton(config)
                 .BuildServiceProvider();
         }

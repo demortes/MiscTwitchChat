@@ -6,6 +6,8 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Collections.Concurrent;
+using System.Linq;
+using Discord.Interactions;
 
 namespace DiscordBot.Services
 {
@@ -15,8 +17,9 @@ namespace DiscordBot.Services
         private readonly DiscordSocketClient _discord;
         private readonly IServiceProvider _services;
         private ConcurrentDictionary<ulong, string> idDict = new ConcurrentDictionary<ulong, string>();
+        private readonly InteractionService _interactionService;
 
-        public CommandHandlingService(IServiceProvider services)
+        public CommandHandlingService(IServiceProvider services, InteractionService interactionService)
         {
             _commands = services.GetRequiredService<CommandService>();
             _discord = services.GetRequiredService<DiscordSocketClient>();
@@ -28,6 +31,14 @@ namespace DiscordBot.Services
             // if it qualifies as a command.
             _discord.MessageReceived += MessageReceivedAsync;
             _discord.MessageDeleted += MessageDeleted;
+            _interactionService = new InteractionService(_discord);
+            _interactionService = interactionService;
+
+            _discord.InteractionCreated += async interaction =>
+            {
+                var ctx = new SocketInteractionContext(_discord, interaction);
+                await _interactionService.ExecuteCommandAsync(ctx, _services);
+            };
         }
 
         private async Task MessageDeleted(Cacheable<IMessage, ulong> arg1, Cacheable<IMessageChannel, ulong> arg2)
@@ -44,6 +55,8 @@ namespace DiscordBot.Services
         {
             // Register modules that are public and inherit ModuleBase<T>.
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            await _interactionService.RegisterCommandsGloballyAsync(true);
         }
 
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
@@ -76,7 +89,7 @@ namespace DiscordBot.Services
             // we will handle the result in CommandExecutedAsync,
         }
 
-        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, Discord.Commands.IResult result)
         {
             // command is unspecified when there was a search failure (command not found); we don't care about these errors
             if (!command.IsSpecified)
