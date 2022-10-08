@@ -42,7 +42,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
-            await Context.Interaction.ReplyAsync(reply, isTTS: tts);
+            await ReplyAsync(reply, isTTS: tts);
         }
 
         [SlashCommand("bancah", "Ban everyone's favorite card game.")]
