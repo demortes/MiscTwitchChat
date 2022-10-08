@@ -19,7 +19,13 @@ namespace MiscTwitchChat
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_Environment")}.json", true, true)
+                .AddEnvironmentVariables()
+                .AddUserSecrets<Program>();
+            Configuration = builder.Build();
         }
 
         private IConfiguration Configuration { get; }
