@@ -44,7 +44,7 @@ jobs:
           path: ./publish/TwitchActivityBot
 
     - name: Backup, Replace and Restart Services
-      runs_on: self-hosted
+      runs-on: self-hosted
       run: |
           # sudo systemctl stop kestrel-twitchapi.service
           # sudo systemctl stop kestrel-twitchchatbot.service
