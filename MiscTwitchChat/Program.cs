@@ -20,7 +20,7 @@ namespace MiscTwitchChat
                 })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddEnvironmentVariables(prefix: "TWITCHAPI_");
+                    config.AddEnvironmentVariables();
                 })
                 .UseStartup<Startup>();
     }
