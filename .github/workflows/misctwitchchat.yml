@@ -57,7 +57,7 @@ jobs:
 
           echo Deploying TwitchApi
           rm -rf ~/TwitchApi/*
-          cp -R publish/MiscTwitchApi/* ~/TwitchApi/
+          cp -R publish/MiscTwitchChat/* ~/TwitchApi/
 
           echo Deploying TwitchChatBot
           rm -rf ~/TwitchChatBot/*
