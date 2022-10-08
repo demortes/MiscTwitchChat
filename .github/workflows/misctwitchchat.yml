@@ -20,9 +20,13 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
   test:
+    runs-on: ubuntu-latest
+    steps:
     - name: Test
       run: dotnet test --no-build --verbosity normal
   publish:
+    runs-on: ubuntu-latest
+    steps:
     - name: Publish
       run: dotnet publish MiscTwitchChat/MiscTwitchChat.csproj -c Release -o ./publish/
     - name: Archive production artifacts
