@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Build and Deploy:
+  Work:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
