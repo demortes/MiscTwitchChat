@@ -61,7 +61,7 @@ jobs:
 
           echo Deploying TwitchChatBot
           rm -rf ~/TwitchChatBot/*
-          cp -R publish/TwitchChatBot/* ~/TwitchChatBot/
+          cp -R publish/TwitchActivityBot/* ~/TwitchChatBot/
 
           echo Deploying DiscordBot
           rm -rf ~/DiscordBot/*
