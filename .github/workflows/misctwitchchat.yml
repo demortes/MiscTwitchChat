@@ -24,7 +24,7 @@ jobs:
     needs: build
     steps:
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal MiscTwitchChat/MiscTwitchChat.csproj
   publish:
     runs-on: ubuntu-latest
     needs: test
