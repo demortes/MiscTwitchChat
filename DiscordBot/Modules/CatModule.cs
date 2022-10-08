@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
-    public class CatModule : ModuleBase<SocketCommandContext>
+    public class CatModule : InteractionModuleBase<SocketInteractionContext>
     {
         private IConfiguration _config;
 
@@ -15,7 +16,7 @@ namespace DiscordBot.Modules
             _config = config;
         }
 
-        [Command("cat")]
+        [SlashCommand("cat", "Get a fact about one of the worlds favorite animals.")]
         public async Task Cat(IUser target = null)
         {
             var channel = Context.Channel.Name;

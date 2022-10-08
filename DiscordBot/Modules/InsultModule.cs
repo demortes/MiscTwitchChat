@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
-    public class InsultModule : ModuleBase<SocketCommandContext>
+    public class InsultModule : InteractionModuleBase<SocketInteractionContext>
     {
         private IConfiguration _config;
 
@@ -15,7 +16,7 @@ namespace DiscordBot.Modules
             _config = config;
         }
 
-        [Command("insult")]
+        [SlashCommand("insult", "Insult someone. Either tag them or let the bot pick one randomly.")]
         public async Task Insult(IUser target = null)
         {
             var channel = Context.Channel.Name;

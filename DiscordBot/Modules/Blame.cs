@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace DiscordBot.Modules
             _config = config;
         }
 
-        [Command("blame")]
+        [SlashCommand("blame", "Blame someone.... anyone...")]
         public async Task Blame(IUser target)
         {
             var user = Context.User.Username;
@@ -22,7 +23,7 @@ namespace DiscordBot.Modules
             await ReplyAsync(reply);
         }
 
-        [Command("blamedem")]
+        [SlashCommand("blamedem", "Demortes has his own blame command...")]
         public async Task BlameDem()
         {
             var user = Context.User.Username;
@@ -30,7 +31,7 @@ namespace DiscordBot.Modules
             await ReplyAsync(reply);
         }
 
-        [Command("blamecody")]
+        [SlashCommand("blamecody", "Australians get one too....")]
         public async Task BlameCody()
         {
             var user = Context.User.Username;

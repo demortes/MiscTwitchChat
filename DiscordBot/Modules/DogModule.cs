@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
-    public class DogModule : ModuleBase<SocketCommandContext>
+    public class DogModule : InteractionModuleBase<SocketInteractionContext>
     {
         private readonly IConfiguration _config;
 
@@ -15,7 +16,7 @@ namespace DiscordBot.Modules
             _config = config;
         }
 
-        [Command("dog")]
+        [SlashCommand("dog", "Facts about woofers.")]
 #pragma warning disable IDE0060 // Remove unused parameter
         public async Task Dog(IUser target = null)
 #pragma warning restore IDE0060 // Remove unused parameter

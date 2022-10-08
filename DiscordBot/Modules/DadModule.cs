@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
-    public class DadModule : ModuleBase<SocketCommandContext>
+    public class DadModule : InteractionModuleBase<SocketInteractionContext>
     {
         private IConfiguration _config;
 
@@ -15,7 +16,7 @@ namespace DiscordBot.Modules
             _config = config;
         }
 
-        [Command("dad")]
+        [SlashCommand("dad", "Summon the inner dad and make a joke.")]
         public async Task Insult(IUser target = null)
         {
             var channel = Context.Channel.Name;
