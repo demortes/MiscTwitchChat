@@ -43,55 +43,36 @@ jobs:
           name: TwitchActivityBot
           path: ./publish/TwitchActivityBot
 
-    - name: Copy folder content recursively to remote
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        local: publish
-        remote: tmp
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.USERNAME }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Backup, Replace and Restart Services
+      runs_on: self-hosted
+      run: |
+          # sudo systemctl stop kestrel-twitchapi.service
+          # sudo systemctl stop kestrel-twitchchatbot.service
+          # sudo systemctl stop kestrel-discordbot.service
+          ls
 
-    # - name: Backup, Replace and Restart Services
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.SSH_HOST }}
-    #     username: ${{ secrets.USERNAME }}
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     port: ${{ secrets.PORT }}
-    #     script_stop: true
-    #     script: |
-    #       sudo systemctl stop kestrel-twitchapi.service
-    #       sudo systemctl stop kestrel-twitchchatbot.service
-    #       sudo systemctl stop kestrel-discordbot.service
-    #       ls
-    #       mkdir tmp
-    #       unzip TwitchActivityBot.zip -d ~/tmp/
-    #       unzip MiscTwitchApi.zip -d ~/tmp/
-    #       unzip DiscordBot.zip -d ~/tmp/
+          # echo Backing up items.
+          # zip -r ~/backups/"misctwitchapi-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchApi/*
+          # zip -r ~/backups/"twitchchatbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchChatBot/*
+          # zip -r ~/backups/"discordbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/DiscordBot/*
 
-    #       echo Backing up items.
-    #       zip -r ~/backups/"misctwitchapi-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchApi/*
-    #       zip -r ~/backups/"twitchchatbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchChatBot/*
-    #       zip -r ~/backups/"discordbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/DiscordBot/*
+          # echo Deploying TwitchApi
+          # rm -rf ~/TwitchApi/*
+          # cp -R ~/tmp/out/MiscTwitchApi/* ~/TwitchApi/
 
-    #       echo Deploying TwitchApi
-    #       rm -rf ~/TwitchApi/*
-    #       cp -R ~/tmp/out/MiscTwitchApi/* ~/TwitchApi/
+          # echo Deploying TwitchChatBot
+          # rm -rf ~/TwitchChatBot/*
+          # cp -R ~/tmp/out/TwitchChatBot/* ~/TwitchChatBot/
 
-    #       echo Deploying TwitchChatBot
-    #       rm -rf ~/TwitchChatBot/*
-    #       cp -R ~/tmp/out/TwitchChatBot/* ~/TwitchChatBot/
+          # echo Deploying DiscordBot
+          # rm -rf ~/DiscordBot/*
+          # cp -R ~/tmp/out/DiscordBot/* ~/DiscordBot/
 
-    #       echo Deploying DiscordBot
-    #       rm -rf ~/DiscordBot/*
-    #       cp -R ~/tmp/out/DiscordBot/* ~/DiscordBot/
-
-    #       echo Cleaning up.
-    #       rm -rf tmp
-    #       rm MiscTwitchApi.zip
-    #       rm TwitchActivityBot.zip
-    #       rm DiscordBot.zip
-    #       sudo systemctl start kestrel-discordbot.service
-    #       sudo systemctl start kestrel-twitchapi.service
-    #       sudo systemctl start kestrel-twitchchatbot.service
+          # echo Cleaning up.
+          # rm -rf tmp
+          # rm MiscTwitchApi.zip
+          # rm TwitchActivityBot.zip
+          # rm DiscordBot.zip
+          # sudo systemctl start kestrel-discordbot.service
+          # sudo systemctl start kestrel-twitchapi.service
+          # sudo systemctl start kestrel-twitchchatbot.service
