@@ -24,6 +24,7 @@ namespace DiscordBot
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
+                .AddEnvironmentVariables()
                 .AddUserSecrets<Program>(true)
                 .Build();
             // You should dispose a service provider created using ASP.NET
