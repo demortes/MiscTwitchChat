@@ -21,11 +21,13 @@ jobs:
       run: dotnet build --no-restore
   test:
     runs-on: ubuntu-latest
+    needs: build
     steps:
     - name: Test
       run: dotnet test --no-build --verbosity normal
   publish:
     runs-on: ubuntu-latest
+    needs: test
     steps:
     - name: Publish
       run: dotnet publish MiscTwitchChat/MiscTwitchChat.csproj -c Release -o ./publish/
