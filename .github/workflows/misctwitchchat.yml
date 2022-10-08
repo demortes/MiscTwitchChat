@@ -45,33 +45,31 @@ jobs:
 
     - name: Backup, Replace and Restart Services
       run: |
-          # sudo systemctl stop kestrel-twitchapi.service
-          # sudo systemctl stop kestrel-twitchchatbot.service
-          # sudo systemctl stop kestrel-discordbot.service
+          sudo systemctl stop kestrel-twitchapi.service
+          sudo systemctl stop kestrel-twitchchatbot.service
+          sudo systemctl stop kestrel-discordbot.service
           ls ~
 
-          # echo Backing up items.
-          # zip -r ~/backups/"misctwitchapi-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchApi/*
-          # zip -r ~/backups/"twitchchatbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchChatBot/*
-          # zip -r ~/backups/"discordbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/DiscordBot/*
+          echo Backing up items.
+          zip -r ~/backups/"misctwitchapi-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchApi/*
+          zip -r ~/backups/"twitchchatbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchChatBot/*
+          zip -r ~/backups/"discordbot-$(date +"%Y-%m-%d-%H%M%S").zip" ~/DiscordBot/*
 
-          # echo Deploying TwitchApi
-          # rm -rf ~/TwitchApi/*
-          # cp -R ~/tmp/out/MiscTwitchApi/* ~/TwitchApi/
+          echo Deploying TwitchApi
+          rm -rf ~/TwitchApi/*
+          cp -R publish/MiscTwitchApi/* ~/TwitchApi/
 
-          # echo Deploying TwitchChatBot
-          # rm -rf ~/TwitchChatBot/*
-          # cp -R ~/tmp/out/TwitchChatBot/* ~/TwitchChatBot/
+          echo Deploying TwitchChatBot
+          rm -rf ~/TwitchChatBot/*
+          cp -R publish/TwitchChatBot/* ~/TwitchChatBot/
 
-          # echo Deploying DiscordBot
-          # rm -rf ~/DiscordBot/*
-          # cp -R ~/tmp/out/DiscordBot/* ~/DiscordBot/
+          echo Deploying DiscordBot
+          rm -rf ~/DiscordBot/*
+          cp -R publish/DiscordBot/* ~/DiscordBot/
 
-          # echo Cleaning up.
-          # rm -rf tmp
-          # rm MiscTwitchApi.zip
-          # rm TwitchActivityBot.zip
-          # rm DiscordBot.zip
-          # sudo systemctl start kestrel-discordbot.service
-          # sudo systemctl start kestrel-twitchapi.service
-          # sudo systemctl start kestrel-twitchchatbot.service
+          echo Cleaning up.
+          rm -rf publish
+
+          sudo systemctl start kestrel-discordbot.service
+          sudo systemctl start kestrel-twitchapi.service
+          sudo systemctl start kestrel-twitchchatbot.service
