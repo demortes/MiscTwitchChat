@@ -27,7 +27,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiDogAsync();
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
     }
 }

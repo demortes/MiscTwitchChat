@@ -36,11 +36,11 @@ namespace DiscordBot.Modules
                     total += rand.Next(1, numOfSides);
                 }
 
-                await ReplyAsync($"{Context.User.Username} has rolled {total}");
+                await RespondAsync($"{Context.User.Username} has rolled {total}");
             }
             else
             {
-                await ReplyAsync($"{Context.User.Username} has given incorrect parameters. Please try again. Beep boop.");
+                await RespondAsync($"{Context.User.Username} has given incorrect parameters. Please try again. Beep boop.");
             }
         }
     }
