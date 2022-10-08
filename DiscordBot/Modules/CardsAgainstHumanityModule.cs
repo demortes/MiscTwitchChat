@@ -18,9 +18,8 @@ namespace DiscordBot.Modules
         }
         // Dependency Injection will fill this value in for us
         [SlashCommand("ping", "Is it alive?")]
-        [Alias("pong", "hello")]
         public Task PingAsync()
-            => RespondAsync("pong!");
+            => ReplyAsync("pong!");
 
         // Get info on a user, or the user who invoked the command if one is not specified
         [SlashCommand("userinfo", "Get some information about a user.")]
@@ -28,11 +27,10 @@ namespace DiscordBot.Modules
         {
             user ??= Context.User;
 
-            await RespondAsync(user.ToString());
+            await ReplyAsync(user.ToString());
         }
 
         [SlashCommand("cah", "Everyones favorite card game....")]
-        [Alias("cards", "card")]
         public async Task CardAsync(string args = null)
         {
             var tts = false;
@@ -44,11 +42,10 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
-            await RespondAsync(reply, isTTS: tts);
+            await Context.Interaction.ReplyAsync(reply, isTTS: tts);
         }
 
         [SlashCommand("bancah", "Ban everyone's favorite card game.")]
-        [Alias(new string[] { "throwcahintothevoid" })]
         public async Task BanCah()
         {
             var url = _config.GetValue<string>("BaseAPIUrl");
@@ -57,7 +54,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
-            await RespondAsync(reply);
+            await ReplyAsync(text: reply);
         }
     }
 }

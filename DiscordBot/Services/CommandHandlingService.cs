@@ -8,6 +8,7 @@ using Discord.WebSocket;
 using System.Collections.Concurrent;
 using System.Linq;
 using Discord.Interactions;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordBot.Services
 {
@@ -18,9 +19,12 @@ namespace DiscordBot.Services
         private readonly IServiceProvider _services;
         private ConcurrentDictionary<ulong, string> idDict = new ConcurrentDictionary<ulong, string>();
         private readonly InteractionService _interactionService;
+        private readonly ILogger<CommandHandlingService> _logger;
 
-        public CommandHandlingService(IServiceProvider services, InteractionService interactionService)
+        public CommandHandlingService(IServiceProvider services, InteractionService interactionService, ILogger<CommandHandlingService> logger)
         {
+
+            _logger = logger;
             _commands = services.GetRequiredService<CommandService>();
             _discord = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
@@ -30,6 +34,7 @@ namespace DiscordBot.Services
 
             _discord.InteractionCreated += async interaction =>
             {
+                _logger.LogInformation("Interaction received, {interaction}", interaction);
                 var ctx = new SocketInteractionContext(_discord, interaction);
                 await _interactionService.ExecuteCommandAsync(ctx, _services);
             };

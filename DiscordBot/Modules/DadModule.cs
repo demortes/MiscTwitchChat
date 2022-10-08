@@ -25,7 +25,7 @@ namespace DiscordBot.Modules
             var apiService = new DemAPI.Client(url, new HttpClient());
             apiService.ReadResponseAsString = true;
             var reply = await apiService.ApiDadAsync();
-            await RespondAsync(reply);
+            await ReplyAsync(reply);
         }
     }
 }
