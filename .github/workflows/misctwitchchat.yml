@@ -48,7 +48,7 @@ jobs:
           # sudo systemctl stop kestrel-twitchapi.service
           # sudo systemctl stop kestrel-twitchchatbot.service
           # sudo systemctl stop kestrel-discordbot.service
-          ls
+          ls ~
 
           # echo Backing up items.
           # zip -r ~/backups/"misctwitchapi-$(date +"%Y-%m-%d-%H%M%S").zip" ~/TwitchApi/*
