@@ -44,13 +44,13 @@ jobs:
           path: ./publish/TwitchActivityBot
 
     - name: Copy folder content recursively to remote
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: publish/*
-          remote: tmp/
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.USERNAME }}
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: publish/*
+        remote: tmp/
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.USERNAME }}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # - name: Backup, Replace and Restart Services
     #   uses: appleboy/ssh-action@master
