@@ -21,10 +21,24 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build
-    - name: Publish
-      run: dotnet publish MiscTwitchChat/MiscTwitchChat.csproj -c Release -o ./publish/
+    - name: Publish Twitch API
+      run: dotnet publish MiscTwitchChat/MiscTwitchChat.csproj -c Release -o ./publish/MiscTwitchChat/
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
           name: MiscTwitchApi
-          path: ./publish
+          path: ./publish/MiscTwitchChat/
+    - name: Publish Discord Bot
+      run: dotnet publish DiscordBot/DiscordBot.csproj -c Release -o ./publish/DiscordBot/
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+          name: DiscordBot
+          path: ./publish/DiscordBot
+    - name: Publish Twitch Activity Bot
+      run: dotnet publish TwitchActivityBot/TwitchActivityBot.csproj -c Release -o ./publish/TwitchActivityBot/
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+          name: TwitchActivityBot
+          path: ./publish/TwitchActivityBot
