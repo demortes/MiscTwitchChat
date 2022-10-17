@@ -14,25 +14,19 @@ namespace DiscordBot.Services
 {
     public class CommandHandlingService
     {
-        private readonly CommandService _commands;
         private readonly DiscordSocketClient _discord;
         private readonly IServiceProvider _services;
         private ConcurrentDictionary<ulong, string> idDict = new ConcurrentDictionary<ulong, string>();
         private readonly InteractionService _interactionService;
         private readonly ILogger<CommandHandlingService> _logger;
 
-        public CommandHandlingService(IServiceProvider services, InteractionService interactionService, ILogger<CommandHandlingService> logger)
+        public CommandHandlingService(IServiceProvider services, InteractionService interactionService, ILogger<CommandHandlingService> logger, DiscordSocketClient discord)
         {
-
             _logger = logger;
-            _commands = services.GetRequiredService<CommandService>();
-            _discord = services.GetRequiredService<DiscordSocketClient>();
+            _interactionService = interactionService;
             _services = services;
 
-            _interactionService = new InteractionService(_discord);
-            _interactionService = interactionService;
-
-            _discord.InteractionCreated += async interaction =>
+            discord.InteractionCreated += async interaction =>
             {
                 _logger.LogInformation("Interaction received, {interaction}", interaction);
                 var ctx = new SocketInteractionContext(_discord, interaction);

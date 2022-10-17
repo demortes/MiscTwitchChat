@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Discord.Commands;
 using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
@@ -25,7 +24,7 @@ namespace DiscordBot.Modules
             var apiService = new DemAPI.Client(url, new HttpClient());
             apiService.ReadResponseAsString = true;
             var reply = await apiService.ApiInsultAsync(channel, user, target?.Username);
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
     }
 }

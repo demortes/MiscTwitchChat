@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Discord.Commands;
 using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
@@ -27,7 +26,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiDogAsync();
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
     }
 }

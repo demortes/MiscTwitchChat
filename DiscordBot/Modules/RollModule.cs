@@ -1,10 +1,6 @@
-﻿using Discord.Commands;
-using Discord.Interactions;
+﻿using Discord.Interactions;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -36,11 +32,11 @@ namespace DiscordBot.Modules
                     total += rand.Next(1, numOfSides);
                 }
 
-                await ReplyAsync($"{Context.User.Username} has rolled {total}");
+                await RespondAsync($"{Context.User.Username} has rolled {total}");
             }
             else
             {
-                await ReplyAsync($"{Context.User.Username} has given incorrect parameters. Please try again. Beep boop.");
+                await RespondAsync($"{Context.User.Username} has given incorrect parameters. Please try again. Beep boop.");
             }
         }
     }

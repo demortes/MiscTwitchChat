@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.WebSocket;
-using Discord.Commands;
 using DiscordBot.Services;
 using Microsoft.Extensions.Configuration;
 using Discord.Interactions;
+using Serilog;
 
 namespace DiscordBot
 {
@@ -20,6 +20,7 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
+            Log.Logger = new LoggerConfiguration().CreateLogger();
             //Config the configuration
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -36,7 +37,7 @@ namespace DiscordBot
                 var client = services.GetRequiredService<DiscordSocketClient>();
 
                 client.Log += LogAsync;
-                services.GetRequiredService<CommandService>().Log += LogAsync;
+                services.GetRequiredService<InteractionService>().Log += LogAsync;
 
                 // Tokens should be considered secret data and never hard-coded.
                 // We can read from the environment variable to avoid hardcoding.
@@ -67,7 +68,7 @@ namespace DiscordBot
         {
             return new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
-                .AddSingleton<CommandService>()
+                .AddSingleton<InteractionService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<InteractionService>()
                 .AddSingleton<HttpClient>()
