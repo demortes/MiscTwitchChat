@@ -48,6 +48,11 @@ namespace MiscTwitchChat
             services.AddDefaultIdentity<MiscTwitchChatUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<MiscTwitchDbContext>();
 
+            services.AddAuthentication().AddTwitch(options => {
+                options.ClientId = Configuration.GetSection("Twitch").GetValue<string>("ClientId");
+                options.ClientSecret = Configuration.GetSection("Twitch").GetValue<string>("ClientSecret");
+            });
+
             //Load CAH Cards JSON and add to singleton.
             using (StreamReader file = File.OpenText("cah_cards.json"))
             {
