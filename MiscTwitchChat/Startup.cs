@@ -12,6 +12,7 @@ using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
 using System.IO;
 using Microsoft.Extensions.Hosting;
+using MiscTwitchChat.Areas.Identity.Data;
 
 namespace MiscTwitchChat
 {
@@ -44,8 +45,11 @@ namespace MiscTwitchChat
             services.AddDbContext<MiscTwitchDbContext>(o => 
                 o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
 
+            services.AddDefaultIdentity<MiscTwitchChatUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<MiscTwitchDbContext>();
+
             //Load CAH Cards JSON and add to singleton.
-            using(StreamReader file = File.OpenText("cah_cards.json"))
+            using (StreamReader file = File.OpenText("cah_cards.json"))
             {
                 var serializer = new JsonSerializer();
                 var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
@@ -118,8 +122,8 @@ namespace MiscTwitchChat
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             app.UseRouting();
-            app.UseForwardedHeaders();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }

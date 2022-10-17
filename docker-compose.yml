@@ -1,0 +1,11 @@
+services:
+  mariadb:
+    image: mariadb
+    ports:
+      - 3306:3306
+    networks:
+      - default
+    environment:
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}

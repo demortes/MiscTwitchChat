@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using MiscTwitchChat.Areas.Identity.Data;
 using MiscTwitchChat.Classlib.Entities;
 
 namespace MiscTwitchChat
 {
-    public class MiscTwitchDbContext : DbContext
+    public class MiscTwitchDbContext : IdentityDbContext<MiscTwitchChatUser>
     {
         public MiscTwitchDbContext(DbContextOptions<MiscTwitchDbContext> options) : base(options)
         {
