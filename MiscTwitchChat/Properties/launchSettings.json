@@ -24,7 +24,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "sslPort": 49155
     }
   }
 }

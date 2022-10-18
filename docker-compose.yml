@@ -1,3 +1,6 @@
+volumes:
+  mariadb-volume:
+
 services:
   mariadb:
     image: mariadb
@@ -9,3 +12,6 @@ services:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=twitchapi
+    volumes:
+      - mariadb-volume:/var/lib/mysql

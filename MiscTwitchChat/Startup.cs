@@ -53,6 +53,8 @@ namespace MiscTwitchChat
                 options.ClientSecret = Configuration.GetSection("Twitch").GetValue<string>("ClientSecret");
             });
 
+            services.AddAuthorization();
+
             //Load CAH Cards JSON and add to singleton.
             using (StreamReader file = File.OpenText("cah_cards.json"))
             {
@@ -93,6 +95,11 @@ namespace MiscTwitchChat
         // ReSharper disable once UnusedMember.Global
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            //MIgrate Databases
+            using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            scope.ServiceProvider.GetRequiredService<MiscTwitchDbContext>().Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
