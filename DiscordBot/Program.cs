@@ -1,13 +1,12 @@
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
-using DiscordBot.Services;
 using Microsoft.Extensions.Configuration;
 using Discord.Interactions;
+using System.Reflection;
 
 namespace DiscordBot
 {
@@ -33,46 +32,39 @@ namespace DiscordBot
             // its documentation for the best way to do this.
             using (var services = ConfigureServices(config))
             {
+                var loggingService = services.GetRequiredService<LoggingService>();
                 var client = services.GetRequiredService<DiscordSocketClient>();
+                var interactionService = services.GetRequiredService<InteractionService>();
+                client.InteractionCreated += async (x) =>
+                {
+                    var ctx = new SocketInteractionContext(client, x);
+                    await interactionService.ExecuteCommandAsync(ctx, services);
+                };
 
-                client.Log += LogAsync;
-                services.GetRequiredService<CommandService>().Log += LogAsync;
+                client.Ready += async () =>
+                {
+                    await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), services);
+                    await interactionService.RegisterCommandsGloballyAsync(true);
+                };
 
                 // Tokens should be considered secret data and never hard-coded.
                 // We can read from the environment variable to avoid hardcoding.
-                await client.LoginAsync(TokenType.Bot, config.GetValue<String>("Discord:Token"));
+                await client.LoginAsync(TokenType.Bot, config.GetValue<string>("Discord:Token"));
                 await client.StartAsync();
-
-                // Here we initialize the logic required to register our commands.
-                client.Ready += async () => 
-                { 
-                    await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
-                };
 
                 await Task.Delay(-1);
             }
-        }
-
-        private Task LogAsync(LogMessage log)
-        {
-            if (log.Severity < LogSeverity.Info)
-                Console.Error.WriteLine(log.ToString());
-            else
-                Console.WriteLine(log.ToString());
-
-            return Task.CompletedTask;
         }
 
         private ServiceProvider ConfigureServices(IConfiguration config)
         {
             return new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
-                .AddSingleton<CommandService>()
-                .AddSingleton<CommandHandlingService>()
                 .AddSingleton<InteractionService>()
-                .AddSingleton<HttpClient>()
-                .AddLogging()
+                .AddSingleton<CommandService>()
+                .AddSingleton<LoggingService>()
                 .AddSingleton(config)
+                .AddLogging()
                 .BuildServiceProvider();
         }
     }

@@ -1,7 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Discord;
-using Discord.Commands;
 using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 
@@ -16,10 +15,11 @@ namespace DiscordBot.Modules
         {
             _config = config;
         }
+
         // Dependency Injection will fill this value in for us
         [SlashCommand("ping", "Is it alive?")]
         public Task PingAsync()
-            => ReplyAsync("pong!");
+            => this.RespondAsync("pong!");
 
         // Get info on a user, or the user who invoked the command if one is not specified
         [SlashCommand("userinfo", "Get some information about a user.")]
@@ -27,7 +27,7 @@ namespace DiscordBot.Modules
         {
             user ??= Context.User;
 
-            await ReplyAsync(user.ToString());
+            await this.RespondAsync(user.ToString());
         }
 
         [SlashCommand("cah", "Everyones favorite card game....")]
@@ -42,7 +42,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
-            await ReplyAsync(reply, isTTS: tts);
+            await RespondAsync(reply, isTTS: tts);
         }
 
         [SlashCommand("bancah", "Ban everyone's favorite card game.")]
@@ -54,7 +54,7 @@ namespace DiscordBot.Modules
                 ReadResponseAsString = true
             };
             var reply = await apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
-            await ReplyAsync(text: reply);
+            await RespondAsync(text: reply);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace DiscordBot.Modules
         {
             var user = Context.User.Username;
             var reply = $"We should all blame {target}";
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
 
         [SlashCommand("blamedem", "Demortes has his own blame command...")]
@@ -28,7 +28,7 @@ namespace DiscordBot.Modules
         {
             var user = Context.User.Username;
             var reply = $"Demortes is at it again... WTF Demortes.";
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
 
         [SlashCommand("blamecody", "Australians get one too....")]
@@ -36,7 +36,7 @@ namespace DiscordBot.Modules
         {
             var user = Context.User.Username;
             var reply = $"U wot m8? Cody's wheezing again....";
-            await ReplyAsync(reply);
+            await RespondAsync(reply);
         }
     }
 }
