@@ -1,4 +1,3 @@
-[![Build Status](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_apis/build/status/demortes.MiscTwitchChat?branchName=master)](https://dev.azure.com/demortes/Twitch%20API%20Utilities/_build/latest?definitionId=10&branchName=master)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdemortes%2FMiscTwitchChat?ref=badge_shield)
 
 # Misc Twitch Api
