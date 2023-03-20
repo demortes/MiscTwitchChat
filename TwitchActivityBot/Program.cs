@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace TwitchActivityBot
 {
@@ -32,7 +33,7 @@ namespace TwitchActivityBot
             var services = serviceCollection.BuildServiceProvider();
             var bot = services.GetRequiredService<Chatbot>();
             while (bot.isConnected())
-                ;
+                Thread.Sleep(5000);
         }
     }
 }
