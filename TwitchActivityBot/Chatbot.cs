@@ -15,12 +15,12 @@ namespace TwitchActivityBot
 {
     public class Chatbot
     {
-        private ILogger _logger;
+        private ILogger<Chatbot> _logger;
         private ActivityBotDbContext _db;
         private IConfiguration _config;
         private TwitchClient _client;
 
-        public Chatbot(IConfiguration config, ActivityBotDbContext db, ILogger logger)
+        public Chatbot(IConfiguration config, ActivityBotDbContext db, ILogger<Chatbot> logger)
         {
             _logger = logger;
             _db = db;

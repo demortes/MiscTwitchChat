@@ -14,13 +14,5 @@ namespace TwitchActivityBot
         public ActivityBotDbContext() : base()
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true).AddUserSecrets<Program>(true).AddEnvironmentVariables().Build();
-            var connectionString = config.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            base.OnConfiguring(optionsBuilder);
-        }
     }
 }
