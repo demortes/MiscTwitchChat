@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace MiscTwitchChat.Models
+﻿namespace MiscTwitchChat.Models
 {
     public class DogResponse
     {

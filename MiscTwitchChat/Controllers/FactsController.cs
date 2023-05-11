@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Helpers;
 using System;
-using System.Threading.Tasks;
 
 namespace MiscTwitchChat.Controllers
 {
