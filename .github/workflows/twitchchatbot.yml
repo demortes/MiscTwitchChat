@@ -11,7 +11,7 @@ name: Create and publish a Twitch Activity Chatbot image
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'misc/fix-for-docker']
 
 env:
   REGISTRY: ghcr.io
