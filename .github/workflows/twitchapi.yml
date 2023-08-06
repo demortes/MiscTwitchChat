@@ -11,7 +11,7 @@ name: Create and publish a Twitch API image
 
 on:
   push:
-    branches: ['main', 'misc/fix-for-docker']
+    branches: ['main']
 
 env:
   REGISTRY: ghcr.io

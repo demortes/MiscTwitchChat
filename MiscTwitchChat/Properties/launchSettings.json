@@ -1,20 +1,21 @@
 {
+  "profiles": {
+    "MiscTwitchChat": {
+      "commandName": "Project",
+      "commandLineArgs": "",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:10020"
+    }
+  },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:63836",
       "sslPort": 44360
-    }
-  },
-  "profiles": {
-    "MiscTwitchChat": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:10020"
     }
   }
 }
