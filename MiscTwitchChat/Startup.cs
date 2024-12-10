@@ -12,6 +12,8 @@ using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
 using System.IO;
 using Microsoft.Extensions.Hosting;
+using MiscTwitchChat.Classlib;
+using MiscTwitchChat.ClassLib;
 
 namespace MiscTwitchChat
 {
@@ -62,6 +64,7 @@ namespace MiscTwitchChat
             services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())));
             services.AddSingleton(Configuration);
+            services.AddSingleton<IGoFundMeService, GoFundMeService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
