@@ -1,0 +1,25 @@
+﻿@{
+    if (string.IsNullOrEmpty(ViewContext.ModelState["slug"]?.ToString()))
+    {
+        <form method="get">
+            <div>
+                <label>Provide GoFundMe Slug</label>
+                <input type="text" name="slug" value="essentials-fund" />
+                <input type="submit" />
+            </div>
+        </form>
+    } else {
+        <script type="text/javascript" src="https://cdn.jsdeliver.net/npm/toastify-js"></script>
+        // Remove the layout, this is now going to be the web source.
+        Layout = null;
+
+        var ENDPOINT = $"api/GoFundMe?slug={ViewContext.ModelState["slug"].AttemptedValue}";
+        <script>
+            console.log("API Endpoint found: @ENDPOINT");
+            @* Get first cursor. *@
+            @* Save and then set interval to get new stuff. *@
+            @* on new stuff, trigger sound. *@
+            @* Set up toast. *@
+        </script>
+    }
+}

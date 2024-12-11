@@ -2,12 +2,12 @@
   "profiles": {
     "MiscTwitchChat": {
       "commandName": "Project",
-      "commandLineArgs": "",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:10020/Home/GoFundMe?slug=essentials-fund",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:10020"
+      "applicationUrl": "http://localhost:10020/"
     }
   },
   "iisSettings": {

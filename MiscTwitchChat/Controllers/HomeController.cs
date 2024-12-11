@@ -20,6 +20,11 @@ namespace MiscTwitchChat.Controllers
             return View();
         }
 
+        public IActionResult GoFundMe(string slug)
+        {
+            return View(model: slug);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
