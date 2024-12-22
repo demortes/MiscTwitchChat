@@ -17,7 +17,7 @@ namespace TwitchActivityBot
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
-            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
                 configurationBuilder.AddUserSecrets<Program>();
             }
@@ -31,7 +31,7 @@ namespace TwitchActivityBot
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             //Configure DB.
             serviceCollection.AddMySql<ActivityBotDbContext>(
-                configuration.GetConnectionString("DefaultConnection"), 
+                configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
             );
             serviceCollection.AddScoped<Chatbot>();

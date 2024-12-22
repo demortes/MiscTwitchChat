@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Models;
 using Newtonsoft.Json;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace MiscTwitchChat.Controllers
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -34,7 +34,7 @@ namespace MiscTwitchChat.Controllers
             "Today doesn't look good. Tomorrow doesn't either. Nor the year for that fact.",
             "Only I will ever know",
             "I better not say.",
-            "Repeat after me... I am not that lucky.", 
+            "Repeat after me... I am not that lucky.",
             "Only if your name is Zach.",
             "What are you? Stupid?",
             "What the hell kind of question is that?",

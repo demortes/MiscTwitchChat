@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Models;
+using System.Diagnostics;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -8,7 +8,7 @@ namespace MiscTwitchChat.Controllers
     {
         public HomeController()
         {
-            
+
         }
         public IActionResult Index()
         {

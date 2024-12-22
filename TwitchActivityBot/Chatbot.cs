@@ -43,21 +43,22 @@ namespace TwitchActivityBot
             _client.AutoReListenOnException = true;
             _client.OnDisconnected += onDisconnected;
             _client.OnFailureToReceiveJoinConfirmation += onFailuredToReceiveJoinConfirmation;
-            
-            if(!_client.Connect()){
+
+            if (!_client.Connect())
+            {
                 _logger.LogError("Failed to connect. Exiting.");
             }
 
             foreach (var channel in _config.GetSection("Channels").Get<string[]>())
                 _client.JoinChannel(channel.ToLower());
-            
+
         }
 
         private void onDisconnected(object sender, OnDisconnectedEventArgs e)
         {
             _logger.LogWarning($"Servier disconnected.");
             Thread.Sleep(5000);
-            if(!_client.IsConnected)
+            if (!_client.IsConnected)
             {
                 _client.Connect();
             }

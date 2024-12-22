@@ -21,7 +21,7 @@ namespace MiscTwitchChat.Controllers
         public string Get()
         {
             var rval = string.Empty;
-            var randCount = _facts.Facts.Length-1;
+            var randCount = _facts.Facts.Length - 1;
             rval = _facts.Facts[_random.Next(0, randCount)];
             return rval;
         }

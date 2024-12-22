@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace MiscTwitchChat
 {
@@ -24,7 +24,7 @@ namespace MiscTwitchChat
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            
+
         }
     }
 }

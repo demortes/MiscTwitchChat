@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
 using MiscTwitchChat.Helpers;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -25,7 +25,7 @@ namespace MiscTwitchChat.Controllers
         public async Task<string> HugAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting Hug from {origUser} in {channel}");
-            if(_db.Disconsenters.FirstOrDefault(p=>p.Name == origUser) != null)
+            if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
             {
                 return $"{origUser} does not consent and so is not allowed to hug.";
             }
@@ -34,7 +34,7 @@ namespace MiscTwitchChat.Controllers
 
             //Increase count on target user.
             var targetDbRecord = await _db.CommandCounts.FirstOrDefaultAsync(x => x.Channel == channel && x.TargetUser == target && x.CommandUsed == "hug");
-            if(targetDbRecord == null)
+            if (targetDbRecord == null)
             {
                 targetDbRecord = new CommandCount
                 {

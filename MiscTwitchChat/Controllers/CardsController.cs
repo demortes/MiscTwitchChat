@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Helpers;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -54,7 +54,8 @@ namespace MiscTwitchChat.Controllers
                     }
                     banCah.Value = DateTimeOffset.UtcNow.AddMinutes(5).ToString();
                     _context.SaveChanges();
-                } else if (DateTimeOffset.Parse(banCah.Value).AddMinutes(3) > DateTimeOffset.UtcNow)
+                }
+                else if (DateTimeOffset.Parse(banCah.Value).AddMinutes(3) > DateTimeOffset.UtcNow)
                 {
                     rval = "CAH was banned too recently. Give peace a chance.";
                 }

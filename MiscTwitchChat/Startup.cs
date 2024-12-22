@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -7,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
+using System;
 using System.IO;
-using Microsoft.Extensions.Hosting;
 
 namespace MiscTwitchChat
 {
@@ -41,18 +41,18 @@ namespace MiscTwitchChat
             });
             services.AddEntityFrameworkMySql();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MiscTwitchDbContext>(o => 
+            services.AddDbContext<MiscTwitchDbContext>(o =>
                 o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
 
             //Load CAH Cards JSON and add to singleton.
-            using(StreamReader file = File.OpenText("cah_cards.json"))
+            using (StreamReader file = File.OpenText("cah_cards.json"))
             {
                 var serializer = new JsonSerializer();
                 var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
                 services.AddSingleton(cards);
             }
 
-            using(StreamReader file = File.OpenText("stjudefacts.json"))
+            using (StreamReader file = File.OpenText("stjudefacts.json"))
             {
                 var serializer = new JsonSerializer();
                 var facts = (StJude)serializer.Deserialize(file, typeof(StJude));

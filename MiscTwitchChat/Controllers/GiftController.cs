@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
 using MiscTwitchChat.Helpers;
+using System;
+using System.Threading.Tasks;
 
 namespace MiscTwitchChat.Controllers
 {

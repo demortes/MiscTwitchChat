@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MiscTwitchChat.Controllers
 {
@@ -13,7 +13,7 @@ namespace MiscTwitchChat.Controllers
         {
             var url = "https://insult.mattbas.org/api/insult.txt";
             var client = new HttpClient();
-            if(!string.IsNullOrWhiteSpace(target))
+            if (!string.IsNullOrWhiteSpace(target))
             {
                 url += $"?who={target}";
             }
