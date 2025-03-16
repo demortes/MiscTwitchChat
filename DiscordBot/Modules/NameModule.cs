@@ -19,15 +19,15 @@ namespace DiscordBot.Modules
         public async Task GenerateName(string game, string item)
         {
             // To be finished once API is published.
-            //var channel = Context.Channel.Name;
-            //var user = Context.User.Username;
-            //var url = _config.GetValue<string>("BaseAPIUrl");
-            //var apiService = new DemAPI.Client(url, new HttpClient())
-            //{
-            //    ReadResponseAsString = true
-            //};
-            //var reply = await apiService.ApiCardsDeleteAsync(channel, user, target?.Username);
-            //await RespondAsync(reply);
+            var channel = Context.Channel.Name;
+            var user = Context.User.Username;
+            var url = _config.GetValue<string>("BaseAPIUrl");
+            var apiService = new DemAPI.Client(url, new HttpClient())
+            {
+                ReadResponseAsString = true
+            };
+            var reply = await apiService.ApiAiNameAsync(game, item);
+            await RespondAsync(reply);
         }
     }
 }
