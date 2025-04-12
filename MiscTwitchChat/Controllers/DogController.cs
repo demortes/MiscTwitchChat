@@ -2,6 +2,7 @@
 using MiscTwitchChat.Models;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -11,7 +12,7 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class DogController : ControllerBase
     {
-        private readonly string endpoint = "https://dog-api.kinduff.com/api/facts?number=1";
+        private readonly string endpoint = "https://dogapi.dog/api/v2/facts?number=1";
 
         [HttpGet]
         public async System.Threading.Tasks.Task<string> GetAsync()
@@ -23,7 +24,7 @@ namespace MiscTwitchChat.Controllers
             var contentReader = new StreamReader(await response.Content.ReadAsStreamAsync());
             JsonSerializer serializer = new JsonSerializer();
             var dogResponse = (DogResponse)serializer.Deserialize(contentReader, typeof(DogResponse));
-            return dogResponse.facts[0];
+            return dogResponse.data.First().attributes.body;
         }
     }
 }
