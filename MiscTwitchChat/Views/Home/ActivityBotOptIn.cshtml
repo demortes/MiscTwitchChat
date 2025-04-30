@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Activity Bot Opt-In";
+}
+
+<h2>Activity Bot Opt-In</h2>
+<div>
+    <label for="activityBotToggle">
+        <input type="checkbox" id="activityBotToggle" />
+        Enable Activity Bot for my channel
+    </label>
+    <span id="statusMsg" style="margin-left: 1em;"></span>
+</div>
+
+@section Scripts {
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggle = document.getElementById("activityBotToggle");
+    const statusMsg = document.getElementById("statusMsg");
+
+    // Fetch current opt-in status
+    fetch("/ActivityBot/GetOptInStatus")
+        .then(res => res.json())
+        .then(data => {
+            toggle.checked = data.optedIn;
+        });
+
+    toggle.addEventListener("change", function() {
+        statusMsg.textContent = "Saving...";
+        const formData = new FormData();
+        formData.append("optIn", toggle.checked);
+
+        fetch("/ActivityBot/SetOptInStatus", {
+            method: "POST",
+            body: formData,
+            credentials: "same-origin"
+        })
+        .then(res => {
+            if (res.ok) {
+                statusMsg.textContent = "Saved!";
+            } else {
+                statusMsg.textContent = "Error saving preference.";
+            }
+        })
+        .catch(() => {
+            statusMsg.textContent = "Error saving preference.";
+        });
+    });
+});
+</script>
+}

@@ -63,6 +63,8 @@ namespace MiscTwitchChat
                 config.Filters.Add(new ActionFilter(new LoggerFactory())));
             services.AddSingleton(Configuration);
 
+            services.AddHttpClient();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -77,6 +79,11 @@ namespace MiscTwitchChat
             services.Configure<MvcOptions>(options =>
             {
                 options.EnableEndpointRouting = false;
+            });
+
+            services.AddOpenTelemetry().WithTracing(tracing =>
+            {
+                tracing.AddSource("MiscTwitchChat");
             });
         }
 

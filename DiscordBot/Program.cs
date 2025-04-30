@@ -1,6 +1,7 @@
 using Discord;
 using Discord.Commands;
 using Discord.Interactions;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,6 +64,7 @@ namespace DiscordBot
                 .AddSingleton<InteractionService>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<LoggingService>()
+                .AddSingleton<DiscordRestClient>()
                 .AddSingleton(config)
                 .AddLogging()
                 .BuildServiceProvider();
