@@ -25,12 +25,22 @@ namespace MiscTwitchChat.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Bans the CAH command for a specified channel.
+        /// </summary>
+        /// <param name="channel">The channel to ban the command in.</param>
+        /// <returns>A string indicating the result of the ban.</returns>
         [HttpGet("ban/{channel}")]
         public string BanCahGet(string channel)
         {
             return BanCah(channel);
         }
 
+        /// <summary>
+        /// Bans the CAH command for a specified channel.
+        /// </summary>
+        /// <param name="channel">The channel to ban the command in.</param>
+        /// <returns>A string indicating the result of the ban.</returns>
         [HttpDelete("{channel}")]
         public string BanCah(string channel)
         {
@@ -91,6 +101,10 @@ namespace MiscTwitchChat.Controllers
         //    return returnString;
         //}
 
+        /// <summary>
+        /// Gets a random CAH card combination.
+        /// </summary>
+        /// <returns>A string containing a random CAH card combination.</returns>
         [HttpGet]
         public string Get()
         {
@@ -98,6 +112,11 @@ namespace MiscTwitchChat.Controllers
         }
 
         // GET: api/Cards
+        /// <summary>
+        /// Gets a random CAH card combination, optionally checking if the command is banned in the specified channel.
+        /// </summary>
+        /// <param name="channel">The channel to check for a ban.</param>
+        /// <returns>A string containing a random CAH card combination.</returns>
         [HttpGet("{channel}")]
         public string Get(string channel = null)
         {
@@ -131,6 +150,11 @@ namespace MiscTwitchChat.Controllers
             return rval;
         }
 
+        /// <summary>
+        /// Strips HTML tags from a string.
+        /// </summary>
+        /// <param name="input">The string to strip HTML from.</param>
+        /// <returns>The string with HTML tags removed.</returns>
         public static string StripHTML(string input)
         {
             input = HttpUtility.HtmlDecode(input);
@@ -140,6 +164,13 @@ namespace MiscTwitchChat.Controllers
     }
     public static class StringExtensionMethods
     {
+        /// <summary>
+        /// Replaces the first occurrence of a string with another string.
+        /// </summary>
+        /// <param name="text">The string to modify.</param>
+        /// <param name="search">The string to search for.</param>
+        /// <param name="replace">The string to replace the first occurrence with.</param>
+        /// <returns>The modified string.</returns>
         public static string ReplaceFirst(this string text, string search, string replace)
         {
             int pos = text.IndexOf(search);

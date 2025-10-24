@@ -17,6 +17,10 @@ namespace MiscTwitchChat.Controllers
 
         private readonly Random _random = new();
 
+        /// <summary>
+        /// Gets a random St. Jude fact.
+        /// </summary>
+        /// <returns>A string containing a random St. Jude fact.</returns>
         [HttpGet]
         public string Get()
         {

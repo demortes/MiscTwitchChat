@@ -33,4 +33,5 @@ ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=publish /app/publish/MiscTwitchChat.xml /app/
 ENTRYPOINT ["dotnet", "MiscTwitchChat.dll"]

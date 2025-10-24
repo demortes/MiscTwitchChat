@@ -12,6 +12,10 @@ namespace MiscTwitchChat.Controllers
     public class CatController : ControllerBase
     {
         private string endpoint = "https://catfact.ninja/fact";
+        /// <summary>
+        /// Gets a random cat fact.
+        /// </summary>
+        /// <returns>A string containing a random cat fact.</returns>
         [HttpGet]
         public async System.Threading.Tasks.Task<string> GetAsync()
         {

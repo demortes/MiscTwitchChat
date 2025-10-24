@@ -9,6 +9,10 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class DadController : ControllerBase
     {
+        /// <summary>
+        /// Gets a random dad joke.
+        /// </summary>
+        /// <returns>A string containing a random dad joke.</returns>
         [HttpGet]
         public async Task<string> GetDadJoke()
         {

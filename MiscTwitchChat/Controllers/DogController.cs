@@ -14,6 +14,10 @@ namespace MiscTwitchChat.Controllers
     {
         private readonly string endpoint = "https://dogapi.dog/api/v2/facts?number=1";
 
+        /// <summary>
+        /// Gets a random dog fact.
+        /// </summary>
+        /// <returns>A string containing a random dog fact.</returns>
         [HttpGet]
         public async System.Threading.Tasks.Task<string> GetAsync()
         {

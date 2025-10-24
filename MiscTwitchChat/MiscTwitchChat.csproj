@@ -6,6 +6,8 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/bf16e99c-276a-4825-91f7-c943463031e2/resourcegroups/TwitchSandbox/providers/microsoft.insights/components/DemTwitchSandbox</ApplicationInsightsAnnotationResourceId>
     <UserSecretsId>c9a09168-998a-4961-bc4a-14ab928ca33f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,13 +22,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.3">
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     <PackageReference Include="UrbanDictionaryNet" Version="1.0.3" />
   </ItemGroup>
 
