@@ -22,6 +22,13 @@ namespace MiscTwitchChat.Controllers
         }
 
         // GET: api/Cards
+        /// <summary>
+        /// Gifts a random item to a user in a channel.
+        /// </summary>
+        /// <param name="channel">The channel the gift is being given in.</param>
+        /// <param name="fromUser">The user giving the gift.</param>
+        /// <param name="giftingUsername">The user receiving the gift. If not specified, a random user will be chosen.</param>
+        /// <returns>A string describing the gift exchange.</returns>
         [HttpGet]
         public async Task<string> Get(string channel, string fromUser, string giftingUsername = null)
         {

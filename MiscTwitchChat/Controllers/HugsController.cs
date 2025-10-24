@@ -21,6 +21,12 @@ namespace MiscTwitchChat.Controllers
             _db = db;
         }
 
+        /// <summary>
+        /// Hugs a random consenting user in a channel.
+        /// </summary>
+        /// <param name="channel">The channel the hug is being given in.</param>
+        /// <param name="origUser">The user giving the hug.</param>
+        /// <returns>A string describing the hug exchange.</returns>
         [HttpGet("{channel}/{origUser}")]
         public async Task<string> HugAsync(string channel, string origUser)
         {
@@ -50,6 +56,12 @@ namespace MiscTwitchChat.Controllers
             return $"Well well well, {target} was hugged by {origUser}. WAS THERE EVEN CONSENT?!";
         }
 
+        /// <summary>
+        /// Updates the consent status for a user.
+        /// </summary>
+        /// <param name="channel">The channel the user is in.</param>
+        /// <param name="origUser">The user to update consent for.</param>
+        /// <returns>A string indicating the new consent status.</returns>
         [HttpGet("{channel}/{origUser}/consent")]
         public async Task<string> UpdateConsent(string channel, string origUser)
         {
