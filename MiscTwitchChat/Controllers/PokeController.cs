@@ -21,6 +21,12 @@ namespace MiscTwitchChat.Controllers
             _db = db;
         }
 
+        /// <summary>
+        /// Pokes a random consenting user in a channel.
+        /// </summary>
+        /// <param name="channel">The channel the poke is being given in.</param>
+        /// <param name="origUser">The user giving the poke.</param>
+        /// <returns>A string describing the poke exchange.</returns>
         [HttpGet("{channel}/{origUser}")]
         public async Task<string> HugAsync(string channel, string origUser)
         {
@@ -49,6 +55,12 @@ namespace MiscTwitchChat.Controllers
             return $"{target} was poke by {origUser}. POKE HARDER!";
         }
 
+        /// <summary>
+        /// Updates the consent status for a user.
+        /// </summary>
+        /// <param name="channel">The channel the user is in.</param>
+        /// <param name="origUser">The user to update consent for.</param>
+        /// <returns>A string indicating the new consent status.</returns>
         [HttpGet("{channel}/{origUser}/consent")]
         public async Task<string> UpdateConsent(string channel, string origUser)
         {

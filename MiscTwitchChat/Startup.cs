@@ -44,20 +44,8 @@ namespace MiscTwitchChat
             services.AddDbContext<MiscTwitchDbContext>(o =>
                 o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
 
-            //Load CAH Cards JSON and add to singleton.
-            using (StreamReader file = File.OpenText("cah_cards.json"))
-            {
-                var serializer = new JsonSerializer();
-                var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
-                services.AddSingleton(cards);
-            }
-
-            using (StreamReader file = File.OpenText("stjudefacts.json"))
-            {
-                var serializer = new JsonSerializer();
-                var facts = (StJude)serializer.Deserialize(file, typeof(StJude));
-                services.AddSingleton(facts);
-            }
+            RegisterCardsAgainstHumanity(services);
+            RegisterStJudeFacts(services);
 
             services.AddMvc(config =>
                 config.Filters.Add(new ActionFilter(new LoggerFactory())));
@@ -66,7 +54,23 @@ namespace MiscTwitchChat
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Demortes' Random Chat Bot APIs", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Demortes' Random Chat Bot APIs",
+                    Version = "v1",
+                    Description = "A collection of APIs for Demortes' Twitch chat bot.",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Name = "Demortes",
+                        Email = "webmaster@demortes.com",
+                        Url = new Uri("https://demortes.com")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
+                    }
+                });
             });
 
             services.Configure<ForwardedHeadersOptions>(options =>
@@ -102,6 +106,7 @@ namespace MiscTwitchChat
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demortes' Random Chat Bot APIs");
+                c.InjectStylesheet("/css/custom.css");
             });
 
             app.UseHttpsRedirection();
@@ -120,6 +125,22 @@ namespace MiscTwitchChat
             app.UseRouting();
             app.UseForwardedHeaders();
 
+        }
+
+        private static void RegisterCardsAgainstHumanity(IServiceCollection services)
+        {
+            using StreamReader file = File.OpenText("cah_cards.json");
+            var serializer = new JsonSerializer();
+            var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
+            services.AddSingleton(cards);
+        }
+
+        private static void RegisterStJudeFacts(IServiceCollection services)
+        {
+            using StreamReader file = File.OpenText("stjudefacts.json");
+            var serializer = new JsonSerializer();
+            var facts = (StJude)serializer.Deserialize(file, typeof(StJude));
+            services.AddSingleton(facts);
         }
     }
 }

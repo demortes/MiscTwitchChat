@@ -18,10 +18,10 @@ namespace MiscTwitchChat.Controllers
         }
 
         /// <summary>
-        /// Get the term from Urban Dictionary. Truncated to 255 ish characters, and single line.
+        /// Gets the definition of a term from Urban Dictionary.
         /// </summary>
-        /// <param name="term">Term to look for.</param>
-        /// <returns>String of 255 ish characters, used for the definition.</returns>
+        /// <param name="term">The term to look up.</param>
+        /// <returns>A string containing the definition of the term, truncated to approximately 255 characters.</returns>
         [HttpGet("{term}")]
         public string Get(string term)
         {

@@ -10,16 +10,28 @@ namespace MiscTwitchChat.Controllers
         {
 
         }
+        /// <summary>
+        /// Displays the home page.
+        /// </summary>
+        /// <returns>The home page view.</returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Displays the about page.
+        /// </summary>
+        /// <returns>The about page view.</returns>
         public IActionResult About()
         {
             return View();
         }
 
+        /// <summary>
+        /// Displays the error page.
+        /// </summary>
+        /// <returns>The error page view.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
