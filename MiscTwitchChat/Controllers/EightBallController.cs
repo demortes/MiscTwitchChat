@@ -46,6 +46,10 @@ namespace MiscTwitchChat.Controllers
         };
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Gets a random Magic 8-Ball response.
+        /// </summary>
+        /// <returns>A string containing a random Magic 8-Ball response.</returns>
         [HttpGet]
         public string Get()
         {

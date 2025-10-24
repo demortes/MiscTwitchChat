@@ -19,6 +19,11 @@ namespace MiscTwitchChatCore.Controllers
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        /// <summary>
+        /// Gets the latest tweet from a specified Twitter user.
+        /// </summary>
+        /// <param name="twitterUsername">The Twitter username to get the latest tweet from.</param>
+        /// <returns>A string containing the URL of the latest tweet.</returns>
         [HttpGet("{twitterUsername}")]
         public async Task<string> GetAsync(string twitterUsername)
         {

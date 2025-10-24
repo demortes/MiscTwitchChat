@@ -8,6 +8,13 @@ namespace MiscTwitchChat.Controllers
     [ApiController]
     public class InsultController : ControllerBase
     {
+        /// <summary>
+        /// Gets a random insult.
+        /// </summary>
+        /// <param name="channel">The channel the insult is being used in.</param>
+        /// <param name="user">The user using the insult.</param>
+        /// <param name="target">The target of the insult. If not specified, the insult will be generic.</param>
+        /// <returns>A string containing a random insult.</returns>
         [HttpGet]
         public async Task<string> InsultAsync(string channel, string user, string target = null)
         {
