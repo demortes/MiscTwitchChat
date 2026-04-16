@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Helpers;
 using System;
 
@@ -20,7 +20,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Gets a random St. Jude fact.
         /// </summary>
-        /// <returns>A string containing a random St. Jude fact.</returns>
+        /// <summary>
+        /// Retrieves a random St. Jude fact.
+        /// </summary>
+        /// <returns>A random St. Jude fact as a string.</returns>
         [HttpGet]
         public string Get()
         {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
@@ -15,6 +15,9 @@ namespace MiscTwitchChat.Controllers
         private readonly ILogger _logger;
         private readonly MiscTwitchDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GiftController"/> using the provided logger factory and database context.
+        /// </summary>
         public GiftController(ILoggerFactory logger, MiscTwitchDbContext context)
         {
             _logger = logger.CreateLogger<CardsController>();
@@ -28,7 +31,15 @@ namespace MiscTwitchChat.Controllers
         /// <param name="channel">The channel the gift is being given in.</param>
         /// <param name="fromUser">The user giving the gift.</param>
         /// <param name="giftingUsername">The user receiving the gift. If not specified, a random user will be chosen.</param>
-        /// <returns>A string describing the gift exchange.</returns>
+        /// <summary>
+        /// Selects or validates a recipient and returns a message describing a gift being handed to that recipient.
+        /// </summary>
+        /// <param name="channel">Twitch channel identifier where the gift is being given.</param>
+        /// <param name="fromUser">The user who is giving the gift.</param>
+        /// <param name="giftingUsername">Optional recipient username; if null or equal to <paramref name="fromUser"/>, a random consenting recipient is chosen. If no consenting recipient is found, a special message is returned.</param>
+        /// <returns>
+        /// A formatted message like "{fromUser} hands over a gift of {gift} to {giftingUsername}", or the string "No active consenting users found.... Sad Panda." when no recipient is available.
+        /// </returns>
         [HttpGet]
         public async Task<string> Get(string channel, string fromUser, string giftingUsername = null)
         {

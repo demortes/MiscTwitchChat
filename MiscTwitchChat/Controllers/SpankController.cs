@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
@@ -15,6 +15,9 @@ namespace MiscTwitchChat.Controllers
         private readonly MiscTwitchDbContext _db;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SpankController"/> and stores the provided logger and database context.
+        /// </summary>
         public SpankController(ILogger<SpankController> logger, MiscTwitchDbContext db)
         {
             _logger = logger;
@@ -26,7 +29,12 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the spank is being given in.</param>
         /// <param name="origUser">The user giving the spank.</param>
-        /// <returns>A string describing the spank exchange.</returns>
+        /// <summary>
+        /// Chooses a random consenting chatter in the specified channel, records a "spank" command usage for the chosen target, and returns a confirmation message.
+        /// </summary>
+        /// <param name="channel">The channel in which the spank is initiated.</param>
+        /// <param name="origUser">The user initiating the spank; if this user is registered as not consenting, the operation is blocked.</param>
+        /// <returns>A message confirming who was spanked, or a message stating the initiator does not consent and cannot spank.</returns>
         [HttpGet("{channel}/{origUser}")]
         public async Task<string> SpankAsync(string channel, string origUser)
         {
@@ -60,7 +68,12 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the user is in.</param>
         /// <param name="origUser">The user to update consent for.</param>
-        /// <returns>A string indicating the new consent status.</returns>
+        /// <summary>
+        /// Toggles the consent state for the specified user in the database and returns a status message.
+        /// </summary>
+        /// <param name="channel">Channel name from the route (accepted but not used in the database update).</param>
+        /// <param name="origUser">The username whose consent status will be toggled.</param>
+        /// <returns>A message stating that the user has registered non-consent ("&lt;user&gt; has registered they do not consent.") or that the user has registered consent ("&lt;user&gt; has registered that they DO consent.").</returns>
         [HttpGet("{channel}/{origUser}/consent")]
         public async Task<string> UpdateConsent(string channel, string origUser)
         {

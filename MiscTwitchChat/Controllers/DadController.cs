@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -12,7 +12,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Gets a random dad joke.
         /// </summary>
-        /// <returns>A string containing a random dad joke.</returns>
+        /// <summary>
+        /// Retrieves a random dad joke from icanhazdadjoke.com as plain text.
+        /// </summary>
+        /// <returns>The dad joke text.</returns>
         [HttpGet]
         public async Task<string> GetDadJoke()
         {
