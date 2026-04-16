@@ -38,6 +38,13 @@ namespace TwitchActivityBot
             //Check Config/Connection.
             //Configure twitch bot(s).
             var services = serviceCollection.BuildServiceProvider();
+
+            using (var scope = services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ActivityBotDbContext>();
+                db.Database.Migrate();
+            }
+
             var bot = services.GetRequiredService<Chatbot>();
             while (bot.isConnected())
                 Thread.Sleep(5000);
