@@ -22,7 +22,7 @@ namespace MiscTwitchChat.Controllers
         /// <param name="targetUser">The user the command was used on.</param>
         /// <param name="commandUsed">The command that was used.</param>
         /// <returns>The number of times the command has been used.</returns>
-        [HttpGet("{channel}/{targetUsers}/{commandUsed}")]
+        [HttpGet("{channel}/{targetUser}/{commandUsed}")]
         public async Task<int> GetAsync(string channel, string targetUser, string commandUsed)
         {
             var targetData = await _context.CommandCounts.FirstOrDefaultAsync(x => x.Channel == channel && x.TargetUser == targetUser && x.CommandUsed == commandUsed);
