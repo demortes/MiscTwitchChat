@@ -1,29 +1,23 @@
 ﻿using Discord;
 using Discord.Interactions;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+using DiscordBot.DemAPI;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
     public class InsultModule : InteractionModuleBase<SocketInteractionContext>
     {
-        private IConfiguration _config;
+        private readonly Client _apiService;
 
-        public InsultModule(IConfiguration config)
+        public InsultModule(Client apiService)
         {
-            _config = config;
+            _apiService = apiService;
         }
 
         [SlashCommand("insult", "Insult someone. Either tag them or let the bot pick one randomly.")]
         public async Task Insult(IUser target = null)
         {
-            var channel = Context.Channel.Name;
-            var user = Context.User.Username;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
-            var reply = await apiService.ApiInsultAsync(channel, user, target?.Username);
+            var reply = await _apiService.ApiInsultAsync(Context.Channel.Name, Context.User.Username, target?.Username);
             await RespondAsync(reply);
         }
     }

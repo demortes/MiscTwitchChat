@@ -1,29 +1,23 @@
 ﻿using Discord;
 using Discord.Interactions;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+using DiscordBot.DemAPI;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
     public class CatModule : InteractionModuleBase<SocketInteractionContext>
     {
-        private IConfiguration _config;
+        private readonly Client _apiService;
 
-        public CatModule(IConfiguration config)
+        public CatModule(Client apiService)
         {
-            _config = config;
+            _apiService = apiService;
         }
 
         [SlashCommand("cat", "Get a fact about one of the worlds favorite animals.")]
         public async Task Cat(IUser target = null)
         {
-            var channel = Context.Channel.Name;
-            var user = Context.User.Username;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
-            var reply = await apiService.ApiCatAsync();
+            var reply = await _apiService.ApiCatAsync();
             await RespondAsync(reply);
         }
     }

@@ -2,9 +2,11 @@ using Discord;
 using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
+using DiscordBot.DemAPI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -60,11 +62,18 @@ namespace DiscordBot
         {
             return new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
-                .AddSingleton<InteractionService>()
+                .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
                 .AddSingleton<CommandService>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton(config)
                 .AddLogging()
+                .AddHttpClient()
+                .AddSingleton(x =>
+                {
+                    var url = config.GetValue<string>("BaseAPIUrl");
+                    var httpClient = x.GetRequiredService<IHttpClientFactory>().CreateClient();
+                    return new Client(url, httpClient) { ReadResponseAsString = true };
+                })
                 .BuildServiceProvider();
         }
     }

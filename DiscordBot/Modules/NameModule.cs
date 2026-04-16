@@ -1,32 +1,22 @@
-﻿using Discord;
-using Discord.Interactions;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+﻿using Discord.Interactions;
+using DiscordBot.DemAPI;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
     public class NameModule : InteractionModuleBase<SocketInteractionContext>
     {
-        private IConfiguration _config;
+        private readonly Client _apiService;
 
-        public NameModule(IConfiguration config)
+        public NameModule(Client apiService)
         {
-            _config = config;
+            _apiService = apiService;
         }
 
         [SlashCommand("generate-name", "Generate a name to be used in a video game. Pick the game, and the object you want a name for.")]
         public async Task GenerateName(string game, string item)
         {
-            // To be finished once API is published.
-            var channel = Context.Channel.Name;
-            var user = Context.User.Username;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient())
-            {
-                ReadResponseAsString = true
-            };
-            var reply = await apiService.ApiAiNameAsync(game, item);
+            var reply = await _apiService.ApiAiNameAsync(game, item);
             await RespondAsync(reply);
         }
     }

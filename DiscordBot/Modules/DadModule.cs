@@ -1,29 +1,22 @@
-﻿using Discord;
-using Discord.Interactions;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+﻿using Discord.Interactions;
+using DiscordBot.DemAPI;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
 {
     public class DadModule : InteractionModuleBase<SocketInteractionContext>
     {
-        private IConfiguration _config;
+        private readonly Client _apiService;
 
-        public DadModule(IConfiguration config)
+        public DadModule(Client apiService)
         {
-            _config = config;
+            _apiService = apiService;
         }
 
         [SlashCommand("dad", "Summon the inner dad and make a joke.")]
-        public async Task Insult(IUser target = null)
+        public async Task Insult()
         {
-            var channel = Context.Channel.Name;
-            var user = Context.User.Username;
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient());
-            apiService.ReadResponseAsString = true;
-            var reply = await apiService.ApiDadAsync();
+            var reply = await _apiService.ApiDadAsync();
             await RespondAsync(reply);
         }
     }

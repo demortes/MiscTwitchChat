@@ -1,7 +1,6 @@
 using Discord;
 using Discord.Interactions;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+using DiscordBot.DemAPI;
 using System.Threading.Tasks;
 
 namespace DiscordBot.Modules
@@ -9,11 +8,11 @@ namespace DiscordBot.Modules
     // Modules must be public and inherit from an IModuleBase
     public class CardsAgainstHumanityModule : InteractionModuleBase<SocketInteractionContext>
     {
-        private readonly IConfiguration _config;
+        private readonly Client _apiService;
 
-        public CardsAgainstHumanityModule(IConfiguration config)
+        public CardsAgainstHumanityModule(Client apiService)
         {
-            _config = config;
+            _apiService = apiService;
         }
 
         // Dependency Injection will fill this value in for us
@@ -33,27 +32,15 @@ namespace DiscordBot.Modules
         [SlashCommand("cah", "Everyones favorite card game....")]
         public async Task CardAsync(string args = null)
         {
-            var tts = false;
-            if (!string.IsNullOrWhiteSpace(args) && args.ToLower() == "tts")
-                tts = true;
-            string url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient())
-            {
-                ReadResponseAsString = true
-            };
-            var reply = await apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
+            var tts = !string.IsNullOrWhiteSpace(args) && args.ToLower() == "tts";
+            var reply = await _apiService.ApiCardsGetAsync(Context.Channel?.Id.ToString());
             await RespondAsync(reply, isTTS: tts);
         }
 
         [SlashCommand("bancah", "Ban everyone's favorite card game.")]
         public async Task BanCah()
         {
-            var url = _config.GetValue<string>("BaseAPIUrl");
-            var apiService = new DemAPI.Client(url, new HttpClient())
-            {
-                ReadResponseAsString = true
-            };
-            var reply = await apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
+            var reply = await _apiService.ApiCardsDeleteAsync(Context.Channel!.Id.ToString());
             await RespondAsync(text: reply);
         }
     }
