@@ -5,7 +5,9 @@ using Discord.WebSocket;
 using DiscordBot.DemAPI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -35,8 +37,32 @@ namespace DiscordBot
             using (var services = ConfigureServices(config))
             {
                 var loggingService = services.GetRequiredService<LoggingService>();
+                var logger = services.GetRequiredService<ILogger<Program>>();
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 var interactionService = services.GetRequiredService<InteractionService>();
+
+                interactionService.SlashCommandExecuted += (info, ctx, result) =>
+                {
+                    using (logger.BeginScope(new Dictionary<string, object>
+                    {
+                        ["Username"] = ctx.User.Username,
+                        ["UserId"] = ctx.User.Id,
+                        ["Guild"] = ctx.Guild?.Name ?? "DM",
+                        ["GuildId"] = ctx.Guild?.Id.ToString() ?? "DM",
+                        ["Channel"] = ctx.Channel.Name,
+                        ["Command"] = info?.Name ?? "unknown"
+                    }))
+                    {
+                        if (result.IsSuccess)
+                            logger.LogInformation("Slash command {Command} executed by {Username} in {Guild}/{Channel}",
+                                info?.Name, ctx.User.Username, ctx.Guild?.Name ?? "DM", ctx.Channel.Name);
+                        else
+                            logger.LogWarning("Slash command {Command} failed for {Username}: {ErrorReason}",
+                                info?.Name, ctx.User.Username, result.ErrorReason);
+                    }
+                    return Task.CompletedTask;
+                };
+
                 client.InteractionCreated += async (x) =>
                 {
                     var ctx = new SocketInteractionContext(client, x);
@@ -66,7 +92,16 @@ namespace DiscordBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton(config)
-                .AddLogging()
+                .AddLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConfiguration(config.GetSection("Logging"));
+                    logging.AddJsonConsole(options =>
+                    {
+                        options.IncludeScopes = true;
+                        options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+                    });
+                })
                 .AddHttpClient()
                 .AddSingleton(x =>
                 {

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TwitchLib.Client;
@@ -46,17 +47,16 @@ namespace TwitchActivityBot
 
             if (!_client.Connect())
             {
-                _logger.LogError("Failed to connect. Exiting.");
+                _logger.LogError("Failed to connect to Twitch. Exiting.");
             }
 
             foreach (var channel in _config.GetSection("Channels").Get<string[]>())
                 _client.JoinChannel(channel.ToLower());
-
         }
 
         private void onDisconnected(object sender, OnDisconnectedEventArgs e)
         {
-            _logger.LogWarning($"Servier disconnected.");
+            _logger.LogWarning("Disconnected from Twitch server, attempting reconnect");
             Thread.Sleep(5000);
             if (!_client.IsConnected)
             {
@@ -66,34 +66,34 @@ namespace TwitchActivityBot
 
         private void onReconnected(object sender, OnReconnectedEventArgs e)
         {
-            _logger.LogWarning($"Reconnected to server.");
+            _logger.LogWarning("Reconnected to Twitch server");
         }
 
         private void onFailuredToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
         {
-            _logger.LogError($"Failed to receive join confirmation on channel {e.Exception.Channel}: {e.Exception.Details}");
+            _logger.LogError("Failed to receive join confirmation for {Channel}: {Details}",
+                e.Exception.Channel, e.Exception.Details);
             _client.JoinChannel(e.Exception.Channel);
         }
 
         private void onConnectionError(object sender, OnConnectionErrorArgs e)
         {
-            _logger.LogError($"Connection error: {e.Error.Message}");
+            _logger.LogError("Twitch connection error: {ErrorMessage}", e.Error.Message);
         }
 
         private void onConnected(object sender, OnConnectedArgs e)
         {
-            _logger.LogInformation($"Connected to Twitch.");
+            _logger.LogInformation("Connected to Twitch as {BotUsername}", e.BotUsername);
         }
 
         private void onLog(object sender, OnLogArgs e)
         {
-            _logger.LogDebug(e.Data);
+            _logger.LogDebug("{TwitchLibData}", e.Data);
         }
 
         private void joinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            //_client.SendMessage(e.Channel, "I will help take over the world.");
-            _logger.LogInformation($"Joined channel {e.Channel} as {e.BotUsername}.");
+            _logger.LogInformation("Joined {Channel} as {BotUsername}", e.Channel, e.BotUsername);
         }
 
         public bool isConnected()
@@ -103,7 +103,16 @@ namespace TwitchActivityBot
 
         private void messageReceived(object sender, OnMessageReceivedArgs e)
         {
-            _logger.LogInformation($"Chat message detected from {e.ChatMessage.Username} in channel {e.ChatMessage.Channel}.");
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
+            {
+                ["Username"] = e.ChatMessage.Username,
+                ["Channel"] = e.ChatMessage.Channel,
+                ["MessageId"] = e.ChatMessage.Id
+            });
+
+            _logger.LogInformation("Chat message received from {Username} in {Channel}",
+                e.ChatMessage.Username, e.ChatMessage.Channel);
+
             var record = _db.ActiveChatters.FirstOrDefault(p => p.Channel == e.ChatMessage.Channel && p.Username == e.ChatMessage.Username);
             if (record != null)
                 record.LastSeen = DateTimeOffset.UtcNow;

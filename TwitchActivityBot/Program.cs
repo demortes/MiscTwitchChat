@@ -25,8 +25,13 @@ namespace TwitchActivityBot
             var configuration = configurationBuilder.Build();
             serviceCollection.AddLogging(config =>
             {
-                config.AddConfiguration(configuration);
-                config.AddConsole();
+                config.ClearProviders();
+                config.AddConfiguration(configuration.GetSection("Logging"));
+                config.AddJsonConsole(options =>
+                {
+                    options.IncludeScopes = true;
+                    options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+                });
             });
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             //Configure DB.

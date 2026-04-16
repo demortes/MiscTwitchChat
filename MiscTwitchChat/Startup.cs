@@ -54,8 +54,9 @@ namespace MiscTwitchChat
             RegisterCardsAgainstHumanity(services);
             RegisterStJudeFacts(services);
 
+            services.AddScoped<ActionFilter>();
             services.AddMvc(config =>
-                config.Filters.Add(new ActionFilter(new LoggerFactory())));
+                config.Filters.Add<ActionFilter>());
             services.AddSingleton(Configuration);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
