@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Models;
 using System.Diagnostics;
 
@@ -6,6 +6,9 @@ namespace MiscTwitchChat.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeController"/> class.
+        /// </summary>
         public HomeController()
         {
 
@@ -13,7 +16,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Displays the home page.
         /// </summary>
-        /// <returns>The home page view.</returns>
+        /// <summary>
+        /// Displays the application's home page.
+        /// </summary>
+        /// <returns>The view for the home page.</returns>
         public IActionResult Index()
         {
             return View();
@@ -22,7 +28,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Displays the about page.
         /// </summary>
-        /// <returns>The about page view.</returns>
+        /// <summary>
+        /// Displays the About page.
+        /// </summary>
+        /// <returns>The view for the About page.</returns>
         public IActionResult About()
         {
             return View();
@@ -31,7 +40,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Displays the error page.
         /// </summary>
-        /// <returns>The error page view.</returns>
+        /// <summary>
+        /// Displays the error page populated with the current request identifier.
+        /// </summary>
+        /// <returns>The error page view populated with an <see cref="ErrorViewModel"/> containing the current request identifier.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

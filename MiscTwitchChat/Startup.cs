@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -30,7 +30,13 @@ namespace MiscTwitchChat
 
         private IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Configures and registers application services, middleware options, database context, Swagger/OpenAPI, and other framework integrations into the dependency injection container.
+        /// </summary>
+        /// <remarks>
+        /// Configurations performed include cookie policy options, Entity Framework MySQL DbContext registration, singleton registrations for card and fact data, MVC with action filters, registering the application's <see cref="IConfiguration"/>, Swagger/OpenAPI document metadata, forwarded header handling, and MVC options (endpoint routing disabled).
+        /// </remarks>
+        /// <param name="services">The service collection to populate with application services and configuration.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -85,7 +91,12 @@ namespace MiscTwitchChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        // ReSharper disable once UnusedMember.Global
+        /// <summary>
+        /// Configures the application's HTTP request pipeline and middleware.
+        /// </summary>
+        /// <remarks>
+        /// Sets up environment-specific error handling and HSTS, serves Swagger and Swagger UI (with a custom stylesheet), enables HTTPS redirection, static files, cookie policy, forwarded header processing, and MVC routing.
+        /// </remarks>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -127,6 +138,10 @@ namespace MiscTwitchChat
 
         }
 
+        /// <summary>
+        /// Loads "cah_cards.json", deserializes it into a CAH_cards instance, and registers that instance as a singleton in the provided service collection.
+        /// </summary>
+        /// <param name="services">The service collection to which the deserialized CAH_cards instance will be added as a singleton.</param>
         private static void RegisterCardsAgainstHumanity(IServiceCollection services)
         {
             using StreamReader file = File.OpenText("cah_cards.json");
@@ -135,6 +150,9 @@ namespace MiscTwitchChat
             services.AddSingleton(cards);
         }
 
+        /// <summary>
+        /// Loads St. Jude facts from the file "stjudefacts.json" and registers the resulting StJude object as a singleton service.
+        /// </summary>
         private static void RegisterStJudeFacts(IServiceCollection services)
         {
             using StreamReader file = File.OpenText("stjudefacts.json");

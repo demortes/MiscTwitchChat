@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -49,7 +49,13 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Gets a random Magic 8-Ball response.
         /// </summary>
-        /// <returns>A string containing a random Magic 8-Ball response.</returns>
+        /// <summary>
+        /// Provides a random Magic 8-Ball response string.
+        /// </summary>
+        /// <remarks>
+        /// Logs all incoming request headers with a generated correlation GUID.
+        /// </remarks>
+        /// <returns>A random response string selected from the controller's predefined pool.</returns>
         [HttpGet]
         public string Get()
         {

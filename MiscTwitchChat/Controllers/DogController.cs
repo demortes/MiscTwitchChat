@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Models;
 using Newtonsoft.Json;
 using System.IO;
@@ -16,6 +16,9 @@ namespace MiscTwitchChat.Controllers
 
         /// <summary>
         /// Gets a random dog fact.
+        /// </summary>
+        /// <summary>
+        /// Retrieve a random dog fact from the external dog facts API.
         /// </summary>
         /// <returns>A string containing a random dog fact.</returns>
         [HttpGet]
