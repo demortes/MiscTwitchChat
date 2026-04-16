@@ -36,7 +36,7 @@ namespace MiscTwitchChat.Controllers
         /// <param name="origUser">The user initiating the poke.</param>
         /// <returns>A message stating either that <paramref name="origUser"/> does not consent and cannot poke, or that a selected target was poked by <paramref name="origUser"/>.</returns>
         [HttpGet("{channel}/{origUser}")]
-        public async Task<string> HugAsync(string channel, string origUser)
+        public async Task<string> PokeAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting poke from {origUser} in {channel}");
             if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
