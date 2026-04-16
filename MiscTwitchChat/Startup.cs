@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 namespace MiscTwitchChat
 {
