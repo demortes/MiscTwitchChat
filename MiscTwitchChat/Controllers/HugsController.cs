@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
@@ -15,6 +15,9 @@ namespace MiscTwitchChat.Controllers
         private readonly MiscTwitchDbContext _db;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="HugController"/> with the provided logger and database context.
+        /// </summary>
         public HugController(ILogger<SpankController> logger, MiscTwitchDbContext db)
         {
             _logger = logger;
@@ -26,7 +29,15 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the hug is being given in.</param>
         /// <param name="origUser">The user giving the hug.</param>
-        /// <returns>A string describing the hug exchange.</returns>
+        /// <summary>
+        /// Processes a hug request from a user in a channel, updates the command usage count, and returns a status message.
+        /// </summary>
+        /// <param name="channel">The channel where the hug is initiated.</param>
+        /// <param name="origUser">The user who initiated the hug.</param>
+        /// <returns>
+        /// A message stating either that the initiating user has registered non-consent and cannot hug,
+        /// or confirming which target was hugged by the initiating user (and that the hug was recorded).
+        /// </returns>
         [HttpGet("{channel}/{origUser}")]
         public async Task<string> HugAsync(string channel, string origUser)
         {
@@ -61,7 +72,12 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the user is in.</param>
         /// <param name="origUser">The user to update consent for.</param>
-        /// <returns>A string indicating the new consent status.</returns>
+        /// <summary>
+        /// Toggles the stored consent status for the specified user.
+        /// </summary>
+        /// <param name="channel">The channel name (accepted but not used by this endpoint).</param>
+        /// <param name="origUser">The user whose consent status will be registered or removed.</param>
+        /// <returns>A message stating the user's new consent status.</returns>
         [HttpGet("{channel}/{origUser}/consent")]
         public async Task<string> UpdateConsent(string channel, string origUser)
         {

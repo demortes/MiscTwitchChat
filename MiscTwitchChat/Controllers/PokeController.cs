@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
@@ -15,6 +15,9 @@ namespace MiscTwitchChat.Controllers
         private readonly MiscTwitchDbContext _db;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PokeController"/> using the provided logger and database context.
+        /// </summary>
         public PokeController(ILogger<SpankController> logger, MiscTwitchDbContext db)
         {
             _logger = logger;
@@ -26,9 +29,14 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the poke is being given in.</param>
         /// <param name="origUser">The user giving the poke.</param>
-        /// <returns>A string describing the poke exchange.</returns>
+        /// <summary>
+        /// Pokes a random consenting user in the specified channel on behalf of the originating user.
+        /// </summary>
+        /// <param name="channel">The channel in which to select a consenting chatter.</param>
+        /// <param name="origUser">The user initiating the poke.</param>
+        /// <returns>A message stating either that <paramref name="origUser"/> does not consent and cannot poke, or that a selected target was poked by <paramref name="origUser"/>.</returns>
         [HttpGet("{channel}/{origUser}")]
-        public async Task<string> HugAsync(string channel, string origUser)
+        public async Task<string> PokeAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting poke from {origUser} in {channel}");
             if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
@@ -60,7 +68,12 @@ namespace MiscTwitchChat.Controllers
         /// </summary>
         /// <param name="channel">The channel the user is in.</param>
         /// <param name="origUser">The user to update consent for.</param>
-        /// <returns>A string indicating the new consent status.</returns>
+        /// <summary>
+        /// Toggles the stored consent status for a user in the Disconsenters table.
+        /// </summary>
+        /// <param name="channel">The channel name from the route (routing/contextual identifier).</param>
+        /// <param name="origUser">The user whose consent status will be toggled.</param>
+        /// <returns>A message indicating the user's new consent status.</returns>
         [HttpGet("{channel}/{origUser}/consent")]
         public async Task<string> UpdateConsent(string channel, string origUser)
         {

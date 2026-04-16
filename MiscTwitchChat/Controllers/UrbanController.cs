@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -12,6 +12,9 @@ namespace MiscTwitchChat.Controllers
     {
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of UrbanController and creates its logger from the provided ILoggerFactory.
+        /// </summary>
         public UrbanController(ILoggerFactory logger)
         {
             _logger = logger.CreateLogger<UrbanController>();
@@ -21,7 +24,11 @@ namespace MiscTwitchChat.Controllers
         /// Gets the definition of a term from Urban Dictionary.
         /// </summary>
         /// <param name="term">The term to look up.</param>
-        /// <returns>A string containing the definition of the term, truncated to approximately 255 characters.</returns>
+        /// <summary>
+        /// Gets the definition of a term from Urban Dictionary and returns it as a single-line, truncated string.
+        /// </summary>
+        /// <param name="term">The term to look up.</param>
+        /// <returns>The definition with line breaks replaced by spaces and truncated to at most 175 characters; or a not-found, special-case, or error message when applicable.</returns>
         [HttpGet("{term}")]
         public string Get(string term)
         {

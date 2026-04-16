@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MiscTwitchChat.Models;
 using Newtonsoft.Json;
 using System.IO;
@@ -15,7 +15,10 @@ namespace MiscTwitchChat.Controllers
         /// <summary>
         /// Gets a random cat fact.
         /// </summary>
-        /// <returns>A string containing a random cat fact.</returns>
+        /// <summary>
+        /// Fetches a random cat fact from the configured API endpoint.
+        /// </summary>
+        /// <returns>A string containing the cat fact returned by the API.</returns>
         [HttpGet]
         public async System.Threading.Tasks.Task<string> GetAsync()
         {

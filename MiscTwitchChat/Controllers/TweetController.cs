@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +14,11 @@ namespace MiscTwitchChatCore.Controllers
     {
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TweetController"/> class with the given configuration.
+        /// </summary>
+        /// <param name="configuration">Configuration source used to retrieve Twitter API credentials and other settings.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="configuration"/> is <c>null</c>.</exception>
         public TweetController(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -23,7 +28,11 @@ namespace MiscTwitchChatCore.Controllers
         /// Gets the latest tweet from a specified Twitter user.
         /// </summary>
         /// <param name="twitterUsername">The Twitter username to get the latest tweet from.</param>
-        /// <returns>A string containing the URL of the latest tweet.</returns>
+        /// <summary>
+        /// Retrieves the most recent tweet for the specified Twitter username and returns its URL.
+        /// </summary>
+        /// <param name="twitterUsername">The Twitter handle (screen name) to fetch the latest tweet for; do not include the '@' prefix.</param>
+        /// <returns>The URL of the user's latest tweet, for example "https://twitter.com/{user}/status/{id}".</returns>
         [HttpGet("{twitterUsername}")]
         public async Task<string> GetAsync(string twitterUsername)
         {
