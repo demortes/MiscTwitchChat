@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Serilog.Context;
 using System.Diagnostics;
 
 namespace MiscTwitchChat
@@ -27,14 +28,14 @@ namespace MiscTwitchChat
             var remoteIp = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             var userAgent = request.Headers.UserAgent.ToString();
 
-            _logger.LogInformation(
-                "HTTP {Method} {Path} responded {StatusCode} in {ElapsedMs}ms from {RemoteIP} via {UserAgent}",
-                request.Method,
-                request.Path,
-                response.StatusCode,
-                _stopwatch.ElapsedMilliseconds,
-                remoteIp,
-                userAgent);
+            using (LogContext.PushProperty("RemoteIP", remoteIp))
+            using (LogContext.PushProperty("UserAgent", userAgent))
+            using (LogContext.PushProperty("ElapsedMs", _stopwatch.ElapsedMilliseconds))
+            {
+                _logger.LogInformation(
+                    "HTTP {Method} {Path} responded {StatusCode} in {ElapsedMs}ms",
+                    request.Method, request.Path, response.StatusCode, _stopwatch.ElapsedMilliseconds);
+            }
         }
     }
 }

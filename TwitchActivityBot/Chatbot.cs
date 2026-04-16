@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiscTwitchChat.Classlib.Entities;
+using Serilog.Context;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using TwitchLib.Client;
@@ -103,12 +103,9 @@ namespace TwitchActivityBot
 
         private void messageReceived(object sender, OnMessageReceivedArgs e)
         {
-            using var scope = _logger.BeginScope(new Dictionary<string, object>
-            {
-                ["Username"] = e.ChatMessage.Username,
-                ["Channel"] = e.ChatMessage.Channel,
-                ["MessageId"] = e.ChatMessage.Id
-            });
+            using var _u = LogContext.PushProperty("Username", e.ChatMessage.Username);
+            using var _c = LogContext.PushProperty("Channel", e.ChatMessage.Channel);
+            using var _m = LogContext.PushProperty("MessageId", e.ChatMessage.Id);
 
             _logger.LogInformation("Chat message received from {Username} in {Channel}",
                 e.ChatMessage.Username, e.ChatMessage.Channel);

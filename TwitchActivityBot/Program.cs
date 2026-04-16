@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Formatting.Compact;
 using System;
 using System.Threading;
 
@@ -13,7 +14,6 @@ namespace TwitchActivityBot
         {
             IServiceCollection serviceCollection = new ServiceCollection();
 
-            //Load configuration files
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
@@ -23,25 +23,23 @@ namespace TwitchActivityBot
             }
 
             var configuration = configurationBuilder.Build();
-            serviceCollection.AddLogging(config =>
-            {
-                config.ClearProviders();
-                config.AddConfiguration(configuration.GetSection("Logging"));
-                config.AddJsonConsole(options =>
-                {
-                    options.IncludeScopes = true;
-                    options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
-                });
-            });
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .Enrich.WithMachineName()
+                .Enrich.WithThreadId()
+                .WriteTo.Console(new CompactJsonFormatter())
+                .CreateLogger();
+
+            serviceCollection.AddLogging(config => config.AddSerilog(dispose: true));
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            //Configure DB.
             serviceCollection.AddMySql<ActivityBotDbContext>(
                 configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
             );
             serviceCollection.AddScoped<Chatbot>();
-            //Check Config/Connection.
-            //Configure twitch bot(s).
+
             var services = serviceCollection.BuildServiceProvider();
 
             using (var scope = services.CreateScope())
