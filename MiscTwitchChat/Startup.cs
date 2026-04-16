@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
-using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
+using IPNetwork = System.Net.IPNetwork;
 
 namespace MiscTwitchChat
 {
@@ -89,33 +89,34 @@ namespace MiscTwitchChat
                 // Clear defaults (loopback only) and trust Cloudflare's published IP ranges.
                 // https://www.cloudflare.com/ips/
                 options.KnownNetworks.Clear();
+                options.KnownIPNetworks.Clear();
                 options.KnownProxies.Clear();
 
                 // IPv4
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("173.245.48.0"),  20));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("103.21.244.0"),  22));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("103.22.200.0"),  22));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("103.31.4.0"),    22));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("141.101.64.0"),  18));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("108.162.192.0"), 18));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("190.93.240.0"),  20));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("188.114.96.0"),  20));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("197.234.240.0"), 22));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("198.41.128.0"),  17));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("162.158.0.0"),   15));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("104.16.0.0"),    13));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("104.24.0.0"),    14));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("172.64.0.0"),    13));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("131.0.72.0"),    22));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("173.245.48.0"),  20));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("103.21.244.0"),  22));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("103.22.200.0"),  22));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("103.31.4.0"),    22));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("141.101.64.0"),  18));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("108.162.192.0"), 18));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("190.93.240.0"),  20));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("188.114.96.0"),  20));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("197.234.240.0"), 22));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("198.41.128.0"),  17));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("162.158.0.0"),   15));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("104.16.0.0"),    13));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("104.24.0.0"),    14));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("172.64.0.0"),    13));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("131.0.72.0"),    22));
 
                 // IPv6
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2400:cb00::"),   32));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2606:4700::"),   32));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2803:f800::"),   32));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2405:b500::"),   32));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2405:8100::"),   32));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2a06:98c0::"),   29));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("2c0f:f248::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2400:cb00::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2606:4700::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2803:f800::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2405:b500::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2405:8100::"),   32));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2a06:98c0::"),   29));
+                options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("2c0f:f248::"),   32));
             });
             services.Configure<MvcOptions>(options =>
             {
