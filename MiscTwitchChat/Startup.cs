@@ -129,10 +129,23 @@ namespace MiscTwitchChat
 
         private static void RegisterCardsAgainstHumanity(IServiceCollection services)
         {
-            using StreamReader file = File.OpenText("cah_cards.json");
-            var serializer = new JsonSerializer();
-            var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
-            services.AddSingleton(cards);
+            try
+            {
+                using StreamReader file = File.OpenText("cah_cards.json");
+                var serializer = new JsonSerializer();
+                var cards = (CAH_cards)serializer.Deserialize(file, typeof(CAH_cards));
+                
+                if (cards == null)
+                {
+                    throw new InvalidOperationException("Failed to deserialize CAH cards from cah_cards.json");
+                }
+                
+                services.AddSingleton(cards);
+            }
+            catch (Exception ex) when (ex is FileNotFoundException or IOException or JsonException)
+            {
+                throw new InvalidOperationException("Failed to load CAH cards data. Ensure cah_cards.json exists and is valid JSON.", ex);
+            }
         }
 
         private static void RegisterStJudeFacts(IServiceCollection services)

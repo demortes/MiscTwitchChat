@@ -28,7 +28,7 @@ namespace MiscTwitchChat.Controllers
         /// <param name="origUser">The user giving the poke.</param>
         /// <returns>A string describing the poke exchange.</returns>
         [HttpGet("{channel}/{origUser}")]
-        public async Task<string> HugAsync(string channel, string origUser)
+        public async Task<string> PokeAsync(string channel, string origUser)
         {
             _logger.LogInformation($"Starting poke from {origUser} in {channel}");
             if (_db.Disconsenters.FirstOrDefault(p => p.Name == origUser) != null)
