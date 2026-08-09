@@ -4,6 +4,47 @@
 ## Description
 This project is purely made out of the desire to aggregate a number of functions together and allow a chat bot easy access to items.
 
+## Health checks
+All three programs expose the same three HTTP endpoints and ship with a Docker `HEALTHCHECK` that probes `/health/ready`.
+
+| Endpoint | Reports |
+| --- | --- |
+| `/health/live` | The process is running and answering. No dependencies are probed. |
+| `/health/ready` | Every dependency the service needs to do its job. |
+| `/health` | Everything registered, including checks not required for readiness. |
+
+Readiness dependencies per service:
+
+| Service | Checks |
+| --- | --- |
+| MiscTwitchChat (API) | `mysql` |
+| DiscordBot | `discord` (gateway connection), `api` |
+| TwitchActivityBot | `mysql`, `twitch` (chat connection), `api` |
+
+The response body is JSON naming each check, its status and how long it took, so a failing probe says *which* dependency broke:
+
+```json
+{"status":"Unhealthy","totalDurationMs":2040.9,"checks":[{"name":"mysql","status":"Unhealthy","description":"MiscTwitchDbContext failed to connect to the database.","durationMs":2035.3}]}
+```
+
+These endpoints are unauthenticated, so the response carries only descriptions written by this solution. Underlying exception detail — driver messages that can name the database user or host — is left out of the body and written to the log instead, at `Error` level under `Microsoft.Extensions.Diagnostics.HealthChecks`.
+
+The bots have no web host of their own, so they start a small listener alongside their normal work. Configuration:
+
+| Setting | Environment variable | Default |
+| --- | --- | --- |
+| `Health:Port` | `Health__Port` | `8080` |
+| `Health:ApiHealthPath` | `Health__ApiHealthPath` | `health/live` |
+| `Health:ApiTimeoutSeconds` | `Health__ApiTimeoutSeconds` | `5` |
+| `BaseAPIUrl` | `BaseAPIUrl` | per `appsettings.json` |
+
+The bots probe the API's `/health/live` rather than its `/health/ready`, so a database outage is reported once by the API instead of cascading into every bot as well. Leaving `BaseAPIUrl` empty disables the API check.
+
+The container health check probes the URL in the `HEALTHCHECK_URL` environment variable, which defaults to `http://127.0.0.1:8080/health/ready`. Override it if you change the listener port, or, for the API, if you set `ASPNETCORE_URLS` to something other than the image's default port 8080.
+
+### Known limitation
+TwitchActivityBot detects the server version and runs migrations before it starts its health listener, so if MySQL is unreachable *at startup* the process exits before it can report anything and the container restarts instead of going unhealthy. Outages that begin once the bot is running are reported normally. The API has no such gap: it configures its database lazily, so it stays up and answers `/health/ready` with `Unhealthy` whether MySQL was missing at boot or failed later.
+
 ## Maintainers
 The official maintainer is Kevin "Demortes" Dethlefs, a Senior Software Engineer, who provides his free time to do this. 
 

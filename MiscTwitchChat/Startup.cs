@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi;
+using MiscTwitchChat.Health;
 using MiscTwitchChat.Helpers;
 using Newtonsoft.Json;
 using System;
@@ -51,6 +52,10 @@ namespace MiscTwitchChat
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MiscTwitchDbContext>(o =>
                 o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
+
+            // The API is only useful when it can reach MySQL, so readiness hangs off the database.
+            services.AddHealthChecks()
+                .AddDbContextConnectionCheck<MiscTwitchDbContext>("mysql", HealthEndpoint.ReadyTag);
 
             RegisterCardsAgainstHumanity(services);
             RegisterStJudeFacts(services);
@@ -135,6 +140,10 @@ namespace MiscTwitchChat
         {
             // Must be first so RemoteIpAddress is resolved before any other middleware reads it.
             app.UseForwardedHeaders();
+
+            // Ahead of UseHttpsRedirection: the container's health check probes over plain HTTP and a
+            // redirect would look like success to curl.
+            app.UseHealthEndpoints();
 
             if (env.IsDevelopment())
             {

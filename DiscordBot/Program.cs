@@ -3,8 +3,10 @@ using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
 using DiscordBot.DemAPI;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiscTwitchChat.Health;
 using Serilog;
 using Serilog.Context;
 using Serilog.Formatting.Compact;
@@ -75,11 +77,40 @@ namespace DiscordBot
                     await interactionService.RegisterCommandsGloballyAsync(true);
                 };
 
+                await using var health = StartHealthEndpoint(config, client);
+
                 await client.LoginAsync(TokenType.Bot, config.GetValue<string>("Discord:Token"));
                 await client.StartAsync();
 
                 await Task.Delay(-1);
             }
+        }
+
+        /// <summary>
+        /// Exposes this bot's health over HTTP so the container has something to probe. The bot is only
+        /// useful when it is on the Discord gateway and can reach the API it proxies commands to, so both
+        /// of those are readiness dependencies.
+        /// </summary>
+        private static WebApplication StartHealthEndpoint(IConfiguration config, DiscordSocketClient client)
+        {
+            return HealthEndpoint.Start(config, checks =>
+            {
+                checks.AddConnectionCheck(
+                    "discord",
+                    () => client.ConnectionState == ConnectionState.Connected,
+                    "Connected to the Discord gateway.",
+                    "Not connected to the Discord gateway.",
+                    HealthEndpoint.ReadyTag);
+
+                var apiHealthUri = HealthEndpoint.ResolveApiHealthUri(config);
+                if (apiHealthUri == null)
+                {
+                    Log.Warning("BaseAPIUrl is not configured, so the API health check is disabled.");
+                    return;
+                }
+
+                checks.AddApiCheck("api", apiHealthUri, HealthEndpoint.ResolveApiTimeout(config), HealthEndpoint.ReadyTag);
+            });
         }
 
         private ServiceProvider ConfigureServices(IConfiguration config)

@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiscTwitchChat.Classlib\MiscTwitchChat.Classlib.csproj" />
+    <ProjectReference Include="..\MiscTwitchChat.Health\MiscTwitchChat.Health.csproj" />
   </ItemGroup>
 
   <ItemGroup>
