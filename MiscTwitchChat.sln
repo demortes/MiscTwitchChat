@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiscTwitchChat.Classlib", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot", "DiscordBot\DiscordBot.csproj", "{C85E596D-48CE-412A-A618-0AD8A2B426B9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiscTwitchChat.Health", "MiscTwitchChat.Health\MiscTwitchChat.Health.csproj", "{7B1F2C34-9A5D-4E6B-8C71-2D3E4F5A6B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C85E596D-48CE-412A-A618-0AD8A2B426B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C85E596D-48CE-412A-A618-0AD8A2B426B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C85E596D-48CE-412A-A618-0AD8A2B426B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1F2C34-9A5D-4E6B-8C71-2D3E4F5A6B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1F2C34-9A5D-4E6B-8C71-2D3E4F5A6B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1F2C34-9A5D-4E6B-8C71-2D3E4F5A6B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1F2C34-9A5D-4E6B-8C71-2D3E4F5A6B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

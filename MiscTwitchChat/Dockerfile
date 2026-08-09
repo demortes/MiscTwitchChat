@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["MiscTwitchChat/MiscTwitchChat.csproj", "MiscTwitchChat/"]
 COPY ["MiscTwitchChat.Classlib/MiscTwitchChat.Classlib.csproj", "MiscTwitchChat.Classlib/"]
+COPY ["MiscTwitchChat.Health/MiscTwitchChat.Health.csproj", "MiscTwitchChat.Health/"]
 RUN dotnet restore "MiscTwitchChat/MiscTwitchChat.csproj"
 COPY . .
 WORKDIR "/src/MiscTwitchChat"
@@ -32,6 +33,17 @@ ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 ENV DD_IAST_ENABLED=true
+
+# Fixed listener port so the health check below has a known address. Overriding ASPNETCORE_URLS at run
+# time wins over this, in which case override HEALTHCHECK_URL to match.
+ENV ASPNETCORE_HTTP_PORTS=8080
+EXPOSE 8080
+
+# Readiness, not liveness: the API is only useful when it can reach MySQL.
+ENV HEALTHCHECK_URL=http://127.0.0.1:8080/health/ready
+HEALTHCHECK --interval=30s --timeout=10s --start-period=45s --retries=3 \
+    CMD curl -fsS "$HEALTHCHECK_URL" > /dev/null || exit 1
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MiscTwitchChat.dll"]

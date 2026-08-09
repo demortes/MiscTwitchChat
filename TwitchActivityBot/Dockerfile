@@ -6,6 +6,8 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["TwitchActivityBot/TwitchActivityBot.csproj", "TwitchActivityBot/"]
+COPY ["MiscTwitchChat.Classlib/MiscTwitchChat.Classlib.csproj", "MiscTwitchChat.Classlib/"]
+COPY ["MiscTwitchChat.Health/MiscTwitchChat.Health.csproj", "MiscTwitchChat.Health/"]
 RUN dotnet restore "TwitchActivityBot/TwitchActivityBot.csproj"
 COPY . .
 WORKDIR "/src/TwitchActivityBot"
@@ -29,6 +31,15 @@ ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 ENV DD_IAST_ENABLED=true
+
+# Health listener the bot starts alongside the Twitch connection. Override with Health__Port.
+EXPOSE 8080
+
+# Readiness covers MySQL, the Twitch chat connection, and reachability of the API.
+ENV HEALTHCHECK_URL=http://127.0.0.1:8080/health/ready
+HEALTHCHECK --interval=30s --timeout=10s --start-period=45s --retries=3 \
+    CMD curl -fsS "$HEALTHCHECK_URL" > /dev/null || exit 1
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TwitchActivityBot.dll"]

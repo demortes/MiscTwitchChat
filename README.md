@@ -4,6 +4,42 @@
 ## Description
 This project is purely made out of the desire to aggregate a number of functions together and allow a chat bot easy access to items.
 
+## Health checks
+All three programs expose the same three HTTP endpoints and ship with a Docker `HEALTHCHECK` that probes `/health/ready`.
+
+| Endpoint | Reports |
+| --- | --- |
+| `/health/live` | The process is running and answering. No dependencies are probed. |
+| `/health/ready` | Every dependency the service needs to do its job. |
+| `/health` | Everything registered, including checks not required for readiness. |
+
+Readiness dependencies per service:
+
+| Service | Checks |
+| --- | --- |
+| MiscTwitchChat (API) | `mysql` |
+| DiscordBot | `discord` (gateway connection), `api` |
+| TwitchActivityBot | `mysql`, `twitch` (chat connection), `api` |
+
+The response body is JSON naming each check, its status and how long it took, so a failing probe says *which* dependency broke:
+
+```json
+{"status":"Unhealthy","totalDurationMs":2040.9,"checks":[{"name":"mysql","status":"Unhealthy","description":"MiscTwitchDbContext failed to connect to the database.","durationMs":2035.3,"error":"Unable to connect to any of the specified MySQL hosts."}]}
+```
+
+The bots have no web host of their own, so they start a small listener alongside their normal work. Configuration:
+
+| Setting | Environment variable | Default |
+| --- | --- | --- |
+| `Health:Port` | `Health__Port` | `8080` |
+| `Health:ApiHealthPath` | `Health__ApiHealthPath` | `health/live` |
+| `Health:ApiTimeoutSeconds` | `Health__ApiTimeoutSeconds` | `5` |
+| `BaseAPIUrl` | `BaseAPIUrl` | per `appsettings.json` |
+
+The bots probe the API's `/health/live` rather than its `/health/ready`, so a database outage is reported once by the API instead of cascading into every bot as well. Leaving `BaseAPIUrl` empty disables the API check.
+
+The container health check probes the URL in the `HEALTHCHECK_URL` environment variable, which defaults to `http://127.0.0.1:8080/health/ready`. Override it if you change the listener port, or, for the API, if you set `ASPNETCORE_URLS` to something other than the image's default port 8080.
+
 ## Maintainers
 The official maintainer is Kevin "Demortes" Dethlefs, a Senior Software Engineer, who provides his free time to do this. 
 
