@@ -31,6 +31,11 @@ namespace MiscTwitchChat
             Configuration = builder.Build();
         }
 
+        /// <summary>
+        /// MySQL server version assumed when "Database:ServerVersion" is not configured. Currently the MySQL LTS release.
+        /// </summary>
+        private static readonly Version DefaultServerVersion = new(8, 4, 0);
+
         private IConfiguration Configuration { get; }
 
         /// <summary>
@@ -50,8 +55,9 @@ namespace MiscTwitchChat
             });
             services.AddEntityFrameworkMySql();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var serverVersion = ResolveServerVersion(Configuration);
             services.AddDbContext<MiscTwitchDbContext>(o =>
-                o.UseMySql(Configuration.GetConnectionString("DefaultConnection"), serverVersion: ServerVersion.AutoDetect(connectionString)));
+                o.UseMySql(connectionString, serverVersion));
 
             // The API is only useful when it can reach MySQL, so readiness hangs off the database.
             services.AddHealthChecks()
@@ -173,6 +179,47 @@ namespace MiscTwitchChat
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        /// <summary>
+        /// Resolves the MySQL server version the EF Core provider targets for feature detection.
+        /// </summary>
+        /// <remarks>
+        /// The version is pinned from the "Database:ServerVersion" configuration value (for example "8.4") rather than
+        /// probed with <see cref="ServerVersion.AutoDetect(string)"/>. AutoDetect opens a throwaway connection to read
+        /// the version; inside the <c>AddDbContext</c> options lambda that ran once per scope, costing an extra
+        /// connection and round trip on every request. Pinning also keeps the application bootable when MySQL is
+        /// unreachable, so the endpoints that do not touch the database keep serving.
+        /// </remarks>
+        /// <param name="configuration">Configuration to read the pinned server version from.</param>
+        /// <returns>The configured server version, or <see cref="DefaultServerVersion"/> when none is configured.</returns>
+        /// <exception cref="InvalidOperationException">The configured value is not a parsable version.</exception>
+        private static ServerVersion ResolveServerVersion(IConfiguration configuration)
+        {
+            var configured = configuration["Database:ServerVersion"];
+            if (string.IsNullOrWhiteSpace(configured))
+            {
+                return new MySqlServerVersion(DefaultServerVersion);
+            }
+
+            if (!Version.TryParse(configured, out var parsed))
+            {
+                throw new InvalidOperationException(
+                    $"Configuration value 'Database:ServerVersion' ('{configured}') is not a valid version. Use a value such as '8.4'.");
+            }
+
+            return new MySqlServerVersion(Normalize(parsed));
+        }
+
+        /// <summary>
+        /// Expands a version to three components so provider feature gates compare as expected.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Version"/> leaves omitted components at -1, and -1 sorts below 0. That makes
+        /// <c>new Version(8, 4)</c> compare as *less than* <c>new Version(8, 4, 0)</c>, so a two-component
+        /// value silently fails any provider feature gated at exactly that release.
+        /// </remarks>
+        private static Version Normalize(Version version) =>
+            version.Build >= 0 ? version : new Version(version.Major, version.Minor, 0);
 
         /// <summary>
         /// Loads "cah_cards.json", deserializes it into a CAH_cards instance, and registers that instance as a singleton in the provided service collection.
