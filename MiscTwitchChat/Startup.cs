@@ -34,7 +34,7 @@ namespace MiscTwitchChat
         /// <summary>
         /// MySQL server version assumed when "Database:ServerVersion" is not configured. Currently the MySQL LTS release.
         /// </summary>
-        private static readonly Version DefaultServerVersion = new(8, 4);
+        private static readonly Version DefaultServerVersion = new(8, 4, 0);
 
         private IConfiguration Configuration { get; }
 
@@ -207,8 +207,19 @@ namespace MiscTwitchChat
                     $"Configuration value 'Database:ServerVersion' ('{configured}') is not a valid version. Use a value such as '8.4'.");
             }
 
-            return new MySqlServerVersion(parsed);
+            return new MySqlServerVersion(Normalize(parsed));
         }
+
+        /// <summary>
+        /// Expands a version to three components so provider feature gates compare as expected.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Version"/> leaves omitted components at -1, and -1 sorts below 0. That makes
+        /// <c>new Version(8, 4)</c> compare as *less than* <c>new Version(8, 4, 0)</c>, so a two-component
+        /// value silently fails any provider feature gated at exactly that release.
+        /// </remarks>
+        private static Version Normalize(Version version) =>
+            version.Build >= 0 ? version : new Version(version.Major, version.Minor, 0);
 
         /// <summary>
         /// Loads "cah_cards.json", deserializes it into a CAH_cards instance, and registers that instance as a singleton in the provided service collection.
