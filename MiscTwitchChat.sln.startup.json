@@ -54,7 +54,6 @@
   "MultiProjectConfigurations": {
     "All Apps": {
       "Projects": {
-        "DiscordBot": {},
         "MiscTwitchChat": {},
         "TwitchActivityBot": {}
       }

@@ -18,7 +18,6 @@ Readiness dependencies per service:
 | Service | Checks |
 | --- | --- |
 | MiscTwitchChat (API) | `mysql` |
-| DiscordBot | `discord` (gateway connection), `api` |
 | TwitchActivityBot | `mysql`, `twitch` (chat connection), `api` |
 
 The response body is JSON naming each check, its status and how long it took, so a failing probe says *which* dependency broke:
