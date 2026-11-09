@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Hono } from 'hono';
 import type { AppEnv } from '../src/env';
 import { urban, formatDefinition, DEMORTES_MSG, CHRISSIE_MSG, ERROR_MSG } from '../src/routes/urban';
-import { aiName } from '../src/routes/aiName';
+import { aiName, DEFAULT_MODEL } from '../src/routes/aiName';
 import { dictionary, pickMeaning } from '../src/routes/dictionary';
 
 const env = { OPEN_AI_KEY: 'sk-test', OPEN_AI_URL: 'https://ai.example/v1/chat' } as any;
@@ -90,6 +90,16 @@ describe('aiName', () => {
     expect(await res.text()).toBe('Sword Art');
     const body = JSON.parse(f.mock.calls[0][1].body as string);
     expect(body.messages[1].content).toContain('a sword within the game Zelda');
+  });
+
+  it('uses the OPEN_AI_MODEL setting, and a default when it is not set or blank', async () => {
+    const f = vi.fn(async (_u: string, _i: RequestInit) => json({ choices: [{ message: { content: 'x' } }] }));
+    vi.stubGlobal('fetch', f);
+    await app().request('/api/ai/name/Zelda/sword', {}, { ...env, OPEN_AI_MODEL: 'some-model' });
+    await app().request('/api/ai/name/Zelda/sword', {}, env);
+    await app().request('/api/ai/name/Zelda/sword', {}, { ...env, OPEN_AI_MODEL: '  ' });
+    const models = f.mock.calls.map((c) => JSON.parse(c[1].body as string).model);
+    expect(models).toEqual(['some-model', DEFAULT_MODEL, DEFAULT_MODEL]);
   });
 
   it('errors when config is missing', async () => {

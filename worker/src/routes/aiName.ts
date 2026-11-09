@@ -3,6 +3,9 @@ import type { AppEnv } from '../env';
 
 export const aiName = new Hono<AppEnv>();
 
+// OpenAI retires models over time, so the model is a setting (OPEN_AI_MODEL) rather than hardcoded.
+export const DEFAULT_MODEL = 'gpt-4o-mini';
+
 const SYSTEM_PROMPT =
   'You are a helpful assistant. You will be asked to complete things related to certain video games. Provide only short answers, designed to be inserted into a livestream chat, like Twitch chat. Stay casual, but not insulting. Use puns whenever you can.';
 
@@ -40,7 +43,7 @@ aiName.get('/:game/:item', async (c) => {
         'User-Agent': 'MiscTwitchChat-Worker',
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: c.env.OPEN_AI_MODEL?.trim() || DEFAULT_MODEL,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: buildPrompt(game, item) },

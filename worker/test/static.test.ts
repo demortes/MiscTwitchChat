@@ -60,7 +60,6 @@ describe('docs', () => {
       '/api/insult': ['get'],
       '/api/dictionary/{word}': ['get'],
       '/api/urban/{term}': ['get'],
-      '/api/tweet/{twitterUsername}': ['get'],
       '/api/ai/name/{game}/{item}': ['get'],
       '/api/hug/{channel}/{origUser}': ['get'],
       '/api/hug/{channel}/{origUser}/consent': ['get'],

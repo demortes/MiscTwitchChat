@@ -16,6 +16,6 @@
   ],
   "observability": { "enabled": true }
   // Secrets (set with `wrangler secret put <NAME>`, or put in .dev.vars for local runs):
-  // OPEN_AI_KEY, OPEN_AI_URL, TwitterApiKey, TwitterApiSecret, DictionaryApiKey, TWITCH_EVENTSUB_SECRET,
-  // DISCORD_PUBLIC_KEY, DISCORD_APP_ID
+  // OPEN_AI_KEY, OPEN_AI_URL, OPEN_AI_MODEL (optional), DictionaryApiKey, TWITCH_EVENTSUB_SECRET,
+  // TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, TWITCH_BOT_USER_ID, DISCORD_PUBLIC_KEY, DISCORD_APP_ID
 }

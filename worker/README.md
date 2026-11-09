@@ -21,10 +21,12 @@ Set the secrets you need (each is optional; a route that needs a missing one ret
 ```bash
 npx wrangler secret put OPEN_AI_KEY
 npx wrangler secret put OPEN_AI_URL
-npx wrangler secret put TwitterApiKey
-npx wrangler secret put TwitterApiSecret
+npx wrangler secret put OPEN_AI_MODEL            # optional; defaults to gpt-4o-mini
 npx wrangler secret put DictionaryApiKey
 npx wrangler secret put TWITCH_EVENTSUB_SECRET
+npx wrangler secret put TWITCH_CLIENT_ID         # only for the self-service /twitch/connect page
+npx wrangler secret put TWITCH_CLIENT_SECRET
+npx wrangler secret put TWITCH_BOT_USER_ID
 npx wrangler secret put DISCORD_PUBLIC_KEY
 npx wrangler secret put DISCORD_APP_ID
 npm run deploy

@@ -6,7 +6,6 @@ import { dog } from './routes/dog';
 import { insult } from './routes/insult';
 import { dictionary } from './routes/dictionary';
 import { urban } from './routes/urban';
-import { tweet } from './routes/tweet';
 import { aiName } from './routes/aiName';
 import { hug } from './routes/hug';
 import { poke } from './routes/poke';
@@ -18,6 +17,7 @@ import { eightball } from './routes/eightball';
 import { health } from './routes/health';
 import { docs } from './routes/docs';
 import { twitch } from './webhooks/twitch';
+import { connect as twitchConnect } from './twitch/connect';
 import { discord } from './discord/interactions';
 
 export const app = new Hono<AppEnv>();
@@ -35,7 +35,6 @@ app.route('/api/dog', dog);
 app.route('/api/insult', insult);
 app.route('/api/dictionary', dictionary);
 app.route('/api/urban', urban);
-app.route('/api/tweet', tweet);
 app.route('/api/ai/name', aiName);
 app.route('/api/hug', hug);
 app.route('/api/poke', poke);
@@ -47,6 +46,7 @@ app.route('/api/eightball', eightball);
 app.route('/health', health);
 app.route('/', docs); // swagger / openapi.json
 app.route('/twitch', twitch);
+app.route('/twitch', twitchConnect); // /twitch/connect + /twitch/callback
 app.route('/discord', discord);
 
 export default {

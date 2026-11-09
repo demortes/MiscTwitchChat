@@ -36,7 +36,6 @@ export const openapi = {
       responses: { ...text('Success'), ...text('word is required', '400'), ...text('Not Found', '404') },
     }),
     '/api/urban/{term}': get('Urban', 'UrbanGet', 'Gets the Urban Dictionary definition of a term.', [path('term')]),
-    '/api/tweet/{twitterUsername}': get('Tweet', 'TweetGet', "Gets a user's latest tweet.", [path('twitterUsername')]),
     '/api/ai/name/{game}/{item}': get('Name', 'NameGet', 'Generates an AI name for an item in a game.', [path('game'), path('item')]),
     '/api/hug/{channel}/{origUser}': get('Hugs', 'HugsHug', 'Hugs a random consenting chatter.', [path('channel'), path('origUser')]),
     '/api/hug/{channel}/{origUser}/consent': get('Hugs', 'HugsConsent', 'Toggles whether a user consents to being hugged.', [path('channel'), path('origUser')]),
