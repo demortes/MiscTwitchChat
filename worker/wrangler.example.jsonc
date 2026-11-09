@@ -1,0 +1,20 @@
+// Template for worker/wrangler.jsonc. Copy it and fill in your own values:
+//
+//   cp wrangler.example.jsonc wrangler.jsonc
+//
+// wrangler.jsonc is gitignored on purpose: it holds the ID of YOUR D1 database, which belongs to your
+// Cloudflare account and should not be committed or shared. See README.md for the full setup.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "misctwitchchat",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*", "/twitch/*", "/health", "/swagger/*"] },
+  "d1_databases": [
+    // Run `npx wrangler d1 create misctwitchchat`, then paste the database_id it prints.
+    { "binding": "DB", "database_name": "misctwitchchat", "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID", "migrations_dir": "migrations" }
+  ],
+  "observability": { "enabled": true }
+  // Secrets (set with `wrangler secret put <NAME>`, or put in .dev.vars for local runs):
+  // OPEN_AI_KEY, OPEN_AI_URL, TwitterApiKey, TwitterApiSecret, DictionaryApiKey, TWITCH_EVENTSUB_SECRET
+}

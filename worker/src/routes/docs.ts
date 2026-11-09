@@ -17,7 +17,7 @@ docs.get('/swagger', (c) =>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Swagger - Dem's Twitch API</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@${SWAGGER_UI_VERSION}/swagger-ui.css" />
-  <link rel="stylesheet" href="/css/custom.css" />
+  <link rel="stylesheet" href="/css/swagger-dark.css" />
 </head>
 <body>
   <div id="swagger-ui"></div>

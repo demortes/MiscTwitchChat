@@ -1,0 +1,207 @@
+/*
+ * Dark theme for Swagger UI 5.x, matching the site palette in custom.css.
+ *
+ * custom.css only recolours the page chrome. Swagger UI paints most of its own text a fixed dark grey
+ * (#3b4151), so on a dark page that text becomes unreadable. This file sets the colours Swagger UI
+ * hard-codes. Loaded after swagger-ui.css so equal-specificity rules here win.
+ */
+:root {
+    --bg: #1a1a1d;
+    --surface: #25252a;
+    --border: #4e4e50;
+    --text: #c5c6c7;
+    --heading: #e8e9ea;
+    --accent: #66fcf1;
+}
+
+html,
+body {
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+}
+
+.swagger-ui {
+    color: var(--text);
+}
+
+/* Everything Swagger UI colours itself. */
+.swagger-ui .info .title,
+.swagger-ui .info h1,
+.swagger-ui .info h2,
+.swagger-ui .info h3,
+.swagger-ui .info h4,
+.swagger-ui .info p,
+.swagger-ui .info li,
+.swagger-ui .info table,
+.swagger-ui .info .base-url,
+.swagger-ui .opblock-tag,
+.swagger-ui .opblock-tag small,
+.swagger-ui .opblock .opblock-summary-description,
+.swagger-ui .opblock .opblock-summary-operation-id,
+.swagger-ui .opblock .opblock-summary-path,
+.swagger-ui .opblock .opblock-summary-path__deprecated,
+.swagger-ui .opblock-description-wrapper p,
+.swagger-ui .opblock-external-docs-wrapper p,
+.swagger-ui .opblock-title_normal p,
+.swagger-ui .opblock-section-header h4,
+.swagger-ui .opblock-section-header label,
+.swagger-ui .parameter__name,
+.swagger-ui .parameter__type,
+.swagger-ui .parameter__deprecated,
+.swagger-ui .parameter__in,
+.swagger-ui .parameter__extension,
+.swagger-ui .parameter__enum,
+.swagger-ui .response-col_status,
+.swagger-ui .response-col_links,
+.swagger-ui .response-col_description,
+.swagger-ui .responses-inner h4,
+.swagger-ui .responses-inner h5,
+.swagger-ui table thead tr td,
+.swagger-ui table thead tr th,
+.swagger-ui table tbody tr td,
+.swagger-ui .tab li,
+.swagger-ui .tab li button.tablinks,
+.swagger-ui label,
+.swagger-ui .model,
+.swagger-ui .model-title,
+.swagger-ui .model-toggle,
+.swagger-ui .prop-type,
+.swagger-ui .prop-format,
+.swagger-ui section.models h4,
+.swagger-ui .scheme-container .schemes > label,
+.swagger-ui .servers > label,
+.swagger-ui .markdown p,
+.swagger-ui .markdown li,
+.swagger-ui .renderedMarkdown p,
+.swagger-ui .renderedMarkdown li,
+.swagger-ui .loading-container .loading::after,
+.swagger-ui .btn,
+.swagger-ui .opblock-summary-control,
+.swagger-ui .errors-wrapper .errors h4,
+.swagger-ui .errors-wrapper .errors small {
+    color: var(--text);
+}
+
+.swagger-ui .info .title,
+.swagger-ui .opblock-tag,
+.swagger-ui section.models h4 {
+    color: var(--heading);
+}
+
+.swagger-ui .info a,
+.swagger-ui .info__contact a,
+.swagger-ui .info__license a,
+.swagger-ui .markdown a,
+.swagger-ui .renderedMarkdown a {
+    color: var(--accent);
+}
+
+/* Surfaces. Swagger UI draws several of these white. */
+.swagger-ui .scheme-container,
+.swagger-ui .opblock .opblock-section-header,
+.swagger-ui .dialog-ux .modal-ux,
+.swagger-ui .dialog-ux .modal-ux-header {
+    background: var(--surface);
+    box-shadow: none;
+    color: var(--text);
+}
+
+.swagger-ui .dialog-ux .modal-ux {
+    border-color: var(--border);
+}
+
+.swagger-ui .dialog-ux .modal-ux-header h3,
+.swagger-ui .dialog-ux .modal-ux-content h4,
+.swagger-ui .dialog-ux .modal-ux-content p {
+    color: var(--text);
+}
+
+.swagger-ui section.models,
+.swagger-ui section.models.is-open h4,
+.swagger-ui .opblock-tag,
+.swagger-ui .opblock-tag:hover {
+    border-color: var(--border);
+}
+
+.swagger-ui .opblock-tag:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.swagger-ui section.models .model-container,
+.swagger-ui .model-box {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.swagger-ui table tbody tr td,
+.swagger-ui table thead tr td,
+.swagger-ui table thead tr th {
+    border-bottom-color: var(--border);
+}
+
+/* Form controls. */
+.swagger-ui select,
+.swagger-ui input[type='text'],
+.swagger-ui input[type='password'],
+.swagger-ui input[type='search'],
+.swagger-ui input[type='email'],
+.swagger-ui textarea {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.swagger-ui .btn {
+    background: transparent;
+    border-color: var(--border);
+}
+
+.swagger-ui .btn:hover {
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+.swagger-ui .btn.execute {
+    background: #4990e2;
+    border-color: #4990e2;
+    color: #fff;
+}
+
+/*
+ * Swagger UI sets these section headings with `.swagger-ui .opblock .opblock-section-header h4`, which
+ * out-ranks the plain selectors above, so they stay #3b4151 on the dark surface (contrast 1.5:1) unless
+ * we match its specificity.
+ */
+.swagger-ui .opblock .opblock-section-header h4,
+.swagger-ui .opblock .opblock-section-header h4 span,
+.swagger-ui .opblock .opblock-section-header label,
+.swagger-ui .opblock .opblock-section-header label span,
+.swagger-ui .opblock .opblock-section-header .tab-header .tab-item,
+.swagger-ui .opblock .opblock-section-header .tab-header .tab-item span,
+.swagger-ui .opblock .opblock-section-header .opblock-title_normal,
+.swagger-ui .opblock .opblock-section-header .opblock-title_normal span {
+    color: var(--text);
+}
+
+/* Status colours Swagger UI draws for a light page: lift them so they read on the dark surface. */
+.swagger-ui .parameter__name.required span,
+.swagger-ui table.parameters .parameter__name.required::after,
+.swagger-ui .renderedMarkdown .required {
+    color: #ff7b72;
+}
+
+.swagger-ui .response-control-media-type__accept-message,
+.swagger-ui .response-control-media-type__accept-message code,
+.swagger-ui .response-control-media-type--accept-controller select {
+    color: #7ee787;
+}
+
+/* Collapse/expand arrows and other inline icons are dark by default. */
+.swagger-ui svg:not(.locked):not(.unlocked),
+.swagger-ui .arrow {
+    fill: var(--text);
+}
+
+/* Keep the method badges and the tinted operation blocks readable on a dark page. */
+.swagger-ui .opblock .opblock-summary-method {
+    color: #fff;
+}
