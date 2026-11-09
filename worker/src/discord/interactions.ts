@@ -77,3 +77,16 @@ discord.post('/interactions', async (c) => {
   );
   return c.json({ type: ResponseType.Deferred });
 });
+
+/**
+ * Where the site's "Add my Discord bot" link points. The application ID comes from the DISCORD_APP_ID secret, so
+ * the repo holds no Discord identifier and each deployment invites its own application.
+ */
+discord.get('/invite', (c) => {
+  const appId = c.env.DISCORD_APP_ID;
+  if (!appId) return c.text('Discord is not configured on this instance.', 404);
+  return c.redirect(
+    `https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(appId)}&scope=applications.commands`,
+    302,
+  );
+});

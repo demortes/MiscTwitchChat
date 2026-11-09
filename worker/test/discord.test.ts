@@ -232,3 +232,23 @@ describe('deferred delivery', () => {
     ]);
   });
 });
+
+describe('GET /invite', () => {
+  it('redirects to Discord using the DISCORD_APP_ID secret, so the repo holds no application id', async () => {
+    const res = await discord.request('/invite', {}, { DISCORD_APP_ID: '123456789' } as never);
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location')).toBe(
+      'https://discord.com/oauth2/authorize?client_id=123456789&scope=applications.commands',
+    );
+  });
+
+  it('is a 404 when the instance has no DISCORD_APP_ID', async () => {
+    const res = await discord.request('/invite', {}, {} as never);
+    expect(res.status).toBe(404);
+  });
+
+  it('encodes the id so a malformed secret cannot inject query parameters', async () => {
+    const res = await discord.request('/invite', {}, { DISCORD_APP_ID: '1&scope=bot' } as never);
+    expect(res.headers.get('location')).toContain('client_id=1%26scope%3Dbot&scope=applications.commands');
+  });
+});

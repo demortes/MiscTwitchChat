@@ -27,7 +27,6 @@ npx wrangler secret put DictionaryApiKey
 npx wrangler secret put TWITCH_EVENTSUB_SECRET
 npx wrangler secret put DISCORD_PUBLIC_KEY
 npx wrangler secret put DISCORD_APP_ID
-npx wrangler secret put DISCORD_BOT_TOKEN
 npm run deploy
 ```
 

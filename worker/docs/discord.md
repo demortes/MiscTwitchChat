@@ -6,15 +6,18 @@ The Worker replaces the old Discord.Net gateway bot. Discord POSTs every slash c
 
 ## Setup
 
-1. In the Discord Developer Portal, open your application. Copy the **Application ID**, **Public Key**
-   (General Information) and the **Bot token** (Bot tab).
-2. Set Worker secrets (from `worker/`):
+1. In the [Discord Developer Portal](https://discord.com/developers/applications), create an application (or open
+   yours). On **General Information** copy the **Application ID** and the **Public Key**. On the **Bot** tab, use
+   **Reset Token** to get a bot token (shown once). Leave the privileged intents off.
+2. Give the Worker its secrets (from `worker/`). Nothing Discord-specific is stored in the repo; it all lives on
+   the instance:
    ```
-   npx wrangler secret put DISCORD_PUBLIC_KEY
-   npx wrangler secret put DISCORD_APP_ID
-   npx wrangler secret put DISCORD_BOT_TOKEN   # only needed by the register script, not the Worker itself
+   npx wrangler secret put DISCORD_PUBLIC_KEY   # verifies request signatures
+   npx wrangler secret put DISCORD_APP_ID       # used by the site's "Add my Discord bot" link (/discord/invite)
    ```
-   For local dev put them in `.dev.vars`.
+   The Worker itself never reads the bot token. Only the register script in step 4 needs it, and Cloudflare secrets
+   cannot be read back, so supply it from your shell for that one command and never commit it. For local dev put
+   the two secrets above in `.dev.vars`.
 3. Deploy (`npm run deploy`), then in the portal set **Interactions Endpoint URL** to
    `https://<your-worker-domain>/discord/interactions`. Discord sends a signed PING; it is only
    accepted if the endpoint answers correctly, so deploy the secrets first.
@@ -24,7 +27,9 @@ The Worker replaces the old Discord.Net gateway bot. Discord POSTs every slash c
    # fast, guild-scoped (instant instead of up to ~1h for global):
    DISCORD_GUILD_ID=... DISCORD_APP_ID=... DISCORD_BOT_TOKEN=... npx vite-node scripts/register-commands.ts
    ```
-5. Invite the bot with the `applications.commands` scope (no gateway/bot intents needed anymore).
+5. Invite the application to your server by opening `https://<your-worker-domain>/discord/invite`. It redirects to
+   Discord's authorize page for your application with only the `applications.commands` scope (no `bot` scope,
+   permissions or gateway intents are needed any more).
 
 ## Commands
 
