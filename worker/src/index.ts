@@ -18,6 +18,7 @@ import { eightball } from './routes/eightball';
 import { health } from './routes/health';
 import { docs } from './routes/docs';
 import { twitch } from './webhooks/twitch';
+import { discord } from './discord/interactions';
 
 export const app = new Hono<AppEnv>();
 
@@ -46,6 +47,7 @@ app.route('/api/eightball', eightball);
 app.route('/health', health);
 app.route('/', docs); // swagger / openapi.json
 app.route('/twitch', twitch);
+app.route('/discord', discord);
 
 export default {
   fetch(request: Request, env: AppEnv['Bindings'], ctx: ExecutionContext) {

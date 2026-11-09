@@ -25,10 +25,14 @@ npx wrangler secret put TwitterApiKey
 npx wrangler secret put TwitterApiSecret
 npx wrangler secret put DictionaryApiKey
 npx wrangler secret put TWITCH_EVENTSUB_SECRET
+npx wrangler secret put DISCORD_PUBLIC_KEY
+npx wrangler secret put DISCORD_APP_ID
+npx wrangler secret put DISCORD_BOT_TOKEN
 npm run deploy
 ```
 
-Twitch setup is in [docs/twitch-eventsub.md](docs/twitch-eventsub.md).
+Twitch setup is in [docs/twitch-eventsub.md](docs/twitch-eventsub.md). Discord slash commands (a handy way to try
+the API without Twitch chat) are in [docs/discord.md](docs/discord.md).
 
 ## Deploy from GitHub Actions
 

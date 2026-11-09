@@ -7,6 +7,9 @@ export type Bindings = {
   TwitterApiSecret: string;
   DictionaryApiKey: string;
   TWITCH_EVENTSUB_SECRET: string;
+  DISCORD_PUBLIC_KEY: string;
+  DISCORD_APP_ID: string;
+  DISCORD_BOT_TOKEN: string;
 };
 
 export type AppEnv = { Bindings: Bindings };
