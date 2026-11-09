@@ -48,14 +48,18 @@ aiName.get('/:game/:item', async (c) => {
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: buildPrompt(game, item) },
         ],
-        max_tokens: 100,
+        // Newer OpenAI models reject max_tokens, and reasoning models count their hidden thinking against
+        // this cap too, so it is generous; the prompt is what keeps replies short.
+        max_completion_tokens: 1024,
       }),
     });
     if (!resp.ok) {
       return c.text(`Error: ${statusName(resp.status)} - ${await resp.text()}`);
     }
-    const data = (await resp.json()) as { choices: { message: { content: string } }[] };
-    return c.text(data.choices[0].message.content);
+    const data = (await resp.json()) as { choices?: { message?: { content?: string | null } }[] };
+    const content = data.choices?.[0]?.message?.content?.trim();
+    if (!content) return c.text('Error: the AI returned an empty response.', 502);
+    return c.text(content);
   } catch {
     return c.text('Internal Server Error', 500);
   }
