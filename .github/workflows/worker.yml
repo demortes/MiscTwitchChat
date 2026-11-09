@@ -78,6 +78,8 @@ jobs:
       - name: Check Cloudflare secrets are configured
         id: cf
         shell: bash
+        # Runs before checkout, so the default working directory (worker/) does not exist yet.
+        working-directory: .
         run: |
           if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ] && [ -n "$D1_DATABASE_ID" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
