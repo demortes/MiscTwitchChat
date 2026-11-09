@@ -90,6 +90,16 @@ describe('aiName', () => {
     expect(await res.text()).toBe('Sword Art');
     const body = JSON.parse(f.mock.calls[0][1].body as string);
     expect(body.messages[1].content).toContain('a sword within the game Zelda');
+    // Newer models reject max_tokens outright.
+    expect(body.max_tokens).toBeUndefined();
+    expect(body.max_completion_tokens).toBeGreaterThanOrEqual(256);
+  });
+
+  it('reports an empty completion instead of replying with a blank line', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => json({ choices: [{ message: { content: '' }, finish_reason: 'length' }] })));
+    const res = await app().request('/api/ai/name/Zelda/sword', {}, env);
+    expect(res.status).toBe(502);
+    expect(await res.text()).toContain('empty response');
   });
 
   it('uses the OPEN_AI_MODEL setting, and a default when it is not set or blank', async () => {
