@@ -1,6 +1,6 @@
 # Discord interactions endpoint
 
-The Worker replaces the old Discord.Net gateway bot. Discord POSTs every slash command to
+Slash commands are handled over HTTP, so there is no gateway connection or long-running bot. Discord POSTs every command to
 `POST /discord/interactions`; each request is verified with Ed25519 against `DISCORD_PUBLIC_KEY`
 (401 on failure) and PING is answered with PONG.
 
@@ -43,8 +43,8 @@ The Worker replaces the old Discord.Net gateway bot. Discord POSTs every slash c
 - `cah tts` posts a followup message with `tts: true` and deletes the "thinking" placeholder (edits cannot set TTS).
 - Every message is truncated to 2000 characters and sent with `allowed_mentions: { parse: [] }`, so nothing can ping.
 
-## Differences from the C# bot
+## Behavior notes
 
-- `/roll` now rolls 1..sides inclusive (C# used `Random.Next(1, sides)`, which excluded the top face) and is limited to
-  1-100 dice and 1-1,000,000 sides; anything else gets the "incorrect parameters" reply.
-- Option descriptions default to the option name (as Discord.Net did).
+- `/roll` rolls 1..sides inclusive and is limited to 1-100 dice and 1-1,000,000 sides; anything else gets the
+  "incorrect parameters" reply.
+- Option descriptions default to the option name.

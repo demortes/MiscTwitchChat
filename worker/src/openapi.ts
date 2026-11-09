@@ -1,5 +1,5 @@
-// OpenAPI 3 description of the API. Operations return text/plain strings (like the original
-// ASP.NET controllers), so the NSwag client in DiscordBot stays equivalent.
+// OpenAPI 3 description of the API. Most operations return a single text/plain string, matching the
+// handlers in src/routes.
 
 type Param = { name: string; in: 'path' | 'query'; required: boolean; schema: { type: string }; description?: string };
 

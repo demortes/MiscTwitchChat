@@ -1,7 +1,7 @@
 # MiscTwitchChat Worker
 
 The Cloudflare Workers version of the API (Hono + TypeScript + D1). It also receives Twitch chat activity through
-an EventSub webhook, replacing the long-running `TwitchActivityBot`.
+an EventSub webhook, so no long-running bot is needed.
 
 ## Run your own copy
 
