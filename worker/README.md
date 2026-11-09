@@ -30,6 +30,23 @@ npm run deploy
 
 Twitch setup is in [docs/twitch-eventsub.md](docs/twitch-eventsub.md).
 
+## Deploy from GitHub Actions
+
+[`.github/workflows/worker.yml`](../.github/workflows/worker.yml) typechecks, tests and dry-run bundles the Worker on
+every pull request and push that touches `worker/`. Pushes to `main` then apply the D1 migrations and deploy.
+
+Add three repository secrets (Settings > Secrets and variables > Actions):
+
+| Secret | Value |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | A Cloudflare API token that can edit Workers scripts and D1 databases on your account |
+| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare account ID |
+| `CLOUDFLARE_D1_DATABASE_ID` | The `database_id` from `wrangler d1 create` |
+
+The workflow builds `wrangler.jsonc` from `wrangler.example.jsonc` using that database ID, so no identifier is ever
+committed. Without these secrets (for example on a fork) the tests still run and the deploy is skipped. Runtime
+secrets such as `OPEN_AI_KEY` are set once with `wrangler secret put` and persist across deploys.
+
 ## Develop locally
 
 No Cloudflare account or network is needed for the tests or the local server.
