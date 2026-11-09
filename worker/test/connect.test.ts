@@ -115,6 +115,26 @@ describe('GET /callback', () => {
     });
   });
 
+  it('accepts a login name in TWITCH_BOT_USER_ID and resolves it to the numeric id', async () => {
+    const calls = stubFetch((url, init) =>
+      url === 'https://api.twitch.tv/helix/users?login=alfred_bt' ? json({ data: [{ id: '242778369' }] }) : twitchOk()(url, init),
+    );
+    const res = await callback('code=c&state=abc', 'twitch_connect_state=abc', { ...env, TWITCH_BOT_USER_ID: '@Alfred_BT' });
+    expect(res.status).toBe(200);
+    const sub = calls.find((x) => x.url.endsWith('/eventsub/subscriptions'))!;
+    expect(JSON.parse(String(sub.init?.body)).condition).toEqual({ broadcaster_user_id: '123', user_id: '242778369' });
+  });
+
+  it('fails without subscribing if the bot login is unknown', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const calls = stubFetch((url, init) =>
+      url.startsWith('https://api.twitch.tv/helix/users?login=') ? json({ data: [] }) : twitchOk()(url, init),
+    );
+    const res = await callback('code=c&state=abc', 'twitch_connect_state=abc', { ...env, TWITCH_BOT_USER_ID: 'nobody' });
+    expect(res.status).toBe(502);
+    expect(calls.some((x) => x.url.endsWith('/eventsub/subscriptions'))).toBe(false);
+  });
+
   it('clears the state cookie so the callback cannot be replayed', async () => {
     stubFetch(twitchOk());
     const res = await callback('code=c&state=abc');

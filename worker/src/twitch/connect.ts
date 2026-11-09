@@ -127,13 +127,27 @@ connect.get('/callback', async (c) => {
     }
     const appToken = ((await appTokenRes.json()) as { access_token: string }).access_token;
 
+    // TWITCH_BOT_USER_ID should be the numeric id, but a login name works too (as in the subscribe script).
+    let botId = c.env.TWITCH_BOT_USER_ID.trim();
+    if (!/^\d+$/.test(botId)) {
+      const botRes = await fetch(`${HELIX}/users?login=${encodeURIComponent(botId.replace(/^@/, '').toLowerCase())}`, {
+        headers: { Authorization: `Bearer ${appToken}`, 'Client-Id': c.env.TWITCH_CLIENT_ID },
+      });
+      const bot = botRes.ok ? ((await botRes.json()) as { data: { id: string }[] }).data[0] : undefined;
+      if (!bot) {
+        console.error('twitch connect: TWITCH_BOT_USER_ID is neither a user id nor a known login');
+        return page(c, 502, 'Not connected', '<p>The bot account is not configured correctly. Please let the site owner know.</p>');
+      }
+      botId = bot.id;
+    }
+
     const subRes = await fetch(`${HELIX}/eventsub/subscriptions`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${appToken}`, 'Client-Id': c.env.TWITCH_CLIENT_ID, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type: 'channel.chat.message',
         version: '1',
-        condition: { broadcaster_user_id: me.id, user_id: c.env.TWITCH_BOT_USER_ID },
+        condition: { broadcaster_user_id: me.id, user_id: botId },
         transport: {
           method: 'webhook',
           callback: new URL('/twitch/eventsub', c.req.url).toString(),

@@ -44,7 +44,7 @@ Set it up once:
 
 1. Add `https://<your-worker-domain>/twitch/callback` to your app's **OAuth Redirect URLs** at
    dev.twitch.tv/console (one entry per domain you use, for example the custom domain).
-2. Give the Worker the app's credentials and the bot account's numeric user id:
+2. Give the Worker the app's credentials and the bot account (its numeric user id, or its login name):
    `wrangler secret put TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET` and `TWITCH_BOT_USER_ID`
    (plus `TWITCH_EVENTSUB_SECRET`, as above). Without them `/twitch/connect` returns 404.
 3. The bot account must have authorized your app with `user:read:chat` and `user:bot` (the "Authorization"
