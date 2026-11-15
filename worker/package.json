@@ -11,7 +11,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply misctwitchchat --remote"
   },
   "dependencies": {
-    "hono": "^4.6.0"
+    "hono": "^4.13.18"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261104.1",
